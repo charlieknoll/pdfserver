@@ -45,7 +45,7 @@ function boolOrUndefined(par) {
 const generatePdf = async (req, res) => {
   const launchOptions = {}
   const chromeOptions = {}
-  chromeOptions.timeout = 200000;
+  chromeOptions.timeout = 10000;
   chromeOptions.waitForLoad = true
   chromeOptions.scale = 1
   chromeOptions.waitForJS = true
@@ -127,10 +127,7 @@ const generatePdf = async (req, res) => {
       }
     }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
   } finally {
-    if (browser && !browserClosed) {
-      browserClosed = true
-      await browser.close()
-    }
+    if (page) await browserPagePool.release(page)
   }
 
 }
