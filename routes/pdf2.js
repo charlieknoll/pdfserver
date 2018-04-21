@@ -1,5 +1,5 @@
 
-const puppeteer = require('puppeteer')
+const browserPagePool = require('../services/browserPagePool')
 const url = require('url')
 
 const runWithTimeout = (fn, ms, msg) => {
@@ -52,20 +52,23 @@ const generatePdf = async (req, res) => {
   chromeOptions.printBackground = true
 
 
-  let browser
-  let browserClosed = false
+  let page
+  
   try {
     await runWithTimeout(async (timeoutInfo) => {
       try {
-        browser = await puppeteer.launch(launchOptions)
+        //browser = await puppeteer.launch(launchOptions)
+
+        // if (timeoutInfo.error) {
+        //   return
+        // }
+        //const page = await browser.newPage()
+        page = await browserPagePool.acquire();
 
         if (timeoutInfo.error) {
-          return
-        }
-        const page = await browser.newPage()
-
-        if (timeoutInfo.error) {
+            if (page) await browserPagePool.release(page)
             return
+            
         }
 
         const htmlUrl = url.format({
@@ -82,6 +85,7 @@ const generatePdf = async (req, res) => {
             : { }
         )
         if (timeoutInfo.error) {
+          await browserPagePool.release(page)
           return
         }
         if (chromeOptions.waitForJS === true || chromeOptions.waitForJS === 'true') {
@@ -99,11 +103,13 @@ const generatePdf = async (req, res) => {
         }
 
         if (timeoutInfo.error) {
+          if (page) await browserPagePool.release(page)
           return
         }         
         const content = await page.pdf(chromeOptions)
-
+        await browserPagePool.release(page);
         if (timeoutInfo.error) {
+          
           return
         }
         res.setHeader('Content-Length', content.length);
@@ -117,10 +123,7 @@ const generatePdf = async (req, res) => {
       } finally {
         // this block can be fired when there is a timeout and
         // runWithTimeout was resolved but we cancel the code branch with "return"
-        if (browser && !browserClosed) {
-          browserClosed = true
-          await browser.close()
-        }
+        if (page) await browserPagePool.release(page)
       }
     }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
   } finally {
