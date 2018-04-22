@@ -11,7 +11,12 @@ var usersRouter = require('./routes/users');
 var generatePdf = require('./routes/pdf2');
 
 var app = express();
-
+function nocache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -25,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.post('/pdf', asyncHandler(async (req, res, next) => {
+app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
   await generatePdf(req,res)
 }))
 // catch 404 and forward to error handler

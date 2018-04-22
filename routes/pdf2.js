@@ -45,7 +45,7 @@ function boolOrUndefined(par) {
 const generatePdf = async (req, res) => {
   const launchOptions = {}
   const chromeOptions = {}
-  chromeOptions.timeout = 10000;
+  chromeOptions.timeout = 20000;
   chromeOptions.waitForLoad = true
   chromeOptions.scale = 1
   chromeOptions.waitForJS = true
