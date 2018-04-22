@@ -1,4 +1,4 @@
-var debug = require('debug')('server:browserPagePool');
+var debug = require('debug')('app:browserPagePool');
 const genericPool = require('generic-pool');
 const puppeteer = require('puppeteer');
 const chromeLaunchOptions = {};
@@ -20,8 +20,8 @@ const factory = {
     //     deviceScaleFactor: 1.5,
     //   });
 
-    //   debug('going to' + url);
-    //   await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
+       debug('going to' + url);
+       await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
 
       debug('returning page');
       return page;
