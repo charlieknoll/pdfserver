@@ -17,7 +17,7 @@ function nocache(req, res, next) {
   res.header('Pragma', 'no-cache');
   next();
 }
-// view engine setup
+//view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
@@ -31,7 +31,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
-  await generatePdf(req,res)
+  var content = await generatePdf(req.body.url)
+  res.setHeader('Content-Length', content.length);
+  res.contentType('application/pdf')
+  //res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename=${req.body.fileName}.pdf`);
+  //res.meta.fileExtension = 'pdf'
+  res.end(content)
+  //res.end()
+  //next()
 }))
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
