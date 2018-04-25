@@ -41,14 +41,17 @@ function boolOrUndefined(par) {
   return (par === true || par === 'true') ? true : undefined
 }
 
-const generatePdf = async (url) => {
-  const launchOptions = {}
+const generatePdf = async (url,opt) => {
+
+
+
   const chromeOptions = {}
   chromeOptions.timeout = 10000;
   chromeOptions.waitForLoad = true
   chromeOptions.scale = 1
   chromeOptions.waitForJS = true
   chromeOptions.printBackground = true
+  Object.assign(chromeOptions, opt)
 
 
 

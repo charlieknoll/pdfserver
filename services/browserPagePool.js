@@ -1,7 +1,10 @@
 var debug = require('debug')('app:browserPagePool');
 const genericPool = require('generic-pool');
 const puppeteer = require('puppeteer');
-const chromeLaunchOptions = {};
+const launchOptions = {}
+launchOptions.args = ["--incognito", "--no-sandbox","--disable-gpu"];
+launchOptions.ignoreHTTPSErrors = true;
+launchOptions.pipe = true;
 
 const url = "https://www.google.com"
 
@@ -9,7 +12,7 @@ const factory = {
   create: async function() {
     try {
       debug('launching browser');
-      const browser = await puppeteer.launch(chromeLaunchOptions);
+      const browser = await puppeteer.launch(launchOptions);
       debug('opening new page');
       const page = await browser.newPage();
 

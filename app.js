@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
-  var content = await generatePdf(req.body.url)
+  var content = await generatePdf(req.body.url,req.body.options)
   res.setHeader('Content-Length', content.length);
   res.contentType('application/pdf')
   //res.setHeader('Content-Type', 'application/pdf');

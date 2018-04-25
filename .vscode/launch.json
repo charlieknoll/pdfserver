@@ -11,7 +11,7 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}\\bin\\www",
             "env": {
-                "DEBUG": "pdfserver:server"
+                "DEBUG": "pdfserver:*"
             }
         }
     ]
