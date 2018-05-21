@@ -8,11 +8,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Express",
             "program": "${workspaceFolder}\\bin\\www",
             "env": {
                 "DEBUG": "pdfserver:*"
             }
         }
+        
+
     ]
 }

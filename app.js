@@ -7,8 +7,8 @@ var logger = require('morgan');
 const asyncHandler = require('express-async-handler')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var generatePdf = require('./routes/pdf2');
+var convertRouter = require('./routes/convert');
+var generatePdf = require('./routes/pdf');
 
 var app = express();
 function nocache(req, res, next) {
@@ -29,13 +29,15 @@ app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/convert', convertRouter);
+
 app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
-  var content = await generatePdf(req.body.url,req.body.options)
+  //TODO add catch to handle errors?
+  var content = await generatePdf(req.body);
   res.setHeader('Content-Length', content.length);
   res.contentType('application/pdf')
   //res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename=${req.body.fileName}.pdf`);
+  res.setHeader('Content-Disposition', `inline; filename=${req.body.fileName}.pdf`);
   //res.meta.fileExtension = 'pdf'
   res.end(content)
   //res.end()

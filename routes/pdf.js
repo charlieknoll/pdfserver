@@ -1,174 +1,123 @@
-var express = require('express');
-var router = express.Router();
-const url = require('url')
+
+const browserPagePool = require('../services/browserPagePool')
+const rpScript = require('../services/rpScript')
 
 const runWithTimeout = (fn, ms, msg) => {
-    return new Promise(async (resolve, reject) => {
-        let resolved = false
+  return new Promise(async (resolve, reject) => {
+    let resolved = false
 
-        const info = {
-            // information to pass to fn to ensure it can cancel
-            // things if it needs to
-            error: null
-        }
+    const info = {
+      // information to pass to fn to ensure it can cancel
+      // things if it needs to
+      error: null,
+      pageErrors: [],
+      reject: reject
+    }
 
-        const timer = setTimeout(() => {
-            const err = new Error(`Timeout Error: ${msg}`)
-            info.error = err
-            resolved = true
-            reject(err)
-        }, ms)
+    const timer = setTimeout(() => {
+      const err = new Error(`Timeout Error: ${msg}`)
+      info.error = err
+      err.pageErrors = info.pageErrors
+      resolved = true
+      reject(err)
+    }, ms)
 
-        try {
-            const result = await fn(info)
-
-            if (resolved) {
-                return
-            }
-
-            resolve(result)
-        } catch (e) {
-            if (resolved) {
-                return
-            }
-
-            reject(e)
-        } finally {
-            clearTimeout(timer)
-        }
-    })
-}
-
-function floatOrUndefined(param) {
     try {
-        return parseFloat(param)
+      const result = await fn(info)
+
+      if (resolved) {
+        return
+      }
+
+      resolve(result)
     } catch (e) {
-        return undefined
-    }
-}
+      if (resolved) {
+        return
+      }
 
+      reject(e)
+    } finally {
+      clearTimeout(timer)
+    }
+  })
+}
 function boolOrUndefined(par) {
-    return (par === true || par === 'true') ? true : undefined
+  return (par === true || par === 'true') ? true : undefined
 }
 
-
-function execute(launchOptions, chromeOptions) {
-    return async (req, res) => {
-        const launchOptions = Object.assign({}, launchOptions)
-
-        if (typeof launchOptions.args === 'string') {
-            launchOptions.args = launchOptions.args.split(',')
-        }
-
-        let browser
-        let browserClosed = false
-
-        try {
-            await runWithTimeout(async (timeoutInfo) => {
-                try {
-                    browser = await puppeteer.launch(launchOptions)
-
-                    if (timeoutInfo.error) {
-                        return
-                    }
-
-                    const page = await browser.newPage()
-
-                    if (timeoutInfo.error) {
-                        return
-                    }
+const generatePdf = async (opt) => {
 
 
-                    if (boolOrUndefined(chrome.waitForNetworkIddle) === true) {
-                        console.log('Chrome will wait for network iddle before printing')
-                    }
 
-                    const id = uuid()
-                    const htmlPath = path.join(reporter.options.tempAutoCleanupDirectory, `${id}-chrome-pdf.html`)
+  const chromeOptions = {}
+  chromeOptions.timeout = 10000;
+  chromeOptions.waitForJs = opt.waitForJs;
 
-                    if (!path.isAbsolute(htmlPath)) {
-                        throw new Error(`generated htmlPath option must be an absolute path to a file. path: ${htmlPath}`)
-                    }
+  const pdfOptions = {}
+  pdfOptions.scale = 1
+  pdfOptions.printBackground = true
 
-                    await writeFileAsync(htmlPath, res.content.toString())
-
-                    if (timeoutInfo.error) {
-                        return
-                    }
-
-                    const htmlUrl = url.format({
-                        protocol: 'file',
-                        pathname: htmlPath
-                    })
-
-                    // this is the same as sending timeout options to the page.goto
-                    // but additionally setting it more generally in the page
-                    page.setDefaultNavigationTimeout(chromeOptions.timeout)
-
-                    await page.goto(
-                        htmlUrl,
-                        boolOrUndefined(chromeOptions.waitForNetworkIddle) === true
-                            ? { waitUntil: 'networkidle2' }
-                            : {}
-                    )
-
-                    if (timeoutInfo.error) {
-                        return
-                    }
-
-                    if (chrome.waitForJS === true || chrome.waitForJS === 'true') {
-                        reporter.logger.debug('Chrome will wait for printing trigger', req)
-                        await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: definition.options.timeout })
-
-                    }
-
-                    const newChromeOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
-
-                    if (timeoutInfo.error) {
-                        return
-                    }
-                    Object.assign(chromeOptions, newChromeSettings)
-                    chrome.margin = {
-                        top: chromeOptions.marginTop,
-                        right: chromeOptions.marginRight,
-                        bottom: chromeOptions.marginBottom,
-                        left: chromeOptions.marginLeft
-                    }
+  const rpOptions = {}
+  rpOptions.landscape = boolOrUndefined(opt.landscape)
+  rpOptions.showLoading = false;
+  rpOptions.hideSource = true;
 
 
-                    reporter.logger.debug('Running chrome with params ' + JSON.stringify(chrome), req)
+  return await runWithTimeout(async (timeoutInfo) => {
+    let page
+    let pageReleased = false
+    try {
+      page = await browserPagePool.acquire();
+      if (timeoutInfo.error) return
 
-                    res.content = await page.pdf(chromeOptions)
+      page.setDefaultNavigationTimeout(chromeOptions.timeout)
 
-                    if (timeoutInfo.error) {
-                        return
-                    }
+      await page.goto(opt.url, { waitUntil: 'load' })
 
-                    res.meta.contentType = 'application/pdf'
-                    res.meta.fileExtension = 'pdf'
-                } finally {
-                    // this block can be fired when there is a timeout and
-                    // runWithTimeout was resolved but we cancel the code branch with "return"
-                    if (browser && !browserClosed) {
-                        browserClosed = true
-                        await browser.close()
-                    }
-                }
-            }, definition.options.timeout, `pdf generation not completed after ${definition.options.timeout}ms`)
-        } finally {
-            if (browser && !browserClosed) {
-                browserClosed = true
-                await browser.close()
-            }
-        }
+      if (timeoutInfo.error) return
+
+      //TODO inject rp
+      const rpScriptTag = await page.addScriptTag({ content: rpScript })
+      page.on('pageerror', msg => {
+        timeoutInfo.pageErrors.push(msg);
+      });
+      //run preview with rpOptions
+      try {
+        await page.evaluate(opt => {
+
+          rjs.preview([document.getElementById('report')], opt);
+        }, rpOptions)
+      } catch (e) {
+        console.log('exception on evaluate', e)
+      }
+
+
+
+      await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: chromeOptions.timeout })
+
+      const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
+      Object.assign(pdfOptions, newPdfOptions)
+      pdfOptions.margin = {
+        top: pdfOptions.marginTop,
+        right: pdfOptions.marginRight,
+        bottom: pdfOptions.marginBottom,
+        left: pdfOptions.marginLeft
+      }
+      if (timeoutInfo.error) return
+
+      //TODO delete script
+
+      const content = await page.pdf(pdfOptions)
+      if (timeoutInfo.error) return
+      await browserPagePool.release(page).then(() => {
+        pageReleased = true
+      });
+
+      return content
+    } finally {
+      if (page && !pageReleased) await browserPagePool.release(page)
     }
+  }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
+
 }
-
-
-
-/* GET home page. */
-router.get('/', function (req, res, next) {
-    //res.render('index', { title: '2Express' });
-    await execute({}, {})(req, res);
-});
-module.exports = router;
+module.exports = generatePdf;
