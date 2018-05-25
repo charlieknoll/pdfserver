@@ -2,7 +2,8 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var lessMiddleware = require('less-middleware');
+//var lessMiddleware = require('less-middleware');
+var hbs = require('express-hbs')
 var logger = require('morgan');
 const asyncHandler = require('express-async-handler')
 
@@ -20,12 +21,17 @@ function nocache(req, res, next) {
 //view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.engine('hbs', hbs.express4({
+  defaultLayout: __dirname + '/views/layouts/main.hbs',
+  partialsDir: __dirname + '/views/partials',
+  layoutsDir: __dirname + '/views/layouts'
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(lessMiddleware(path.join(__dirname, 'public')));
+// app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

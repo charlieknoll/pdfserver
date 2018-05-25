@@ -52,13 +52,14 @@ const generatePdf = async (opt) => {
   const chromeOptions = {}
   chromeOptions.timeout = 10000;
   chromeOptions.waitForJs = opt.waitForJs;
+  chromeOptions.emulateMedia = opt.printMedia ? "print" : "screen"
 
   const pdfOptions = {}
   pdfOptions.scale = 1
   pdfOptions.printBackground = true
 
   const rpOptions = {}
-  rpOptions.landscape = boolOrUndefined(opt.landscape)
+  rpOptions.landscape = opt.landscape ? true : false
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
 
@@ -76,16 +77,16 @@ const generatePdf = async (opt) => {
 
       if (timeoutInfo.error) return
 
-      //TODO inject rp
       const rpScriptTag = await page.addScriptTag({ content: rpScript })
       page.on('pageerror', msg => {
         timeoutInfo.pageErrors.push(msg);
       });
+      page.emulateMedia(chromeOptions.emulateMedia)
       //run preview with rpOptions
       try {
         await page.evaluate(opt => {
-
-          rjs.preview([document.getElementById('report')], opt);
+          var el = document.querySelector(".rjs-page-template");
+          rjs.preview([el], opt);
         }, rpOptions)
       } catch (e) {
         console.log('exception on evaluate', e)

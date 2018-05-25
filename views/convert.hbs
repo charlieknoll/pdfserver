@@ -1,58 +1,101 @@
 <h1>{{title}}</h1>
-<div id="app" style="display: none">
 
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show" method="POST" action="/pdf">
-        <b-form-group id="e1l" label="Url to convert:" label-for="e1" description="We will never store your url request history.">
-            <b-form-input id="e1" type="url" v-model="form.url" name="url" required placeholder="https://example.com">
-            </b-form-input>
-        </b-form-group>
+<form method="POST" action="/pdf">
+    <div class="form-group">
+        <label for="">Url to convert</label>
+        <input type="text" name="url" id="" class="form-control" placeholder="" aria-describedby="helpId" required>
+        <small id="helpId" class="text-muted">We will never store your url request history.</small>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label for="">Format:</label>
+                <select class="form-control" name="format" id="">
+                    {{#each formats}}
+                    <option>{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="landscape" name="landscape">
+                    <label class="custom-control-label" for="landscape">Landscape</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="printMedia" name="printMedia">
+                    <label class="custom-control-label" for="printMedia">Print Media</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="waitForJs" name="waitForJs">
+            <label class="custom-control-label" for="waitForJs">Wait For JS</label>
+        </div>
+        <small id="helpId" class="text-muted">Pdf will not begin until window.RESPONSIVE_PAPER_READY_TO_RENDER=true</small>
+    </div>
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="devMode" name="devMode">
+            <label class="custom-control-label" for="devMode">Dev Mode</label>
+        </div>
+        <small id="helpId" class="text-muted">Pdf will displayed as html with console messages</small>
+    </div>
+    <div class="form-group">
+        <label for="">Report element query selector:</label>
+        <input type="text" name="selector" id="" class="form-control" placeholder="" aria-describedby="selectorHelp">
+        <small id="selectorHelp" class="text-muted">By default the entire body content will be rendered. You can select a subsection of the the html by entering a valid
+            <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors">query selector</a> .</small>
+    </div>
+    <button type="submit " class="btn btn-primary ">Submit</button>
+</form>
+<div id="app " style="display: none ">
 
-        <b-form-group label="Format:">
-            <b-form-select :options="formats" required v-model="form.format" name="format" class="mr-sm-2">
-            </b-form-select>
-        </b-form-group>
-        <b-form-group>
-            <b-form-checkbox v-model="form.landscape" name="landscape" />Landscape
-        </b-form-group>
-        <b-form-group>
-            <b-form-checkbox v-model="form.printMedia" name="printMedia" />Print Media
-        </b-form-group>
-        <b-form-group label="" description="Pdf will not begin until window.RESPONSIVE_PAPER_READY_TO_RENDER = true">
-            <b-form-checkbox v-model="form.waitForJs" name="waitForJs" /> Wait for javascript
-        </b-form-group>
-        <b-form-group label="Hidden element selectors:" description="Comma delimited list of elements to hide.">
-            <b-form-input v-model="form.hiddenElementSelectors" name="hiddenElementSelectors" placeholder="e.g. div.floatingBadge">
-            </b-form-input>
-        </b-form-group>
+    <b-form @submit="onSubmit " @reset="onReset " v-if="show " method="POST " action="/pdf ">
+
         <b-row>
             <b-col>
-                <b-form-group label="Css overrides:" description="Enter any styles to override on the target page (or urls).">
-                    <b-form-textarea type="text" v-model="form.css" name="css" :rows="3" placeholder="body { font-size: .8em !important;}" description="">
+                <b-form-group label="Css overrides: " description="Enter any styles to override on the target page (or
+                urls). ">
+                    <b-form-textarea type="text " v-model="form.css " name="css " :rows="3 " placeholder="body { font-size:
+                .8em !important;} " description=" ">
                         </b-form-input>
                 </b-form-group>
             </b-col>
             <b-col>
-                <b-form-group label="Pre render script:" label-for="e2" description="Enter any script to run before printing (or urls)">
-                    <b-form-textarea type="text" v-model="form.script" name="script" :rows="3" placeholder="document.getElementById('img1').style.maxWidth = '100%';">
+                <b-form-group label="Pre render script: " label-for="e2 " description="Enter any script to run before printing
+                (or urls) ">
+                    <b-form-textarea type="text " v-model="form.script " name="script " :rows="3 " placeholder="document.getElementById(
+                'img1').style.maxWidth='100%' ; ">
                         </b-form-input>
                 </b-form-group>
             </b-col>
         </b-row>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
+        <b-button type="submit " variant="primary ">Submit</b-button>
+        <b-button type="reset " variant="danger ">Reset</b-button>
     </b-form>
 </div>
 
+{{!--
 <script>
 
     window.onload = function () {
         var app = new Vue({
-            el: "#app",
+            el: "#app ",
             data: function () {
                 return {
                     form: {
-                        url: 'http://localhost:8080/examples/derby/',
+                        url: 'http://localhost:8080/examples/presentation/',
                         css: '',
                         script: '',
                         format: 'Letter',
@@ -86,8 +129,8 @@
                 }
             }
         });
-        document.getElementById("app").style.display = '';
+        document.getElementById("app ").style.display = '';
     };
 </script>
 
-<!-- b-form-1.vue -->
+<!-- b-form-1.vue -->--}}
