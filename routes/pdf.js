@@ -68,12 +68,13 @@ const generatePdf = async (opt) => {
     let page
     let pageReleased = false
     try {
-      page = await browserPagePool.acquire();
+      const browser = await browserPagePool.acquire();
+      page = browser.page
       if (timeoutInfo.error) return
 
       page.setDefaultNavigationTimeout(chromeOptions.timeout)
 
-      await page.goto(opt.url, { waitUntil: 'load' })
+      const response = await page.goto(opt.url, { waitUntil: 'load' })
 
       if (timeoutInfo.error) return
 
@@ -85,8 +86,8 @@ const generatePdf = async (opt) => {
       //run preview with rpOptions
       try {
         await page.evaluate(opt => {
-          var el = document.querySelector(".rjs-page-template");
-          rjs.preview([el], opt);
+
+          rjs.preview(null, opt);
         }, rpOptions)
       } catch (e) {
         console.log('exception on evaluate', e)

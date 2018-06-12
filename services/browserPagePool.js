@@ -1,40 +1,52 @@
-var debug = require('debug')('app:browserPagePool');
+var debug = require('debug')('pdfserver:browserPagePool');
 const genericPool = require('generic-pool');
 const puppeteer = require('puppeteer');
 const launchOptions = {}
-launchOptions.args = ["--incognito", "--no-sandbox","--disable-gpu"];
+launchOptions.args = ["--incognito", "--no-sandbox", "--disable-gpu"];
 launchOptions.ignoreHTTPSErrors = true;
 launchOptions.pipe = true;
 
 const url = "https://www.google.com"
+let browser = null
+
+async function createBrowser() {
+  return await puppeteer.launch(launchOptions)
+}
 
 const factory = {
-  create: async function() {
+  create: async function () {
     try {
-      debug('launching browser');
-      const browser = await puppeteer.launch(launchOptions);
+
+
+      //const browser = await puppeteer.launch(launchOptions);
       debug('opening new page');
-      const page = await browser.newPage();
+      //const page = await browser.newPage();
+      const context = await browser.createIncognitoBrowserContext();
+      // Create a new page in a pristine context.
+      const page = await context.newPage();
+      // Do stuff
+      //await page.goto(url);
+      return { page: page, context: context };
 
-    //   debug('setting viewport');
-    //   await page.setViewport({
-    //     width: 800,
-    //     height: 420,
-    //     deviceScaleFactor: 1.5,
-    //   });
+      //   debug('setting viewport');
+      //   await page.setViewport({
+      //     width: 800,
+      //     height: 420,
+      //     deviceScaleFactor: 1.5,
+      //   });
 
-       debug('going to' + url);
-       await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
+      //  debug('going to' + url);
+      //  await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
 
-      debug('returning page');
-      return page;
+      // debug('returning page');
+      // return page;
     } catch (e) {
       console.error('browserPagePool error cretaing browser page', e);
     }
   },
-  destroy: function(puppeteer) {
+  destroy: function (ctx) {
     debug('closing browser');
-    puppeteer.close();
+    ctx.close();
   },
 };
 
