@@ -1,5 +1,5 @@
 
-const browserPagePool = require('../services/browserPagePool')
+// const browserPagePool = require('../services/browserPagePool')
 const rpScript = require('../services/rpScript')
 
 const runWithTimeout = (fn, ms, msg) => {
@@ -45,12 +45,12 @@ function boolOrUndefined(par) {
   return (par === true || par === 'true') ? true : undefined
 }
 
-const generatePdf = async (opt) => {
+const generatePdf = async (pool, opt) => {
 
 
 
   const chromeOptions = {}
-  chromeOptions.timeout = 10000;
+  chromeOptions.timeout = 100000;
   chromeOptions.waitForJs = opt.waitForJs;
   chromeOptions.emulateMedia = opt.printMedia ? "print" : "screen"
 
@@ -68,8 +68,8 @@ const generatePdf = async (opt) => {
     let page
     let pageReleased = false
     try {
-      const browser = await browserPagePool.acquire();
-      page = browser.page
+      const pageContext = await pool.acquire();
+      page = pageContext.page
       if (timeoutInfo.error) return
 
       page.setDefaultNavigationTimeout(chromeOptions.timeout)
@@ -79,6 +79,9 @@ const generatePdf = async (opt) => {
       if (timeoutInfo.error) return
 
       const rpScriptTag = await page.addScriptTag({ content: rpScript })
+      //TODO block reportsjs.designer.css
+      //TODO add rjs style to override designer
+      //const rpStyleTag = await page
       page.on('pageerror', msg => {
         timeoutInfo.pageErrors.push(msg);
       });
@@ -111,13 +114,19 @@ const generatePdf = async (opt) => {
 
       const content = await page.pdf(pdfOptions)
       if (timeoutInfo.error) return
-      await browserPagePool.release(page).then(() => {
-        pageReleased = true
-      });
+      try {
+        await pool.release(pageContext).then(() => {
+          pageReleased = true
+        });
+      }
+      catch (e) {
+        console.log(e)
+        
+      }
 
       return content
     } finally {
-      if (page && !pageReleased) await browserPagePool.release(page)
+      if (page && !pageReleased) await pool.release(pageContext)
     }
   }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
 

@@ -6,11 +6,15 @@ var cookieParser = require('cookie-parser');
 var hbs = require('express-hbs')
 var logger = require('morgan');
 const asyncHandler = require('express-async-handler')
-
+const browserPagePool = require('./services/browserPagePool')
 var indexRouter = require('./routes/index');
 var convertRouter = require('./routes/convert');
 var generatePdf = require('./routes/pdf');
-
+var browser = require('./services/browser')
+let browserPagePoolInstance;
+browser.then(b=>{
+  browserPagePoolInstance = browserPagePool(b)
+})
 var app = express();
 function nocache(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -39,7 +43,7 @@ app.use('/convert', convertRouter);
 
 app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
   //TODO add catch to handle errors?
-  var content = await generatePdf(req.body);
+  var content = await generatePdf(browserPagePoolInstance,req.body);
   res.setHeader('Content-Length', content.length);
   res.contentType('application/pdf')
   //res.setHeader('Content-Type', 'application/pdf');
