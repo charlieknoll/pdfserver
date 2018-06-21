@@ -45,12 +45,12 @@ function boolOrUndefined(par) {
   return (par === true || par === 'true') ? true : undefined
 }
 
-const generatePdf = async (pool, opt) => {
+const generatePdf = async (page, opt) => {
 
 
 
   const chromeOptions = {}
-  chromeOptions.timeout = 100000;
+  chromeOptions.timeout = 20000;
   chromeOptions.waitForJs = opt.waitForJs;
   chromeOptions.emulateMedia = opt.printMedia ? "print" : "screen"
 
@@ -66,70 +66,51 @@ const generatePdf = async (pool, opt) => {
 
 
   return await runWithTimeout(async (timeoutInfo) => {
-    let page
-    let pageReleased = false
-    try {
-      const pageContext = await pool.acquire();
-      page = pageContext.page
-      if (timeoutInfo.error) return
-
-      page.setDefaultNavigationTimeout(chromeOptions.timeout)
-
-      const response = await page.goto(opt.url, { waitUntil: 'load' })
-
-      if (timeoutInfo.error) return
-
-      const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
-      const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
-      //TODO block reportsjs.designer.css
-      //TODO add rjs style to override designer
-      //const rpStyleTag = await page
-      page.on('pageerror', msg => {
-        timeoutInfo.pageErrors.push(msg);
-      });
-      page.emulateMedia(chromeOptions.emulateMedia)
-      //run preview with rpOptions
-      try {
-        await page.evaluate(opt => {
-
-          rjs.preview(null, opt);
-        }, rpOptions)
-      } catch (e) {
-        console.log('exception on evaluate', e)
-      }
 
 
 
-      await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: chromeOptions.timeout })
 
-      const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
-      Object.assign(pdfOptions, newPdfOptions)
-      pdfOptions.margin = {
-        top: pdfOptions.marginTop,
-        right: pdfOptions.marginRight,
-        bottom: pdfOptions.marginBottom,
-        left: pdfOptions.marginLeft
-      }
-      if (timeoutInfo.error) return
+    page.setDefaultNavigationTimeout(chromeOptions.timeout)
 
-      //TODO delete script, server side styles
+    const response = await page.goto(opt.url, { waitUntil: 'load' })
 
-      const content = await page.pdf(pdfOptions)
-      if (timeoutInfo.error) return
-      try {
-        await pool.destroy(pageContext).then(() => {
-          pageReleased = true
-        });
-      }
-      catch (e) {
-        console.log(e)
+    //if (timeoutInfo.error) return
 
-      }
+    const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
+    const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
+    //TODO block reportsjs.designer.css
+    //TODO add rjs style to override designer
+    //const rpStyleTag = await page
+    page.on('pageerror', msg => {
+      timeoutInfo.pageErrors.push(msg);
+    });
+    page.emulateMedia(chromeOptions.emulateMedia)
+    //run preview with rpOptions
+    await page.evaluate(opt => {
+      rjs.preview(null, opt);
+    }, rpOptions)
 
-      return content
-    } finally {
-      if (page && !pageReleased) await pool.destroy(pageContext)
+    //if (timeoutInfo.error) return
+
+    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: chromeOptions.timeout })
+
+    //if (timeoutInfo.error) return
+
+    const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
+    Object.assign(pdfOptions, newPdfOptions)
+    pdfOptions.margin = {
+      top: pdfOptions.marginTop,
+      right: pdfOptions.marginRight,
+      bottom: pdfOptions.marginBottom,
+      left: pdfOptions.marginLeft
     }
+    //TODO delete script, server side styles
+
+    const content = await page.pdf(pdfOptions)
+    //if (timeoutInfo.error) return
+
+    return content
+
   }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
 
 }

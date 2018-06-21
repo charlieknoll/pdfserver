@@ -12,7 +12,7 @@ var convertRouter = require('./routes/convert');
 var generatePdf = require('./routes/pdf');
 var browser = require('./services/browser')
 let browserPagePoolInstance;
-browser.then(b=>{
+browser.then(b => {
   browserPagePoolInstance = browserPagePool(b)
 })
 var app = express();
@@ -43,13 +43,27 @@ app.use('/convert', convertRouter);
 
 app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
   //TODO add catch to handle errors?
-  var content = await generatePdf(browserPagePoolInstance,req.body);
-  res.setHeader('Content-Length', content.length);
-  res.contentType('application/pdf')
-  //res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `inline; filename=${req.body.fileName}.pdf`);
-  //res.meta.fileExtension = 'pdf'
-  res.end(content)
+  const pageContext = await browserPagePoolInstance.acquire();
+
+  try {
+    var content = await generatePdf(pageContext.page, req.body);
+    res.setHeader('Content-Length', content.length);
+    res.contentType('application/pdf')
+    //res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename=${req.body.fileName}.pdf`);
+    //res.meta.fileExtension = 'pdf'
+    res.end(content)
+  }
+  finally {
+    try {
+      await browserPagePoolInstance.destroy(pageContext)
+    }
+    catch (e) {
+      console.log(e)
+
+    }
+
+  }
   //res.end()
   //next()
 }))
