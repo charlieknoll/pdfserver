@@ -1,6 +1,6 @@
 
 // const browserPagePool = require('../services/browserPagePool')
-const rpScript = require('../services/rpScript')
+const rpContent = require('../services/rpContent')
 
 const runWithTimeout = (fn, ms, msg) => {
   return new Promise(async (resolve, reject) => {
@@ -62,6 +62,7 @@ const generatePdf = async (pool, opt) => {
   rpOptions.landscape = opt.landscape ? true : false
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
+  rpOptions.format = opt.format;
 
 
   return await runWithTimeout(async (timeoutInfo) => {
@@ -78,7 +79,8 @@ const generatePdf = async (pool, opt) => {
 
       if (timeoutInfo.error) return
 
-      const rpScriptTag = await page.addScriptTag({ content: rpScript })
+      const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
+      const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
       //TODO block reportsjs.designer.css
       //TODO add rjs style to override designer
       //const rpStyleTag = await page
@@ -110,23 +112,23 @@ const generatePdf = async (pool, opt) => {
       }
       if (timeoutInfo.error) return
 
-      //TODO delete script
+      //TODO delete script, server side styles
 
       const content = await page.pdf(pdfOptions)
       if (timeoutInfo.error) return
       try {
-        await pool.release(pageContext).then(() => {
+        await pool.destroy(pageContext).then(() => {
           pageReleased = true
         });
       }
       catch (e) {
         console.log(e)
-        
+
       }
 
       return content
     } finally {
-      if (page && !pageReleased) await pool.release(pageContext)
+      if (page && !pageReleased) await pool.destroy(pageContext)
     }
   }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
 
