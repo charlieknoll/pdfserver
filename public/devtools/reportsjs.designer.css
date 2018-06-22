@@ -1,0 +1,163 @@
+/*Marker classes*/
+.rjs-group {
+  /**/
+}
+.rjs-group-header {
+  /**/
+}
+.rjs-keep-together {
+  /**/
+}
+.rjs-hide-on-first-page {
+  /**/
+  display: none;
+}
+.rjs-force-page-break {
+  /**/
+}
+.rjs-page-header {
+  /**/
+}
+.rjs-page-footer {
+  /**/
+}
+.rjs-page-number {
+  /**/
+}
+.rjs-page-count {
+  /**/
+}
+.rjs-hidden {
+  display: none;
+}
+/*Emulation styles*/
+body > *:not(.rjs-page) {
+  display: none;
+}
+body {
+  background-color: grey;
+  margin: 0;
+  padding: 0;
+}
+.rjs-page {
+  width: 8.5in;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 66px 66px 66px 66px;
+  overflow: hidden;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: auto;
+  margin-left: auto;
+  /*  box-shadow: 0 5px 10px 0 rgba(0,0,0,.3);*/
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvXpBPQAGdgJ3KfanbgAAAABJRU5ErkJggg==);
+  background-repeat: repeat-x;
+}
+@media screen {
+  .rjs-page {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+.rjs-page * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.rjs--contain {
+  max-width: 100%;
+  overflow: hidden;
+}
+/*Paper Sizes*/
+.rjs-ps-letter {
+  width: 8.5in;
+  min-height: 11in;
+  background-position: 0px 11in;
+}
+.rjs-ps-letter-ls {
+  width: 11in;
+  min-height: 8.5in;
+  background-position: 0px 8.5in;
+}
+.rjs-ps-legal {
+  width: 8.5in;
+  min-height: 14in;
+}
+.rjs-ps-legal-ls {
+  width: 14in;
+  min-height: 8.5in;
+}
+.rjs-ps-tabloid-ls {
+  width: 17in;
+  min-height: 11in;
+}
+.rjs-ps-tabloid {
+  width: 11in;
+  min-height: 17in;
+}
+.rjs-ps-ledger {
+  width: 17in;
+  min-height: 11in;
+}
+.rjs-ps-ledger-ls {
+  width: 11in;
+  min-height: 17in;
+}
+.rjs-ps-a0 {
+  width: 33.1in;
+  min-height: 46.8in;
+}
+.rjs-ps-a0-ls {
+  width: 46.8in;
+  min-height: 33.1in;
+}
+.rjs-ps-a1 {
+  width: 23.4in;
+  min-height: 33.1in;
+}
+.rjs-ps-a1-ls {
+  width: 33.1in;
+  min-height: 23.4in;
+}
+.rjs-ps-a2 {
+  width: 16.5in;
+  min-height: 23.4in;
+}
+.rjs-ps-a2-ls {
+  width: 23.4in;
+  min-height: 16.5in;
+}
+.rjs-ps-a3 {
+  width: 11.7in;
+  min-height: 16.5in;
+}
+.rjs-ps-a3-ls {
+  width: 16.5in;
+  min-height: 11.7in;
+}
+.rjs-ps-a4 {
+  width: 210mm;
+  min-height: 279.4mm;
+}
+.rjs-ps-a4-ls {
+  width: 279.4mm;
+  min-height: 210mm;
+}
+.rjs-ps-a5 {
+  width: 5.83in;
+  min-height: 8.27in;
+}
+.rjs-ps-a5-ls {
+  width: 8.27in;
+  min-height: 5.83in;
+}
+.rjs-ps-a6 {
+  width: 4.13in;
+  min-height: 5.83in;
+}
+.rjs-ps-a6-ls {
+  width: 5.83in;
+  min-height: 4.13in;
+}

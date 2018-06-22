@@ -56,6 +56,8 @@ app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
   }
   finally {
     try {
+      //TODO Instead of destroy, call release and delete cookies, navigate back, verify "Hi" is content of page, if not destroy
+      //TODO maybe only do that in production so that in debug mode cache is invalidated every request?
       await browserPagePoolInstance.destroy(pageContext)
     }
     catch (e) {
