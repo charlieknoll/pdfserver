@@ -15,3 +15,7 @@ except:
 - pm2 save after pm2 start ./bin/www
 
 ln -s /etc/nginx/sites-available/pdfserver /etc/nginx/sites-enabled/
+
+Certbot and https support:
+
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04

@@ -40,19 +40,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/convert', convertRouter);
-
-app.post('/pdf', nocache, asyncHandler(async (req, res, next) => {
+String.prototype.replaceAll = function (search, replacement) {
+  var target = this;
+  return target.replace(new RegExp(search, 'g'), replacement);
+};
+app.post('/pdf', asyncHandler(async (req, res, next) => {
   //TODO add catch to handle errors?
   const pageContext = await browserPagePoolInstance.acquire();
 
   try {
-    var content = await generatePdf(pageContext.page, req.body);
-    res.setHeader('Content-Length', content.length);
-    res.contentType('application/pdf')
-    //res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename=${req.body.fileName}.pdf`);
-    //res.meta.fileExtension = 'pdf'
-    res.end(content)
+    var result = await generatePdf(pageContext.page, req.body);
+    // res.setHeader('Content-Length', result.content.length);
+    // res.contentType('application/pdf')
+    // res.setHeader('Content-Type', 'application/pdf');
+    let fileName = req.body.fileName || result.pageTitle
+    fileName = fileName.replaceAll(" ", "-")
+    fileName += ".pdf";
+    // res.setHeader('Content-Disposition', `inline; filename=${fileName}.pdf`);
+    // //res.meta.fileExtension = 'pdf'
+    res.writeHead(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'inline; filename=' + fileName,
+      'Content-Length': result.content.length
+    });
+    res.end(result.content)
   }
   finally {
     try {

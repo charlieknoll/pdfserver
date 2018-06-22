@@ -63,6 +63,7 @@ const generatePdf = async (page, opt) => {
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
   rpOptions.format = opt.format;
+  let pageTitle;
 
 
   return await runWithTimeout(async (timeoutInfo) => {
@@ -75,7 +76,7 @@ const generatePdf = async (page, opt) => {
     const response = await page.goto(opt.url, { waitUntil: 'load' })
 
     //if (timeoutInfo.error) return
-
+    pageTitle = await page.title();
     const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
     const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
     //TODO block reportsjs.designer.css
@@ -109,7 +110,7 @@ const generatePdf = async (page, opt) => {
     const content = await page.pdf(pdfOptions)
     //if (timeoutInfo.error) return
 
-    return content
+    return { content, pageTitle }
 
   }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
 
