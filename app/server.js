@@ -1,60 +1,36 @@
-#!/usr/bin/env node
+// @ts-check
+const express = require('express')
+const passport = require('passport')
+const db = require('./db')
+const logger = require("./config/winston")
+// const Router = require('express-promise-router')
+// const router = new Router()
 
-/**
- * Module dependencies.
- */
+const port = process.env.PORT || 3000
+const app = express()
 
-var app = require('../app/server');
-var debug = require('debug')('pdfserver:server');
-var http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
+require('./config/passport')(passport, db)
+require('./config/express')(app, passport, db.pool)
+require('./routes')(app, passport, db)
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+const server = app.listen(port, () => {
+  if (app.get('env') === 'test') return
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
+  logger.info('Express app started on port ' + port)
+})
 server.on('error', onError);
 server.on('listening', onListening);
 server.on('close', () => {
-  winston.log('Closed express server')
+  logger.info('Closed express server')
 
   db.pool.end(() => {
-    winston.log('Shut down connection pool')
+    logger.info('Shut down connection pool')
   })
 })
 
-/**
- * Normalize a port into a number, string, or false.
- */
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -93,5 +69,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 }
