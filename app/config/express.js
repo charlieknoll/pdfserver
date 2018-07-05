@@ -1,4 +1,5 @@
-const path = require('path');
+const path = require('path')
+const bodyParser = require('body-parser')
 const express = require('express')
 const hbs = require('express-hbs')
 const session = require('express-session')
@@ -22,8 +23,8 @@ module.exports = (app, passport, pool) => {
         next()
     });
     app.use('/', express.static(config.public))
-    app.use(express.json())
-    app.use(express.urlencoded({ extended: true }))
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }))
     app.use(cookieParser())
 
     app.use(session({

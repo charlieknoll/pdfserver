@@ -1,8 +1,9 @@
 var createError = require('http-errors');
 
-module.exports = (app, passport, db) => {
+module.exports = (app, passport, db, logger) => {
 
     app.use('/', require('./home'))
+    app.use('/auth', require('./auth')(passport))
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
@@ -12,6 +13,7 @@ module.exports = (app, passport, db) => {
     // error handler
     app.use(function (err, req, res, next) {
         // set locals, only providing error in development
+        logger.error(err.stack)
         res.locals.message = err.message;
         res.locals.error = req.app.get('env') === 'development' ? err : {};
 

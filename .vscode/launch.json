@@ -12,7 +12,7 @@
             "env": {
                 "DEBUG": "pdfserver:*"
             },
-            "console": "integratedTerminal",
+            "console": "internalConsole",
             "outputCapture": "std"
         }
     ]

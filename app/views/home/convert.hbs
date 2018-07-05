@@ -3,7 +3,7 @@
 <form method="POST" action="/pdf">
     <div class="form-group">
         <label for="">Url to convert</label>
-        <input type="text" name="url" id="" class="form-control" placeholder="" aria-describedby="helpId" required>
+        <input type="text" name="url" id="" class="form-control" placeholder="" aria-describedby="helpId" required value="{{url}}">
         <small id="helpId" class="text-muted">We will never store your url request history.</small>
     </div>
     <div class="row">
@@ -11,8 +11,9 @@
             <div class="form-group">
                 <label for="">Format:</label>
                 <select class="form-control" name="format" id="">
+
                     {{#each formats}}
-                    <option>{{this}}</option>
+                    <option {{#if this.selected}}selected{{/if}}>{{this.value}}</option>
                     {{/each}}
                 </select>
             </div>

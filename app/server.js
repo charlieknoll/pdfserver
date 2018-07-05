@@ -12,7 +12,7 @@ const app = express()
 
 require('./config/passport')(passport, db)
 require('./config/express')(app, passport, db.pool)
-require('./routes')(app, passport, db)
+require('./routes')(app, passport, db, logger)
 
 
 const server = app.listen(port, () => {
