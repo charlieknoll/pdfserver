@@ -5,15 +5,9 @@
             <img width="200" src="/images/logo.png" style="margin: auto" />
             <h3>Create a free account</h3>
         </div>
-        {{#if errors}}
-        <div class="alert alert-danger" role="alert">
-            <ul style="list-style-type:none; text-align: left; margin: 0; padding: 0">
-                {{#each errors}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        {{/if}}
+        {{# if errors }} {{# each errors }}
+        <p class="alert alert-danger">{{ this }}</p>
+        {{/each}} {{/if}}
         <form class="m-t" role="form" action="/user/register" method="POST">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="First Name" required="" name="name" value="{{name}}">
