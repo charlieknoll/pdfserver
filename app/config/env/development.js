@@ -8,5 +8,8 @@ module.exports = {
 		max: 50,
 		idleTimeoutMillis: 30000
 	},
-	session_secret: 'test'
+	session_secret: 'test',
+	mailgun: {
+
+	}
 }

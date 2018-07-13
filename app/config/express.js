@@ -6,7 +6,7 @@ const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session)
 const cookieParser = require('cookie-parser')
 const config = require('./')
-const logger = require('./winston')
+const logger = require('./logger')
 
 module.exports = (app, passport, pool) => {
 
@@ -18,11 +18,12 @@ module.exports = (app, passport, pool) => {
         partialsDir: path.join(config.root, '/views/partials'),
         layoutsDir: path.join(config.root, '/views/layouts')
     }));
+
+    app.use('/', express.static(config.public))
     app.use(function (req, res, next) {
         logger.debug('handling request for: ' + req.url)
         next()
     });
-    app.use('/', express.static(config.public))
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(cookieParser())

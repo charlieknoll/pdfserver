@@ -2,7 +2,7 @@ module.exports = {
 	requiresLogin: (req, res, next) => {
 		if (req.user) return next()
 		req.session.redirectTo = req.url
-		res.redirect('/auth/login');
+		res.redirect('/user/login');
 
 	},
 

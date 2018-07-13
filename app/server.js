@@ -1,18 +1,15 @@
 // @ts-check
-const express = require('express')
+const app = require('express')()
 const passport = require('passport')
-const db = require('./db')
-const logger = require("./config/winston")
-// const Router = require('express-promise-router')
-// const router = new Router()
+const db = require('./config/db')
+const logger = require("./config/logger")
 
 const port = process.env.PORT || 3000
-const app = express()
 
 
-require('./config/passport')(passport, db)
-require('./config/express')(app, passport, db.pool)
-require('./routes')(app, passport, db, logger)
+require('./config/passport')(passport)
+require('./config/express')(app, passport, db.$pool)
+require('./config/routes')(app, passport, db, logger)
 
 
 const server = app.listen(port, () => {
@@ -25,9 +22,9 @@ server.on('listening', onListening);
 server.on('close', () => {
   logger.info('Closed express server')
 
-  db.pool.end(() => {
-    logger.info('Shut down connection pool')
-  })
+  // db.pool.end(() => {
+  //   logger.info('Shut down connection pool')
+  // })
 })
 
 

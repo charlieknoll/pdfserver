@@ -1,13 +1,14 @@
 const bcrypt = require('bcrypt')
-const winston = require('winston')
+const logger = require('../config/logger')
 const LocalStrategy = require('passport-local').Strategy
+const db = require("../config/db")
 
-module.exports = (passport, db) => {
+module.exports = (passport) => {
     passport.use(new LocalStrategy(async (username, password, cb) => {
         try {
-            const result = await db.query('SELECT id, username, password, type FROM users WHERE username=$1', [username])
-            if (result.rows.length > 0) {
-                const first = result.rows[0]
+            const result = await db.any('SELECT id, username, password, type FROM users WHERE username=$1', [username])
+            if (result.length > 0) {
+                const first = result[0]
                 bcrypt.compare(password, first.password, function (err, res) {
                     if (res) {
                         cb(null, { id: first.id, username: first.username, type: first.type })
@@ -20,7 +21,7 @@ module.exports = (passport, db) => {
             }
         }
         catch (error) {
-            winston.error('Error when selecting user on login', error)
+            logger.error('Error when selecting user on login', error)
             return cb(error)
 
         }
@@ -36,11 +37,11 @@ module.exports = (passport, db) => {
     passport.deserializeUser(async (id, cb) => {
         try {
             const results = await db.query('SELECT id, username, type FROM users WHERE id = $1', [parseInt(id, 10)])
-            cb(null, results.rows[0])
+            cb(null, results[0])
         }
         catch (err) {
             if (err) {
-                winston.error('Error when selecting user on session deserialize', err)
+                logger.error('Error when selecting user on session deserialize', err)
                 return cb(err)
             }
         }
