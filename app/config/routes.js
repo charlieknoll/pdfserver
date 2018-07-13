@@ -15,7 +15,7 @@ module.exports = (app, passport, db, logger) => {
     app.get('/user/login', userController.getLogin)
     app.post('/user/login', userController.postLogin)
     app.get('/user/register', userController.getRegister)
-    app.post('/user/register', userController.postRegister)
+    app.post('/user/register', userController.postRegister())
 
 
     //pdf endpoints
