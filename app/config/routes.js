@@ -14,12 +14,15 @@ module.exports = (app, passport, db, logger) => {
     //User related endpoints
     app.get('/user/login', userController.getLogin)
     app.post('/user/login', userController.postLogin)
+    app.get('/user/logout', auth.requiresUser, userController.getLogout)
+    app.post('/user/logout', auth.requiresUser, userController.postLogout)
     app.get('/user/register', userController.getRegister)
     app.post('/user/register', userController.postRegister())
+    app.get('/user/dashboard', auth.requiresUser, userController.getDashboard)
 
 
     //pdf endpoints
-    app.get('/urlconvert', auth.requiresLogin, homeController.urlConvert)
+    app.get('/urlconvert', auth.requiresUser, homeController.urlConvert)
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {

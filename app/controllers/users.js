@@ -1,6 +1,7 @@
 const { check, validationResult, body } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-const logger = require('./../config/logger')
+const logger = require('../config/logger')
+const userModel = require('../models/userModel')
 const registerVm = function (req, errors) {
     var errMsgs = [].map(e => e.msg)
     return {
@@ -10,29 +11,32 @@ const registerVm = function (req, errors) {
         email: req.body.email
     }
 }
-
+const loginVm = function (req, errors) {
+    var errMsgs = [].map(e => e.msg)
+    return {
+        title: 'Login',
+        errors: (errors || []).map(e => e.msg)
+    }
+}
 module.exports = (passport, db) => {
     return {
         getLogin: function (req, res, next) {
-            const viewObj = {
-                title: 'Login',
-                loginError: req.session.loginError
-            }
-            if (viewObj.loginError) delete req.session.loginError
-            res.render('user/login', viewObj);
+
+            res.render('user/login', loginVm(req));
         },
         postLogin: function (req, res, next) {
             passport.authenticate('local', function (err, user, info) {
                 if (err) { return next(err); }
                 if (!user) {
-                    req.session.loginError = "Invalid user name or password"
-                    return res.redirect('/user/login')
+                    const errs = [{ msg: "Invalid user name or password" }]
+                    res.render('user/login', loginVm(req, errs))
+                    return
+
                 }
                 req.logIn(user, function (err) {
                     if (err) { return next(err); }
                     var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/user/dashboard';
                     delete req.session.redirectTo;
-                    delete req.session.loginError;
                     res.redirect(redirectTo);
                 });
 
@@ -40,8 +44,12 @@ module.exports = (passport, db) => {
 
 
         },
+        getLogout: function (req, res, next) {
+            res.render('user/logout')
+        },
         postLogout: function (req, res, next) {
             var redirectTo = '/';
+            //TODO delete session from db
             delete req.session.redirectTo;
             req.session.destroy((err) => {
                 if (err) return next(err)
@@ -96,6 +104,11 @@ module.exports = (passport, db) => {
                     //redirect to emailsent
                 }
             ]
+        },
+        getDashboard: function (req, res, next) {
+
+            res.render('user/dashboard', userModel.dashboardVm(req));
+
         }
     }
 

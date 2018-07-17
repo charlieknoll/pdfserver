@@ -5,15 +5,9 @@
             <img width="200" src="/images/logo.png" style="margin: auto" />
 
         </p>
-        {{#if errors}}
-        <div class="alert alert-danger" role="alert">
-            <ul>
-                {{each errors}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
-        </div>
-        {{/if}}
+        {{# if errors }} {{# each errors }}
+        <p class="alert alert-danger">{{ this }}</p>
+        {{/each}} {{/if}}
         <form class="m-t" role="form" action="/user/login" method="POST">
             <div class="form-group ">
                 <input class="form-control " placeholder="Username " required=" " name="username">
