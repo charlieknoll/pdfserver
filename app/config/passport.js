@@ -4,14 +4,14 @@ const LocalStrategy = require('passport-local').Strategy
 const db = require("../config/db")
 
 module.exports = (passport) => {
-    passport.use(new LocalStrategy(async (username, password, cb) => {
+    passport.use(new LocalStrategy(async (email, password, cb) => {
         try {
-            const result = await db.any('SELECT id, username, password, type FROM users WHERE username=$1', [username])
+            const result = await db.any('SELECT id, displayname, passwordhash, usertype FROM users WHERE email=$1 and resettoken IS NULL', [email])
             if (result.length > 0) {
                 const first = result[0]
-                bcrypt.compare(password, first.password, function (err, res) {
+                bcrypt.compare(password, first.passwordhash, function (err, res) {
                     if (res) {
-                        cb(null, { id: first.id, username: first.username, type: first.type })
+                        cb(null, { id: first.id, username: first.displayname, type: first.usertype })
                     } else {
                         cb(null, false)
                     }
@@ -36,7 +36,7 @@ module.exports = (passport) => {
 
     passport.deserializeUser(async (id, cb) => {
         try {
-            const results = await db.query('SELECT id, username, type FROM users WHERE id = $1', [parseInt(id, 10)])
+            const results = await db.query('SELECT id, email, displayname, usertype FROM users WHERE id = $1', [parseInt(id, 10)])
             cb(null, results[0])
         }
         catch (err) {

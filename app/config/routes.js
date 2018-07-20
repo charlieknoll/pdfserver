@@ -3,10 +3,13 @@
 const createError = require('http-errors');
 const auth = require('./../middlewares/authorization')
 const homeController = require('./../controllers/home')
+const userController = require('./../controllers/users')
+
+const validateRegister = require("../controllers/validation/register")
 
 
 module.exports = (app, passport, db, logger) => {
-    const userController = require('./../controllers/users')(passport, db)
+
     app.get('/', function (req, res, next) {
         res.render('home/index', { title: 'Home' })
     })
@@ -16,8 +19,9 @@ module.exports = (app, passport, db, logger) => {
     app.post('/user/login', userController.postLogin)
     app.get('/user/logout', auth.requiresUser, userController.getLogout)
     app.post('/user/logout', auth.requiresUser, userController.postLogout)
+    app.get('/user/reset-password', userController.getResetPassword)
     app.get('/user/register', userController.getRegister)
-    app.post('/user/register', userController.postRegister())
+    app.post('/user/register', validateRegister, userController.postRegister)
     app.get('/user/dashboard', auth.requiresUser, userController.getDashboard)
 
 
