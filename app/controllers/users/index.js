@@ -6,6 +6,8 @@ const db = require("../config/db")
 const passport = require('passport')
 const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcrypt')
+const { sendEmail } = require('../services/sendEmail')
+const signup = require('./signup')
 
 const registerVm = function (req, errors) {
     var errMsgs = [].map(e => e.msg)
@@ -72,14 +74,11 @@ module.exports = {
 
         res.render('user/reset-password', resetPasswordVm(req));
     },
-    getRegister: function (req, res, next) {
-        res.render('user/register', registerVm(req));
-    },
-    postRegister: async function (req, res, next) {
+    postResetPassword: function (req, res, next) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             const vm = registerVm(req, errors.array())
-            res.render('user/register', vm)
+            res.render('user/signup', vm)
             return
 
         }
@@ -102,16 +101,35 @@ module.exports = {
             const sql = "INSERT INTO users(email,displayname,passwordhash,usertype,resettoken,tokenexpire) VALUES (${email}, ${displayname},${passwordHash},'user',${uuid}, CURRENT_TIMESTAMP + (15 * interval '1 minute'))"
 
             await db.none(sql, sqlParams)
+            //send email
+            const url = 'https://www.responsivepaper.com/user/confirm-registration?token=' + sqlParams.uuid
+            const message = {
+                to: sqlParams.email,
+                subject: 'Confirm your account registration at responsivepaper.com',
+                text: `Please click the following link to confirm your responsivepaper.com registration: ${url}`,
+                html: `Please click the following link to confirm your responsivepaper.com registration:<br/><br/><a href="${url}">${url}</a>`,
+                "o:tracking": 'False'
+            };
+
+            await sendEmail(message)
         }
         catch (err) {
+            logger.error(err)
             const vm = registerVm(req)
-            res.render('user/register', vm)
+            res.render('user/signup', vm)
         }
+        //check that email is in system
 
-        //send email
+        //if email exists set the reset token and expire, send reset link
 
-        //redirect to emailsent
-        res.redirect("/user/account-pending")
+        //if email doesn't exist, send the entered email address:
+        //https://www.troyhunt.com/content/images/2016/02/22382237SNAGHTML3203cc13.png
+
+        //in either case redirect to password reset in process
+        res.redirect('/user/passwordresetpending', { title: 'Password Reset Pending' })
+    },
+    getSignup: function (req, res, next) {
+        res.render('user/signup', registerVm(req));
     },
     getDashboard: function (req, res, next) {
 

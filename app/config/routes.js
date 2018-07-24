@@ -6,6 +6,7 @@ const homeController = require('./../controllers/home')
 const userController = require('./../controllers/users')
 
 const validateRegister = require("../controllers/validation/register")
+const validateUserResetPassword = require("../controllers/validation/userResetPassword")
 
 
 module.exports = (app, passport, db, logger) => {
@@ -20,8 +21,9 @@ module.exports = (app, passport, db, logger) => {
     app.get('/user/logout', auth.requiresUser, userController.getLogout)
     app.post('/user/logout', auth.requiresUser, userController.postLogout)
     app.get('/user/reset-password', userController.getResetPassword)
-    app.get('/user/register', userController.getRegister)
-    app.post('/user/register', validateRegister, userController.postRegister)
+    app.post('/user/reset-password', validateUserResetPassword, userController.postResetPassword)
+    app.get('/user/signup', userController.getSignup)
+    app.post('/user/signup', validateRegister, userController.postSignup)
     app.get('/user/dashboard', auth.requiresUser, userController.getDashboard)
 
 
