@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
-const logger = require('../config/logger')
 const LocalStrategy = require('passport-local').Strategy
-const db = require("../config/db")
+const { db, logger } = require('../services')
 
 module.exports = (passport) => {
     passport.use(new LocalStrategy(async (email, password, cb) => {

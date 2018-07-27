@@ -6,7 +6,7 @@ const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session)
 const cookieParser = require('cookie-parser')
 const config = require('./')
-const logger = require('./logger')
+const { logger } = require('../services')
 
 module.exports = (app, passport, pool) => {
 

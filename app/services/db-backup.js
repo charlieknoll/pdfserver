@@ -1,7 +1,6 @@
 //const pg = require('pg')
 const pgp = require('pg-promise')({})
 const config = require('../config')
-const winston = require('winston')
 
 // const dbConfig = {
 // 	user: config.db.user,

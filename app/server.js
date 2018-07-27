@@ -1,15 +1,15 @@
 // @ts-check
 const app = require('express')()
 const passport = require('passport')
-const db = require('./config/db')
-const logger = require("./config/logger")
+const { db, logger } = require('./services')
+
 
 const port = process.env.PORT || 3000
 
 
 require('./config/passport')(passport)
 require('./config/express')(app, passport, db.$pool)
-require('./config/routes')(app, passport, db, logger)
+require('./config/routes')(app)
 
 
 const server = app.listen(port, () => {

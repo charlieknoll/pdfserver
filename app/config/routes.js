@@ -3,28 +3,27 @@
 const createError = require('http-errors');
 const auth = require('./../middlewares/authorization')
 const homeController = require('./../controllers/home')
-const userController = require('./../controllers/users')
+const configUserRoutes = require('../controllers/users')
+const { logger } = require('../services')
 
-const validateRegister = require("../controllers/validation/register")
-const validateUserResetPassword = require("../controllers/validation/userResetPassword")
-
-
-module.exports = (app, passport, db, logger) => {
+module.exports = (app) => {
 
     app.get('/', function (req, res, next) {
         res.render('home/index', { title: 'Home' })
     })
+    configUserRoutes(app)
+
 
     //User related endpoints
-    app.get('/user/login', userController.getLogin)
-    app.post('/user/login', userController.postLogin)
-    app.get('/user/logout', auth.requiresUser, userController.getLogout)
-    app.post('/user/logout', auth.requiresUser, userController.postLogout)
-    app.get('/user/reset-password', userController.getResetPassword)
-    app.post('/user/reset-password', validateUserResetPassword, userController.postResetPassword)
-    app.get('/user/signup', userController.getSignup)
-    app.post('/user/signup', validateRegister, userController.postSignup)
-    app.get('/user/dashboard', auth.requiresUser, userController.getDashboard)
+    // app.get('/user/login', userController.getLogin)
+    // app.post('/user/login', userController.postLogin)
+    // app.get('/user/logout', auth.requiresUser, userController.getLogout)
+    // app.post('/user/logout', auth.requiresUser, userController.postLogout)
+    // app.get('/user/reset-password', userController.getResetPassword)
+    // app.post('/user/reset-password', validateUserResetPassword, userController.postResetPassword)
+    // app.get('/user/signup', userController.getSignup)
+    // app.post('/user/signup', validateRegister, userController.postSignup)
+    // app.get('/user/dashboard', auth.requiresUser, userController.getDashboard)
 
 
     //pdf endpoints

@@ -1,4 +1,4 @@
-const mailgun = require('../config/mailgun')
+const mailgun = require('./mailgun')
 exports.sendEmail = (message) =>
     new Promise((resolve, reject) => {
         const data = {

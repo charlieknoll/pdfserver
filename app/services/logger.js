@@ -1,5 +1,5 @@
 const winston = require('winston');
-const config = require('./')
+const config = require('../config')
 
 // var transport = new winston.transports.();
 // const logger = winston.createLogger({

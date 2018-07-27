@@ -8,7 +8,7 @@
         {{# if errors }} {{# each errors }}
         <p class="alert alert-danger">{{ this }}</p>
         {{/each}} {{/if}}
-        <form class="m-t" role="form" action="/user/register" method="POST">
+        <form class="m-t" role="form" action="/user/signup" method="POST">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Your Name" required="" name="name" value="{{name}}">
             </div>
@@ -27,7 +27,7 @@
 
             <p class="text-muted text-center">
                 <small>Already have an account?
-                    <a href="/user/login">Login</a>
+                    <a href="/user/signin">Sign in</a>
                 </small>
             </p>
         </form>
