@@ -1,4 +1,4 @@
-module.exports = (strArray, value) => {
+const arrayToSelectList = function (strArray, value) {
 
     return strArray.map(v => {
         return {
@@ -6,5 +6,10 @@ module.exports = (strArray, value) => {
             selected: v.toLowerCase() === value.toLowerCase()
         }
     })
+}
+
+
+module.exports = {
+    arrayToSelectList
 
 }

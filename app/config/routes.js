@@ -2,8 +2,9 @@
 
 const createError = require('http-errors');
 const auth = require('./../middlewares/authorization')
-const homeController = require('./../controllers/home')
+//const homeController = require('./../controllers/home')
 const configUserRoutes = require('../controllers/users')
+const configConvertRoutes = require('../controllers/convert')
 const { logger } = require('../services')
 
 module.exports = (app) => {
@@ -12,6 +13,7 @@ module.exports = (app) => {
         res.render('home/index', { title: 'Home' })
     })
     configUserRoutes(app)
+    configConvertRoutes(app)
 
 
     //User related endpoints
@@ -27,7 +29,7 @@ module.exports = (app) => {
 
 
     //pdf endpoints
-    app.get('/urlconvert', auth.requiresUser, homeController.urlConvert)
+    //app.get('/urlconvert', auth.requiresUser, homeController.urlConvert)
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {

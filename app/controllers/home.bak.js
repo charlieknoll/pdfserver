@@ -10,8 +10,7 @@ module.exports = {
 
     const formData = {
       title: 'Url to Pdf Converter',
-      formats: ['Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6'],
-      selectedIndex: 0
+      formats: ['Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6']
     }
     if (vals) {
       Object.assign(formData, vals)

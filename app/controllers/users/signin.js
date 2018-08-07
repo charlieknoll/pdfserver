@@ -34,7 +34,12 @@ const post = function (req, res, next) {
 
 
 }
+
 module.exports = function (app) {
     app.get(url, get)
     app.post(url, post)
+    app.get('/user/login', function (req, res) {
+        res.redirect(url)
+    })
+
 }

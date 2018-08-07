@@ -71,6 +71,8 @@ const post = async function (req, res, next) {
         const result = await db.result("UPDATE users SET passwordhash = ${passwordHash}, resettoken = null, tokenexpire = null where resettoken = ${resetToken} and email = ${email} and tokenexpire > CURRENT_TIMESTAMP", sqlParams)
         if (result.rowCount !== 1) throw new Error("The reset token is either invalid or expired, please try again")
 
+        //TODO send email confirming password change
+
         passport.authenticate('local', function (err, user, info) {
             if (err) { return next(err); }
             if (!user) {

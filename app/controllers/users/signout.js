@@ -40,4 +40,7 @@ async function post(req, res, next) {
 module.exports = function (app) {
     app.get(url, get)
     app.post(url, post)
+    app.get('/user/logout', function (req, res) {
+        res.redirect(url)
+    })
 }
