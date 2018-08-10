@@ -77,6 +77,8 @@ const generatePdf = async (page, opt) => {
 
     //if (timeoutInfo.error) return
     pageTitle = await page.title();
+    //async error testing
+    //const test = await page.brokenFunction({ content: rpContent.rpScriptContents })
     const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
     const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
     //TODO block reportsjs.designer.css

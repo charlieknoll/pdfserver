@@ -1,7 +1,9 @@
 var debug = require('debug')('pdfserver:browserPagePool');
 const genericPool = require('generic-pool');
 
-let browser;
+const browserFactory = require('./browser')
+let browser
+let browserPoolInstance
 
 
 const factory = {
@@ -23,14 +25,19 @@ const factory = {
     pageContext.context.close();
   },
 };
-const browserPool = function (b) {
-  browser = b;
-  return genericPool.createPool(factory, {
+
+browserFactory.then(b => {
+  browser = b
+  browserPoolInstance = genericPool.createPool(factory, {
     max: 2,
     min: 2,
     maxWaitingClients: 50,
     autostart: true,
-  });
+  })
+})
+
+const browserPool = function () {
+  return browserPoolInstance
 }
 
 module.exports = browserPool;

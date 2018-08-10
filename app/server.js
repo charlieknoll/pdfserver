@@ -11,6 +11,10 @@ require('./config/passport')(passport)
 require('./config/express')(app, passport, db.$pool)
 require('./config/routes')(app)
 
+// const { browserPool } = require('./services')
+// //init the browser pool
+// browserPool()
+
 
 const server = app.listen(port, () => {
   if (app.get('env') === 'test') return

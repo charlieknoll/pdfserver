@@ -8,8 +8,13 @@ const arrayToSelectList = function (strArray, value) {
     })
 }
 
+const replaceAll = function (str, search, replacement) {
+
+    return str.replace(new RegExp(search, 'g'), replacement);
+};
 
 module.exports = {
-    arrayToSelectList
+    arrayToSelectList,
+    replaceAll
 
 }
