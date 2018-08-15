@@ -18,6 +18,11 @@ module.exports = (app, passport, pool) => {
         partialsDir: path.join(config.root, '/views/partials'),
         layoutsDir: path.join(config.root, '/views/layouts')
     }));
+    hbs.registerHelper('section', function (value, options) {
+        if (!this._sections) this._sections = {};
+        this._sections[value] = options.fn(this);
+        return null;
+    })
 
     app.use('/', express.static(config.public))
     app.use(function (req, res, next) {

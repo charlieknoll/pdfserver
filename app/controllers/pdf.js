@@ -73,7 +73,14 @@ const generatePdf = async (page, opt) => {
 
     page.setDefaultNavigationTimeout(chromeOptions.timeout)
 
-    const response = await page.goto(opt.url, { waitUntil: 'load' })
+    if (opt.value.substring(0, 4).toLowerCase() === 'http') {
+      const response = await page.goto(opt.value, { waitUntil: 'load' })
+    }
+    else {
+      const response = await page.setContent(opt.value, { waitUntil: 'load' })
+
+    }
+
 
     //if (timeoutInfo.error) return
     pageTitle = await page.title();
