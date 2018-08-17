@@ -19,13 +19,14 @@ const actionVm = function (req, errors) {
 
   const formData = {
     title: 'Pdf Converter',
-    formats: ['Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6']
+    formats: ['', 'Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6']
   }
   if (vals) {
     Object.assign(formData, vals)
   }
   formData.formats = arrayToSelectList(formData.formats, vals['format'] || '')
   formData.errors = (errors || []).map(e => e.msg)
+  formData.apiKey = '26d3162e-3436-4e7b-9b05-db86cec49160'
   return formData
 }
 const get = function (req, res, next) {

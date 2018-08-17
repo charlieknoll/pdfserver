@@ -1,6 +1,7 @@
 <h1>{{title}}</h1>
 
-<form method="POST" action="/convert">
+<form id="converterForm" method="POST" action="/convert" target="responsive-paper-preview">
+    <input id="value" type="hidden" name="value" />
     <div class="form-group">
         <label for="">API Key</label>
         <input type="text" name="apiKey" id="" class="form-control" placeholder="" required value="{{apiKey}}">
@@ -23,36 +24,30 @@
                     <div class="panel-body">
 
                         <label for="">Url to convert</label>
-                        <input type="text" name="value" id="" class="form-control" placeholder="" aria-describedby="helpId" required value="{{url}}">
+                        <input type="text" id="url" class="form-control" placeholder="" aria-describedby="helpId" required value="{{url}}">
                         <small id="helpId" class="text-muted">We will never store your url request history.</small>
                     </div>
                 </div>
                 <div role="tabpanel" id="tab-2" class="tab-pane">
-                    <div class="panel-body">
-                        <textarea id="code" name="value">
-<html style="color: green">
-  <!-- this is a comment -->
-  <head>
-    <title>Mixed HTML Example</title>
-    <style type="text/css">
-      h1 {font-family: comic sans; color: #f0f;}
-      div {background: yellow !important;}
-      body {
-        max-width: 50em;
-        margin: 1em 2em 1em 5em;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Mixed HTML Example</h1>
-    <script>
-        function jsFunc(arg1, arg2) {
-            if (arg1 && arg2) document.body.innerHTML = "achoo";
-        }
-    </script>
-  </body>
-</html>
-</textarea>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="panel-body">
+                                <div id="editor" style="width: 100%; height: 400px;"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="#" id="demo1">Simple basic report</a> <a target="responsive-paper-docs" href="/docs/responsive-paper-css.html#page">?</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="wrapRpTheme" name="wrapRpTheme">
+                                    <label class="custom-control-label" for="wrapRpTheme">Wrap with Responsive Paper Theme</label>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -71,7 +66,7 @@
                 <select class="form-control" name="format" id="">
 
                     {{#each formats}}
-                    <option {{#if this.selected}}selected{{/if}}>{{this.value}}</option>
+                        <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
                     {{/each}}
                 </select>
             </div>
@@ -113,106 +108,67 @@
     <div class="form-group">
         <label for="">Report element query selector:</label>
         <input type="text" name="selector" id="" class="form-control" placeholder="" aria-describedby="selectorHelp">
-        <small id="selectorHelp" class="text-muted">By default the entire body content will be rendered. You can select a subsection of the the html by entering a valid
-            <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors">query selector</a> .</small>
+        <small id="selectorHelp" class="text-muted">By default the entire body content will be rendered. You can select a
+            subsection of the the html by entering a valid
+            <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors">query
+                selector
+            </a> .</small>
     </div> --}}
-    <button type="submit " class="btn btn-primary ">Submit</button>
+    <button type="submit " class="btn btn-primary ">Preview to new tab</button>
 </form>
-<div id="app " style="display: none ">
 
-    <b-form @submit="onSubmit " @reset="onReset " v-if="show " method="POST " action="/pdf ">
 
-        <b-row>
-            <b-col>
-                <b-form-group label="Css overrides: " description="Enter any styles to override on the target page (or
-                urls). ">
-                    <b-form-textarea type="text " v-model="form.css " name="css " :rows="3 " placeholder="body { font-size:
-                .8em !important;} " description=" ">
-                        </b-form-input>
-                </b-form-group>
-            </b-col>
-            <b-col>
-                <b-form-group label="Pre render script: " label-for="e2 " description="Enter any script to run before printing
-                (or urls) ">
-                    <b-form-textarea type="text " v-model="form.script " name="script " :rows="3 " placeholder="document.getElementById(
-                'img1').style.maxWidth='100%' ; ">
-                        </b-form-input>
-                </b-form-group>
-            </b-col>
-        </b-row>
+<div style="display: none">
+    <div id="demo1src">
+        <div class="rjs-page">
 
-        <b-button type="submit " variant="primary ">Submit</b-button>
-        <b-button type="reset " variant="danger ">Reset</b-button>
-    </b-form>
+
+        </div>
+
+    </div>
+    <div id="content1">
+        <p>Invoice</p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <!-- data -->
+    <script>
+        var orderItems = [
+            {
+
+            }
+        ]
+
+    </script>
 </div>
 
-{{!--
-<script>
+{{#section 'style'}}
+{{!-- <link href="/lib/codemirror/codemirror.css" rel="stylesheet"> --}}
+{{/section}} 
+{{#section 'script'}}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+<script>
     window.onload = function () {
-        var app = new Vue({
-            el: "#app ",
-            data: function () {
-                return {
-                    form: {
-                        url: 'http://localhost:8080/examples/presentation/',
-                        css: '',
-                        script: '',
-                        format: 'Letter',
-                        landscape: false,
-                        print: false,
-                        hiddenElementSelectors: null,
-                        waitForJs: false
-                    },
-                    formats: [
-                        { text: 'Select paper size', value: null },
-                        'Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6'
-                    ],
-                    show: true
-                }
-            },
-            methods: {
-                onSubmit(evt) {
-                    //evt.preventDefault();
-                    //alert(JSON.stringify(this.form));
-                },
-                onReset(evt) {
-                    evt.preventDefault();
-                    /* Reset our form values */
-                    this.form.email = '';
-                    this.form.name = '';
-                    this.form.food = null;
-                    this.form.checked = [];
-                    /* Trick to reset/clear native browser form validation state */
-                    this.show = false;
-                    this.$nextTick(() => { this.show = true });
-                }
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/twilight");
+        editor.session.setMode("ace/mode/html");
+        editor.setOptions({
+            fontSize: "16px"
+        })
+        document.getElementById("converterForm").onsubmit = function () {
+            valueEl = document.querySelector('#value')
+            var el = document.querySelector('.tab-pane.active.show')
+            if (el.id === 'tab-2') {
+                //copy editor to value element
+                valueEl.value = editor.getValue()
             }
-        });
-        document.getElementById("app ").style.display = '';
-    };
+            else {
+                //copy url to value element
+                valueEl.value = document.querySelector('#url').value
+            }
+        }
+
+    }
+
 </script>
-
-<!-- b-form-1.vue -->--}} {{#section 'style'}}
-<link href="/lib/codemirror/codemirror.css" rel="stylesheet"> {{/section}} {{#section 'script'}}
-
-<script src="/lib/codemirror/codemirror.js"></script>
-<script>
-    // Define an extended mixed-mode that understands vbscript and
-    // leaves mustache/handlebars embedded templates in html mode
-    var mixedMode = {
-        name: "htmlmixed",
-        scriptTypes: [{
-            matches: /\/x-handlebars-template|\/x-mustache/i,
-            mode: null
-        },
-        {
-            matches: /(text|application)\/(x-)?vb(a|script)/i,
-            mode: "vbscript"
-        }]
-    };
-    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: mixedMode,
-        selectionPointer: true
-    });
-</script>{{/section}}
+{{/section}}

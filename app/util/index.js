@@ -1,11 +1,12 @@
 const arrayToSelectList = function (strArray, value) {
 
-    return strArray.map(v => {
+    return selectList = strArray.map(v => {
         return {
             value: v,
             selected: v.toLowerCase() === value.toLowerCase()
         }
     })
+
 }
 
 const replaceAll = function (str, search, replacement) {
