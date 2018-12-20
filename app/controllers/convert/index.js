@@ -51,6 +51,7 @@ const post = async function (req, res, next) {
       'Content-Length': result.content.length
     });
     res.end(result.content)
+    res.download()
   }
   finally {
     //TODO Instead of destroy, call release and delete cookies, navigate back, verify "Hi" is content of page, if not destroy
