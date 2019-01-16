@@ -41,4 +41,12 @@ CREATE TABLE "pdflog" (
     "filesize" int NOT NULL
 );
 
-INSERT INTO users(email,displayname,passwordhash,usertype) VALUES('admin@responsivepaper.com','Charlie','$2b$10$yOoZCexQiB6i7W.DF5heFuBWVZTVGnMZV2FuUWVDeDNb0V9ZT.Ife','admin')
+INSERT INTO users(email,displayname,passwordhash,usertype) VALUES('admin@responsivepaper.com','Charlie','$2b$10$yOoZCexQiB6i7W.DF5heFuBWVZTVGnMZV2FuUWVDeDNb0V9ZT.Ife','admin');
+
+GRANT CONNECT ON DATABASE rpdev TO rp_user;
+
+GRANT USAGE ON SCHEMA public TO rp_user;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO rp_user;
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO rp_user;

@@ -1,9 +1,9 @@
 module.exports = {
 	db: {
-		user: 'postgres',
+		user: 'rp_user',
 		password: 'Test1212',
-		database: 'dostest',
-		host: '192.168.0.20',
+		database: 'rpdev',
+		host: '192.168.0.23',
 		port: 5432,
 		max: 50,
 		idleTimeoutMillis: 30000
