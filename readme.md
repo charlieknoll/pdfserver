@@ -72,6 +72,8 @@ https://medium.freecodecamp.org/how-to-get-https-working-on-your-local-developme
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04
 
+https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-18-04
+
 Install node:
 https://linuxize.com/post/how-to-install-node-js-on-ubuntu-18.04/
 
@@ -113,9 +115,24 @@ TODO:
 
 Test pdf conversion
 
-Pull latest repo
 
-https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-18-04
+sudo apt install build-essential
+(optional?) sudo apt-get install g++
+
+#### Set up app user in linux, pull latest repo
+- useradd -m -s /bin/bash rp_user
+- passwd rp_user
+- git clone
+- git config credential.helper store 
+- git pull 
+- npm install
+- npm install puppeteer (for some reason chrome doesn't install when doing npm install)
+- touch .env
+- nano .env (enter all vars from sample.env) point rp-dev to use rp-test's db
+- set up db on rp-test
+- env $(cat .env) ./app/server.js to run node with env vars
+
+
 
 
 Configure pm2 with proper environment variables

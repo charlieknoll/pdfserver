@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node ./app/server.js",
     "start2": "./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/.bin/nodemon ./bin/www",
     "test": "./node_modules/.bin/cross-env NODE_ENV=test jest"
   },
