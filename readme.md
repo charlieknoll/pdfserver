@@ -125,12 +125,13 @@ sudo apt install build-essential
 - git clone
 - git config credential.helper store 
 - git pull 
-- npm install
+- npm install --production
 - npm install puppeteer (for some reason chrome doesn't install when doing npm install)
 - touch .env
 - nano .env (enter all vars from sample.env) point rp-dev to use rp-test's db
 - set up db on rp-test
 - env $(cat .env) ./app/server.js to run node with env vars
+- env $(cat .env) pm2 start ./app/server.js
 
 
 
