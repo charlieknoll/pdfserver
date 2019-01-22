@@ -110,19 +110,22 @@ sudo nano /etc/postgresql/11/main/pg_hba.conf
 sudo nano /etc/postgresql/11/main/postgresql.conf
 sudo systemctl restart postgresql
 
+sudo su -l postgres
+create user rp_user password '#####';
+create database rp owner rp_user;
+run createdb.sql or execute through pgadmin (careful of drop statements and db name)
 
-TODO: 
-
-Test pdf conversion
 
 
-sudo apt install build-essential
-(optional?) sudo apt-get install g++
 
 #### Set up app user in linux, pull latest repo
-- useradd -m -s /bin/bash rp_user
-- passwd rp_user
-- git clone
+- sudo apt install build-essential
+- sudo npm install pm2 -g
+- (optional?) sudo apt-get install g++
+- sudo useradd -m -s /bin/bash rp_user
+- sudo passwd rp_user
+- sudo su - rp_user
+- git clone https://github.com/charlieknoll/pdfserver.git
 - git config credential.helper store 
 - git pull 
 - npm install --production
@@ -130,16 +133,25 @@ sudo apt install build-essential
 - touch .env
 - nano .env (enter all vars from sample.env) point rp-dev to use rp-test's db
 - set up db on rp-test
-- env $(cat .env) ./app/server.js to run node with env vars
+- env $(cat .env) node ./app/server.js to run node with env vars
 - env $(cat .env) pm2 start ./app/server.js
+- pm2 save
+- pm2 startup systemd (copy command)
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
+- exit out of rp_user session
+- export $(cat /home/rp_user/pdfserver/.env) to load env into 
+- run systemd startup command copied above (this will have the correct env variables)
+- sudo systemctl start pm2-rp_user
+- systemctl status pm2-rp_user
+- pm2 monit (as rp_user) to see request info and logs
+- sudo reboot (check if server.js is running)
+
+Configure nginx to forward traffic to servers
+
+update /etc/nginx/sites-available/test.responsivepaper.com with 
+systemctl reload nginx or restart nginx
 
 
-
-
-Configure pm2 with proper environment variables
-
-https://www.digitalocean.com/community/questions/passing-environment-variables-to-node-js-using-pm2
-https://github.com/freeCodeCamp/freeCodeCamp/blob/master/sample.env
 
 Build landing
 Build backup process to blockstorage
@@ -157,3 +169,8 @@ Make background a picture of a screen with a portrait letter sized printout and 
 add twitter and github links
 Create twitter and github org accounts
 "A new way to design html reports for pdf conversion"
+
+Help articles:
+
+https://www.digitalocean.com/community/questions/passing-environment-variables-to-node-js-using-pm2
+https://github.com/freeCodeCamp/freeCodeCamp/blob/master/sample.env

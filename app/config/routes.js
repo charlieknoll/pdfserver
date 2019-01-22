@@ -10,7 +10,7 @@ const { logger } = require('../services')
 module.exports = (app) => {
 
     app.get('/', function (req, res, next) {
-        res.render('home/index', { title: 'Home' })
+        res.render('home/index', { title: 'Home', layout: 'landing.hbs' })
     })
     configUserRoutes(app)
     configConvertRoutes(app)
