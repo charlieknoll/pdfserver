@@ -1,7 +1,14 @@
 body, html {
     height: 100%;
     margin: 0;
+    color: #999;
+
   }
+
+  /* font?
+  Patua One 
+  
+  */
 .bg {
     background-image: url("/images/background.jpg");
     height: 100%;background-position: center;
@@ -9,6 +16,10 @@ body, html {
     background-size: cover;
     opacity: .6;
     display: block;
+}
+.logo-text {
+    font-family: Shrikhand;
+    color:rgb(254, 87, 34);
 }
 .content {
  display: flex;
@@ -43,7 +54,6 @@ body, html {
 .button {
     font-style: bold;
     font-weight: 700;
-    color: #999;
     border-color: #999;
     border-style: solid;
     border-width: 2px;
@@ -54,5 +64,12 @@ body, html {
 .button:hover {
   background-color: #999;
   color: black;  
-  cursor: pointer;
+  cursor: pointer
+}
+.social a {
+    color: #999;
+    font-size: 3em;
+}
+.social a:hover {
+    color: rgb(75, 75, 75);
 }
