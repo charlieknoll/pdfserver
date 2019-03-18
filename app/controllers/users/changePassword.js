@@ -21,7 +21,6 @@ const actionVm = function (req, errors, email, displayname) {
 const get = async function (req, res, next) {
 
     try {
-        throw (new Error("XXXXXX - testings"))
         const resetToken = req.query.token
         const result = await db.any('Select email, displayname, tokenexpire < CURRENT_TIMESTAMP expired from users where resettoken = ${resetToken}', { resetToken })
 
@@ -33,7 +32,7 @@ const get = async function (req, res, next) {
         res.render(viewPath, actionVm(req, null, result[0].email, result[0].displayname))
     }
     catch (err) {
-        logger.error(err)
+        logger.error(err.message)
         req.session.errorMessage = 'Unknown error: the reset token is either invalid or expired, please try again.'
         res.redirect('/user/reset-password')
     }
