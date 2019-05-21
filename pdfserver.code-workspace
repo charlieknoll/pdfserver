@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "SSH FS - test.responsivepaper.com",
+			"uri": "ssh://test.responsivepaper.com/"
+		}
+	],
+	"settings": {}
+}

@@ -34,7 +34,7 @@ const runWithTimeout = (fn, ms, msg) => {
       if (resolved) {
         return
       }
-
+      e.pageErrors = info.pageErrors
       reject(e)
     } finally {
       clearTimeout(timer)
@@ -50,7 +50,7 @@ const generatePdf = async (page, opt) => {
 
 
   const chromeOptions = {}
-  chromeOptions.timeout = 20000;
+  chromeOptions.timeout = 200000;
   chromeOptions.waitForJs = opt.waitForJs;
   chromeOptions.emulateMedia = opt.printMedia ? "print" : "screen"
 
@@ -63,6 +63,7 @@ const generatePdf = async (page, opt) => {
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
   rpOptions.format = opt.format;
+  //rpOptions.readyToFormatPropertyName = opt.readyToFormatPropertyName || "RESPONSIVE_PAPER_READY_TO_RENDER"
   let pageTitle;
 
 
@@ -82,7 +83,9 @@ const generatePdf = async (page, opt) => {
     }
 
 
-    //if (timeoutInfo.error) return
+    if (timeoutInfo.error) return
+
+    await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 'raf', timeout: 5000 })
     pageTitle = await page.title();
     //async error testing
     //const test = await page.brokenFunction({ content: rpContent.rpScriptContents })
@@ -94,17 +97,29 @@ const generatePdf = async (page, opt) => {
     page.on('pageerror', msg => {
       timeoutInfo.pageErrors.push(msg);
     });
+    page.on('console', msg => {
+      console.log(msg)
+      timeoutInfo.pageErrors.push(msg);
+    })
     page.emulateMedia(chromeOptions.emulateMedia)
     //run preview with rpOptions
     await page.evaluate(opt => {
       rjs.preview(null, opt);
     }, rpOptions)
 
-    //if (timeoutInfo.error) return
+    if (timeoutInfo.error) return
 
-    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: chromeOptions.timeout })
+    //await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: chromeOptions.timeout })
+    // try {
+    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: 5000 })
+    // }
+    // catch (err) {
+    //   //console.log(err)
+    //   return
 
-    //if (timeoutInfo.error) return
+    // }
+
+    if (timeoutInfo.error) return
 
     const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
     Object.assign(pdfOptions, newPdfOptions)
@@ -117,7 +132,7 @@ const generatePdf = async (page, opt) => {
     //TODO delete script, server side styles
 
     const content = await page.pdf(pdfOptions)
-    //if (timeoutInfo.error) return
+    if (timeoutInfo.error) return
 
     return { content, pageTitle }
 
