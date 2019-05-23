@@ -123,6 +123,8 @@ const generatePdf = async (page, opt) => {
 
     const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
     Object.assign(pdfOptions, newPdfOptions)
+
+    //Don't set margins this way?
     pdfOptions.margin = {
       top: pdfOptions.marginTop,
       right: pdfOptions.marginRight,
