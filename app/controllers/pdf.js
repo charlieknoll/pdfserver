@@ -73,7 +73,13 @@ const generatePdf = async (page, opt) => {
 
 
     page.setDefaultNavigationTimeout(chromeOptions.timeout)
-
+    await page.setRequestInterception(true);
+    page.on('request', interceptedRequest => {
+      if (interceptedRequest.url().includes('responsive-paper.designer'))
+        interceptedRequest.abort();
+      else
+        interceptedRequest.continue();
+    });
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value, { waitUntil: 'load' })
     }
@@ -81,7 +87,6 @@ const generatePdf = async (page, opt) => {
       const response = await page.setContent(opt.value, { waitUntil: 'load' })
 
     }
-
 
     if (timeoutInfo.error) return
 
@@ -92,7 +97,7 @@ const generatePdf = async (page, opt) => {
     const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
     const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
     //TODO block reportsjs.designer.css
-    //TODO add rjs style to override designer
+    //TODO add rp style to override designer
     //const rpStyleTag = await page
     page.on('pageerror', msg => {
       timeoutInfo.pageErrors.push(msg);
@@ -104,7 +109,8 @@ const generatePdf = async (page, opt) => {
     page.emulateMedia(chromeOptions.emulateMedia)
     //run preview with rpOptions
     await page.evaluate(opt => {
-      rjs.preview(null, opt);
+      //console.log(rp)
+      rp.preview(null, opt);
     }, rpOptions)
 
     if (timeoutInfo.error) return
