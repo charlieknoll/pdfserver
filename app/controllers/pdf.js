@@ -81,7 +81,10 @@ const generatePdf = async (page, opt) => {
         interceptedRequest.continue();
     });
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
-      const response = await page.goto(opt.value, { waitUntil: 'load' })
+      const response = await page.goto(opt.value, {
+        waitLoad: true,
+        waitNetworkIdle: true // defaults to false
+      })
     }
     else {
       const response = await page.setContent(opt.value, { waitUntil: 'load' })
@@ -103,7 +106,7 @@ const generatePdf = async (page, opt) => {
       timeoutInfo.pageErrors.push(msg);
     });
     page.on('console', msg => {
-      console.log(msg)
+      //console.log(msg)
       timeoutInfo.pageErrors.push(msg);
     })
     page.emulateMedia(chromeOptions.emulateMedia)
