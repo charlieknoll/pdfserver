@@ -24,7 +24,8 @@
                     <div class="panel-body">
 
                         <label for="">Url to convert</label>
-                        <input type="text" id="url" class="form-control" placeholder="" aria-describedby="helpId" required value="{{url}}">
+                        <input type="text" id="url" class="form-control" placeholder="" aria-describedby="helpId"
+                            required value="{{url}}">
                         <small id="helpId" class="text-muted">We will never store your url request history.</small>
                     </div>
                 </div>
@@ -36,15 +37,18 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <a href="#" id="demo1">Simple basic report</a> <a target="responsive-paper-docs" href="/docs/responsive-paper-css.html#page">?</a>
+                            <a href="#" id="demo1">Simple basic report</a> <a target="responsive-paper-docs"
+                                href="/docs/responsive-paper-css.html#page">?</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="wrapRpTheme" name="wrapRpTheme">
-                                    <label class="custom-control-label" for="wrapRpTheme">Wrap with Responsive Paper Theme</label>
+                                    <input type="checkbox" class="custom-control-input" id="wrapRpTheme"
+                                        name="wrapRpTheme">
+                                    <label class="custom-control-label" for="wrapRpTheme">Wrap with Responsive Paper
+                                        Theme</label>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +70,7 @@
                 <select class="form-control" name="format" id="">
 
                     {{#each formats}}
-                        <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
+                    <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
                     {{/each}}
                 </select>
             </div>
@@ -89,6 +93,18 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="debug" name="debug"
+                        {{#if debug}}checked="true" {{/if}}>
+                    <label class="custom-control-label" for="debug">Include Logs</label>
+                </div>
+            </div>
+        </div>
+
     </div>
     {{!--
     <div class="form-group">
@@ -143,7 +159,7 @@
 
 {{#section 'style'}}
 {{!-- <link href="/lib/codemirror/codemirror.css" rel="stylesheet"> --}}
-{{/section}} 
+{{/section}}
 {{#section 'script'}}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>

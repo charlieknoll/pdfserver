@@ -63,6 +63,7 @@ const generatePdf = async (page, opt) => {
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
   rpOptions.format = opt.format;
+  rpOptions.debug = opt.debug
   //rpOptions.readyToFormatPropertyName = opt.readyToFormatPropertyName || "RESPONSIVE_PAPER_READY_TO_RENDER"
   let pageTitle;
 
@@ -112,7 +113,7 @@ const generatePdf = async (page, opt) => {
     page.emulateMedia(chromeOptions.emulateMedia)
     //run preview with rpOptions
     await page.evaluate(opt => {
-      //console.log(rp)
+      //console.log("DEBUG0: " + opt.debug)
       rp.preview(null, opt);
     }, rpOptions)
 
