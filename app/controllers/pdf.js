@@ -98,8 +98,9 @@ const generatePdf = async (page, opt) => {
     pageTitle = await page.title();
     //async error testing
     //const test = await page.brokenFunction({ content: rpContent.rpScriptContents })
-    const rpScriptTag = await page.addScriptTag({ content: rpContent.rpScriptContents })
-    const rpContentTag = await page.addStyleTag({ content: rpContent.rpStyleContents })
+
+    const rpScriptTag = await page.addScriptTag({ content: opt.version ? await rpContent.rpContentsProvider.js(opt.version) : rpContent.rpScriptContents })
+    const rpContentTag = await page.addStyleTag({ content: opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
     //TODO block reportsjs.designer.css
     //TODO add rp style to override designer
     //const rpStyleTag = await page
