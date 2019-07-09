@@ -88,6 +88,8 @@ const generatePdf = async (page, opt) => {
       })
     }
     else {
+      page.setJavaScriptEnabled(false)
+      await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER = true')
       const response = await page.setContent(opt.value, { waitUntil: 'load' })
 
     }
@@ -98,6 +100,7 @@ const generatePdf = async (page, opt) => {
     pageTitle = await page.title();
     //async error testing
     //const test = await page.brokenFunction({ content: rpContent.rpScriptContents })
+    page.setJavaScriptEnabled(true)
 
     const rpScriptTag = await page.addScriptTag({ content: opt.version ? await rpContent.rpContentsProvider.js(opt.version) : rpContent.rpScriptContents })
     const rpContentTag = await page.addStyleTag({ content: opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
