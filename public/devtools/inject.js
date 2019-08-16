@@ -25,11 +25,12 @@ var rp = {
     var el = document.createElement("input");
     el.setAttribute("name", "value");
     el.setAttribute("id", "rp-value")
+    el.setAttribute("type", "hidden");
     this.form.appendChild(el);
     document.body.appendChild(this.form);
   },
   init: function () {
-    rp.referenceCss(this.hostName + this.designerUrl)
+    rp.referenceCss(this.hostName + this.designerPath)
 
     //TODO Load apikey from chrome storage
 
@@ -70,9 +71,3 @@ var rp = {
 
 
 }
-
-rp.init()
-
-rp.toggleCss()
-
-rp.preview(true)

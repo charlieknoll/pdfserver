@@ -26,7 +26,8 @@ const actionVm = function (req, errors) {
   }
   formData.formats = arrayToSelectList(formData.formats, vals['format'] || '')
   formData.errors = (errors || []).map(e => e.msg)
-  formData.apiKey = '26d3162e-3436-4e7b-9b05-db86cec49160'
+  //TODO look up user's developer apiKey
+  formData.apikey = '5a2c36705a546423655475774d6f47343f352f457a345a31582931414d7d5525'
   return formData
 }
 const get = function (req, res, next) {
@@ -65,5 +66,5 @@ const post = async function (req, res, next) {
 
 module.exports = function (app) {
   app.get(url, auth.requiresUser, get)
-  app.post(url, auth.requiresUser, asyncHandler(post))
+  app.post(url, asyncHandler(auth.requiresApiKey), asyncHandler(post))
 }
