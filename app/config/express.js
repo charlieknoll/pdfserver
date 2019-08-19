@@ -18,11 +18,22 @@ module.exports = (app, passport, pool) => {
         partialsDir: path.join(config.root, '/views/partials'),
         layoutsDir: path.join(config.root, '/views/layouts')
     }));
-    hbs.registerHelper('section', function (value, options) {
-        if (!this._sections) this._sections = {};
-        this._sections[value] = options.fn(this);
-        return null;
-    })
+    // hbs.registerHelper('section', function (value, options) {
+    //     if (!this._locals._sections) this._locals._sections = {};
+    //     this._locals._sections[value] = options.fn(this);
+    //     return null;
+    // })
+    // hbs.registerHelper("debug", function (optionalValue, options) {
+    //     console.log("Logging");
+    //     // console.log("====================");
+    //     // console.log(this);
+
+    //     if (optionalValue) {
+    //         console.log("Value");
+    //         console.log("====================");
+    //         console.log(optionalValue);
+    //     }
+    // });
 
     app.use('/', express.static(config.public))
     app.use(function (req, res, next) {

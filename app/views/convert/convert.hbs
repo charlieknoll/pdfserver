@@ -139,37 +139,15 @@
                 selector
             </a> .</small>
     </div> --}}
-    <button type="submit " class="btn btn-primary ">Preview to new tab</button>
+    <button type="submit " class="btn btn-primary ">Preview to new tab </button>
 </form>
 
 
-<div style="display: none">
-    <div id="demo1src">
-        <div class="rjs-page">
-
-
-        </div>
-
-    </div>
-    <div id="content1">
-        <p>Invoice</p>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <!-- data -->
-    <script>
-        var orderItems = [
-            {
-
-            }
-        ]
-
-    </script>
-</div>
-
-{{#section 'style'}}
+{{#contentFor 'pageStyles'}}
 {{!-- <link href="/lib/codemirror/codemirror.css" rel="stylesheet"> --}}
-{{/section}}
-{{#section 'script'}}
+Test
+{{/contentFor}}
+{{#contentFor 'pageScripts'}}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
 <script>
@@ -196,4 +174,4 @@
     }
 
 </script>
-{{/section}}
+{{/contentFor}}
