@@ -26,8 +26,11 @@ CREATE TABLE "apikey" (
 	"id" bigserial PRIMARY KEY,
 	"userid" int NOT NULL REFERENCES users(id),
 	"value" varchar(255) NOT NULL,
+	"usedcredits" int NOT NULL,
 	"descr" varchar(255)
 );
+
+INSERT INTO apikey(userid,value,descr,usedcredits) VALUES (1,'5a2c36705a546423655475774d6f47343f352f457a345a31582931414d7d5525','Developer',0);
 
 CREATE TABLE "pdflog" (
 	"id" bigserial PRIMARY KEY,
@@ -40,6 +43,8 @@ CREATE TABLE "pdflog" (
     "networkdata" int NOT NULL,
     "filesize" int NOT NULL
 );
+
+
 
 INSERT INTO users(email,displayname,passwordhash,usertype) VALUES('admin@responsivepaper.com','Charlie','$2b$10$yOoZCexQiB6i7W.DF5heFuBWVZTVGnMZV2FuUWVDeDNb0V9ZT.Ife','admin');
 

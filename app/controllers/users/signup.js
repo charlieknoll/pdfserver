@@ -3,6 +3,7 @@ const { validationResult, body } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const { db, sendEmail, logger } = require('../../services')
 const bcrypt = require('bcrypt')
+const speakeasy = require('speakeasy')
 
 //constants
 const url = '/user/signup'
@@ -71,9 +72,11 @@ async function post(req, res, next) {
 
         //save to db
         //        const sql = "INSERT INTO users(email,displayname,passwordhash,usertype,resettoken,tokenexpire) VALUES (${email}, ${displayname},${passwordHash},'user',${uuid}, CURRENT_TIMESTAMP + (15 * interval '1 minute'))"
-        const sql = "INSERT INTO users(email,displayname,passwordhash,usertype) VALUES (${email}, ${displayname},${passwordHash},'user')"
-        await db.none(sql, sqlParams)
-
+        const sql = "INSERT INTO users(email,displayname,passwordhash,usertype) VALUES (${email}, ${displayname},${passwordHash},'user') RETURNING id"
+        const result = await db.one(sql, sqlParams)
+        const apiSql = "INSERT INTO apikey(userid,value,descr,usedcredits) VALUES (${userid},${apikey},'Developer',0)"
+        const apikey = speakeasy.generateSecretASCII()
+        await db.none(apiSql, { userid: result.id, apikey })
         //send email
         // const url = 'https://www.responsivepaper.com/user/confirm-registration?token=' + sqlParams.uuid
         // const message = {
