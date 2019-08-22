@@ -19,7 +19,8 @@ const actionVm = function (req, errors) {
 
   const formData = {
     title: 'Pdf Converter',
-    formats: ['', 'Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6']
+    formats: ['', 'Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6'],
+    apikey: req.user.apikey
   }
   if (vals) {
     Object.assign(formData, vals)
@@ -27,7 +28,7 @@ const actionVm = function (req, errors) {
   formData.formats = arrayToSelectList(formData.formats, vals['format'] || '')
   formData.errors = (errors || []).map(e => e.msg)
   //TODO look up user's developer apiKey
-  formData.apikey = '5a2c36705a546423655475774d6f47343f352f457a345a31582931414d7d5525'
+
   return formData
 }
 const get = function (req, res, next) {

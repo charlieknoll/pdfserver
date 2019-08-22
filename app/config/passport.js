@@ -35,7 +35,7 @@ module.exports = (passport) => {
 
     passport.deserializeUser(async (id, cb) => {
         try {
-            const results = await db.query('SELECT id, email, displayname, usertype FROM users WHERE id = $1', [parseInt(id, 10)])
+            const results = await db.query('SELECT users.id, email, displayname, usertype, apikey.value as apikey FROM users inner join apikey on users.id = apikey.userid WHERE users.id = $1', [parseInt(id, 10)])
             cb(null, results[0])
         }
         catch (err) {
