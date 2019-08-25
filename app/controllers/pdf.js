@@ -83,8 +83,7 @@ const generatePdf = async (page, opt) => {
     });
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value, {
-        waitLoad: true,
-        waitNetworkIdle: true // defaults to false
+        "waitUntil": 'networkidle0'
       })
     }
     else {
@@ -97,6 +96,13 @@ const generatePdf = async (page, opt) => {
     if (timeoutInfo.error) return
 
     await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 'raf', timeout: 5000 })
+    //THIS Helps trigger image loading
+    // await page.setViewport({ width: 1640, height: 2800 });
+    // await page.evaluate(() => { window.scrollBy(0, window.innerHeight); })
+    // await page.evaluate(_ => {
+    //   window.scrollTo(0, 0);
+    // });
+
     pageTitle = await page.title();
     //async error testing
     //const test = await page.brokenFunction({ content: rpContent.rpScriptContents })
@@ -134,6 +140,8 @@ const generatePdf = async (page, opt) => {
     // }
 
     if (timeoutInfo.error) return
+    // await page.evaluate(() => { window.scrollBy(0, window.innerHeight); })
+
 
     const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
     Object.assign(pdfOptions, newPdfOptions)
@@ -146,6 +154,18 @@ const generatePdf = async (page, opt) => {
       left: pdfOptions.marginLeft
     }
     //TODO delete script, server side styles
+
+
+    //This seems to force images to completely paint
+
+    await page.evaluate(_ => {
+      window.scrollTo(0, 0);
+    });
+    await page.evaluate(_ => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    await page.screenshot({ fullPage: true });
+
 
     const content = await page.pdf(pdfOptions)
     if (timeoutInfo.error) return
