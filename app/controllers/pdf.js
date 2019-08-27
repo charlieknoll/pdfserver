@@ -71,7 +71,7 @@ const generatePdf = async (page, opt) => {
   return await runWithTimeout(async (timeoutInfo) => {
 
 
-
+    rpOptions.consoleMessages = []
 
     page.setDefaultNavigationTimeout(chromeOptions.timeout)
     await page.setRequestInterception(true);
@@ -81,6 +81,11 @@ const generatePdf = async (page, opt) => {
       else
         interceptedRequest.continue();
     });
+    page.on('console', msg => {
+      //console.log(msg)
+      timeoutInfo.pageErrors.push(msg);
+      rpOptions.consoleMessages.push(msg._text)
+    })
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value, {
         "waitUntil": 'networkidle0'
@@ -116,14 +121,14 @@ const generatePdf = async (page, opt) => {
     page.on('pageerror', msg => {
       timeoutInfo.pageErrors.push(msg);
     });
-    page.on('console', msg => {
-      //console.log(msg)
-      timeoutInfo.pageErrors.push(msg);
-    })
+
     page.emulateMedia(chromeOptions.emulateMedia)
     //run preview with rpOptions
     await page.evaluate(opt => {
       //console.log("DEBUG0: " + opt.debug)
+      opt.consoleMessages.forEach(m => {
+        console.log(m)
+      });
       rp.preview(null, opt);
     }, rpOptions)
 
