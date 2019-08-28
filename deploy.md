@@ -1,12 +1,19 @@
 ### Deployment
 
 - Run tests
-- Run build scripts on reportsjs
-- Copy css and js to app/resources
+- Run build scripts on reportsjs (gulp scripts, gulp less)
+- Copy css and js to app/resources (copy.bat)
 - Copy designer.css to app/public
 - Git check in and push
-- Run script to shutdown a server
-- Git pull, npm update to that server
+- Backup db (cd ~/backup && pg_dump rp > backup.txt)
+- Restore to test db if necessary ()
+- Deploy db migration
+- Run script to shutdown a server:
+  - sudo cp upstream-devonly.conf upstream.conf && systemctl restart nginx
+  - sudo cp upstream-testonly.conf upstream.conf && systemctl restart nginx
+  - sudo cp upstream-default.conf upstream.conf && systemctl restart nginx
+- Git pull, npm update to that server (pm2 stop 0 && git pull && npm update)
+- Restart pm2 on updated instance (pm2 restart 0)
 - Run script to shutdown next server
 - Deploy to that server
 - Bring up server

@@ -56,8 +56,8 @@ module.exports = (app, passport, pool) => {
 
     app.use(passport.initialize())
     app.use(passport.session())
-
-
+    //logger.debug("Logging environment var:")
+    //logger.debug(process.env)
 
 }
 

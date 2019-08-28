@@ -30,7 +30,6 @@ CREATE TABLE "apikey" (
 	"descr" varchar(255)
 );
 
-INSERT INTO apikey(userid,value,descr,usedcredits) VALUES (1,'5a2c36705a546423655475774d6f47343f352f457a345a31582931414d7d5525','Developer',0);
 
 CREATE TABLE "pdflog" (
 	"id" bigserial PRIMARY KEY,
@@ -44,9 +43,8 @@ CREATE TABLE "pdflog" (
     "filesize" int NOT NULL
 );
 
-
-
-INSERT INTO users(email,displayname,passwordhash,usertype) VALUES('admin@responsivepaper.com','Charlie','$2b$10$yOoZCexQiB6i7W.DF5heFuBWVZTVGnMZV2FuUWVDeDNb0V9ZT.Ife','admin');
+INSERT INTO users(email,displayname,passwordhash,usertype) VALUES('admin@responsivepaper.com','Charlie','$2b$10$Jq04Z/ODa4O6d5cIV2gR2O7ukaviJAUoxUuXs221EfoobL3cmyiDa','admin');
+INSERT INTO apikey(userid,value,descr,usedcredits) VALUES (1,'wFhRvsXmr9ukvWLa2ZT9M1rSyFJMx0vU','Developer',0);
 
 GRANT CONNECT ON DATABASE rp TO rp_user;
 

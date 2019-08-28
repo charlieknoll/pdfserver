@@ -1,5 +1,22 @@
 ## PdfServer for Responsive Paper
 
+### Dev environment
+
+#### dev.responsivepaper.com (192.168.0.23)
+
+- rpdev database used in local development
+- no nginx configured
+- pm2 should restart web server as failover for test.responsivepaper.com (see .env)
+- node pointing to test db
+
+
+#### test.responsivepaper.com (192.168.0.22)
+
+- rp database used for testing deployment
+- nginx configured
+- pm2 should restart web server
+- scripts configured for rolling server updates
+
 ### Installation
 
 Initial ubuntu:
@@ -38,7 +55,7 @@ sudo apt-get install gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 lib
 
 Set up postgres
 
-test postgres connection to testing from dev 
+test postgres connection to testing from dev
 test ip connection from pgadmin to dev
 
 
@@ -47,8 +64,8 @@ test ip connection from pgadmin to dev
 
 
 - git clone
-- git config credential.helper store 
-- git pull 
+- git config credential.helper store
+- git pull
 - pm2 save after pm2 start ./bin/www
 
 ln -s /etc/nginx/sites-available/pdfserver /etc/nginx/sites-enabled/
@@ -126,8 +143,8 @@ run createdb.sql or execute through pgadmin (careful of drop statements and db n
 - sudo passwd rp_user
 - sudo su - rp_user
 - git clone https://github.com/charlieknoll/pdfserver.git
-- git config credential.helper store 
-- git pull 
+- git config credential.helper store
+- git pull
 - npm install --production
 - npm install puppeteer (for some reason chrome doesn't install when doing npm install)
 - touch .env
@@ -139,7 +156,7 @@ run createdb.sql or execute through pgadmin (careful of drop statements and db n
 - pm2 startup systemd (copy command)
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
 - exit out of rp_user session
-- export $(cat /home/rp_user/pdfserver/.env) to load env into 
+- export $(cat /home/rp_user/pdfserver/.env) to load env into
 - run systemd startup command copied above (this will have the correct env variables)
 - sudo systemctl start pm2-rp_user
 - systemctl status pm2-rp_user
@@ -148,7 +165,7 @@ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -
 
 Configure nginx to forward traffic to servers
 
-update /etc/nginx/sites-available/test.responsivepaper.com with 
+update /etc/nginx/sites-available/test.responsivepaper.com with
 systemctl reload nginx or restart nginx
 
 
