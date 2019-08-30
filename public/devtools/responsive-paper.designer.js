@@ -5,8 +5,8 @@
 
 var rpDesigner = {
   options: {
-    hostName: "https://responsivepaper.com",
-    tunnelHostName: null,
+    serverUrl: "https://responsivepaper.com",
+    tunnelHostUrl: null,
     apiKey: "",
     includeConsole: true,
     waitForReadyToRender: true,
@@ -23,11 +23,15 @@ var rpDesigner = {
     (document.head || document.body || document.documentElement).appendChild(css);
     this.cssEl = css
 
+
+
+  },
+  addHiddenForm: function () {
     //TODO add debug/include logs
 
     this.form = document.createElement("form");
     this.form.setAttribute("method", "post");
-    this.form.setAttribute("action", this.hostName + "/convert");
+    this.form.setAttribute("action", this.options.serverUrl + "/convert");
     this.form.setAttribute("target", "responsive-paper-preview");
     var el = document.createElement("input");
     el.setAttribute("name", "value");
@@ -39,14 +43,20 @@ var rpDesigner = {
     el.setAttribute("id", "rp-apikey")
     el.setAttribute("type", "hidden");
     this.form.appendChild(el);
+    el = document.createElement("input");
+    el.setAttribute("name", "includeConsole");
+    el.setAttribute("id", "rp-include-console")
+    el.setAttribute("type", "hidden");
+    this.form.appendChild(el);
     document.body.appendChild(this.form);
 
   },
   init: function (opt) {
     Object.assign(this.options, opt)
 
-    this.referenceCss(this.options.hostName + this.designerPath)
-    if (!opt.tunnelHostName) console.log("Responsive Paper error: tunnelHostName not set on options. Please see getting started guide for help")
+    this.referenceCss(this.options.serverUrl + this.designerPath)
+    this.addHiddenForm()
+    if (!opt.tunnelHostUrl) console.log("Responsive Paper error: tunnelHostUrl not set on options. Please see getting started guide for help")
     if (!opt.apiKey) console.log("Responsive Paper error: apiKey not set on options. Please see getting started guide for help")
     if (opt.applyResponsivePaperCss) this.toggleCss()
     if (opt.autoPreview) {
@@ -63,11 +73,13 @@ var rpDesigner = {
       return
     }
     var el = document.getElementById("rp-value")
-    //TODO replace hostname with tunnelHostName
-    el.value = window.location
+
+    el.value = window.location.href.replace(window.location.origin, this.options.tunnelHostUrl)
 
     el = document.getElementById("rp-apikey")
     el.value = this.options.apiKey
+    el = document.getElementById("rp-include-console")
+    el.value = this.options.includeConsole ? "on" : "off"
     this.form.submit()
 
   }

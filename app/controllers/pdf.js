@@ -50,10 +50,10 @@ const generatePdf = async (page, opt) => {
 
 
   const chromeOptions = {}
-  chromeOptions.timeout = 200000;
-  chromeOptions.waitForJs = opt.waitForJs;
+  //TODO don't allow for too long a timeout
+  chromeOptions.timeout = 30000;
   chromeOptions.emulateMedia = opt.printMedia ? "print" : "screen"
-
+  chromeOptions.renderTimeout = 5000;
   const pdfOptions = {}
   pdfOptions.scale = 1
   pdfOptions.printBackground = true
@@ -63,7 +63,7 @@ const generatePdf = async (page, opt) => {
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
   rpOptions.format = opt.format;
-  rpOptions.debug = opt.debug
+  rpOptions.debug = opt.includeConsole;
   //rpOptions.readyToFormatPropertyName = opt.readyToFormatPropertyName || "RESPONSIVE_PAPER_READY_TO_RENDER"
   let pageTitle;
 
@@ -90,17 +90,23 @@ const generatePdf = async (page, opt) => {
       const response = await page.goto(opt.value,
         { waitUntil: 'load' }
       )
+      //TODO handle bad page load (404, 504 gateway timeout)
+      if (response._status !== 200) {
+        const msg = "Chrome could not navigate to page: " + response._status + " - " + response._statusText + ", host may be unreachable: " + opt.value
+        timeoutInfo.pageErrors.push(msg);
+        throw new Error("Navigation error: " + "Chrome could not navigate to page: " + response._status + " - " + response._statusText + ", host may be unreachable: " + opt.value)
+      }
     }
     else {
       page.setJavaScriptEnabled(false)
-      await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER = true')
+      if (opt.waitForReadyToRender) await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER = true')
       const response = await page.setContent(opt.value, { waitUntil: 'load' })
 
     }
 
     if (timeoutInfo.error) return
 
-    await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 'raf', timeout: 5000 })
+    if (opt.waitForReadyToRender) await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: chromeOptions.renderTimeout })
     //THIS Helps trigger image loading
     // await page.setViewport({ width: 1640, height: 2800 });
     // await page.evaluate(() => { window.scrollBy(0, window.innerHeight); })
