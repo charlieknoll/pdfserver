@@ -136,6 +136,7 @@ const generatePdf = async (page, opt) => {
         console.log(m)
       });
       rp.preview(null, opt);
+
     }, rpOptions)
 
     if (timeoutInfo.error) return
