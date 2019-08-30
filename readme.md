@@ -91,6 +91,9 @@ https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-applica
 
 https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-18-04
 
+This has good ssh info:
+https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04
+
 Install node:
 https://linuxize.com/post/how-to-install-node-js-on-ubuntu-18.04/
 

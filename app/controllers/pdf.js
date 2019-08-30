@@ -87,9 +87,9 @@ const generatePdf = async (page, opt) => {
       rpOptions.consoleMessages.push(msg._text)
     })
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
-      const response = await page.goto(opt.value, {
-        "waitUntil": 'networkidle0'
-      })
+      const response = await page.goto(opt.value,
+        { waitUntil: 'load' }
+      )
     }
     else {
       page.setJavaScriptEnabled(false)
