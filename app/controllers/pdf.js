@@ -130,12 +130,15 @@ const generatePdf = async (page, opt) => {
 
     page.emulateMedia(chromeOptions.emulateMedia)
     //run preview with rpOptions
-    await page.evaluate(opt => {
+    await page.evaluate(async (opt) => {
       //console.log("DEBUG0: " + opt.debug)
       opt.consoleMessages.forEach(m => {
         console.log(m)
       });
-      rp.preview(null, opt);
+      await rp.preview(null, opt);
+      console.log(window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
+      console.log(window.RESPONSIVE_PAPER_FINISHED)
+      console.log('test')
 
     }, rpOptions)
 
