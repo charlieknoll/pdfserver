@@ -48,6 +48,8 @@ var rpDesigner = {
     el.setAttribute("name", "includeConsole");
     el.setAttribute("id", "rp-include-console")
     el.setAttribute("type", "hidden");
+    //TODO add waitforreadytorender
+
     this.form.appendChild(el);
     document.body.appendChild(this.form);
 
