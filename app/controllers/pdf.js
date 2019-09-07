@@ -59,11 +59,11 @@ const generatePdf = async (page, opt) => {
   pdfOptions.printBackground = true
 
   const rpOptions = {}
-  rpOptions.landscape = opt.landscape ? true : false
+  rpOptions.landscape = opt.landscape
   rpOptions.showLoading = false;
   rpOptions.hideSource = true;
   rpOptions.format = opt.format;
-  rpOptions.debug = opt.includeConsole;
+  rpOptions.debug = opt.includeConsole === "on";
   //rpOptions.readyToFormatPropertyName = opt.readyToFormatPropertyName || "RESPONSIVE_PAPER_READY_TO_RENDER"
   let pageTitle;
 
@@ -83,8 +83,10 @@ const generatePdf = async (page, opt) => {
     });
     page.on('console', msg => {
       //console.log(msg)
-      timeoutInfo.pageErrors.push(msg);
-      rpOptions.consoleMessages.push(msg._text)
+      if (!msg._location.url.includes('responsive-paper.designer')) {
+        timeoutInfo.pageErrors.push(msg);
+        rpOptions.consoleMessages.push(msg._text)
+      }
     })
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value,
@@ -136,9 +138,7 @@ const generatePdf = async (page, opt) => {
         console.log(m)
       });
       await rp.preview(null, opt);
-      console.log(window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
-      console.log(window.RESPONSIVE_PAPER_FINISHED)
-      console.log('test')
+
 
     }, rpOptions)
 

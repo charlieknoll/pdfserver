@@ -10,6 +10,7 @@ var rpDesigner = {
     apiKey: "",
     includeConsole: true,
     waitForReadyToRender: true,
+    waitForReadyToRenderTimeout: 20000,
     applyResponsivePaperCss: true,
     autoPreview: true
   },
@@ -60,6 +61,7 @@ var rpDesigner = {
     if (!opt.apiKey) console.log("Responsive Paper error: apiKey not set on options. Please see getting started guide for help")
     if (opt.applyResponsivePaperCss) this.toggleCss()
     if (opt.autoPreview) {
+      this.waitTime = 0
       this.preview()
     }
   },
@@ -69,7 +71,13 @@ var rpDesigner = {
   preview: function () {
 
     if (!window.RESPONSIVE_PAPER_READY_TO_RENDER && this.options.waitForReadyToRender) {
-      setTimeout(this.preview, 100)
+      //TODO add READY_TO_RENDER TIMEOUT
+      this.waitTime += 100
+      if (this.waitTime > this.options.waitForReadyToRenderTimeout) {
+        console.log(this.options.waitForReadyToRenderTimeout + "ms timeout exceeded waiting for window.RESPONSIVE_PAPER_READY_TO_RENDER === true")
+        return
+      }
+      setTimeout(this.preview.bind(this), 100)
       return
     }
     var el = document.getElementById("rp-value")
