@@ -48,9 +48,19 @@ var rpDesigner = {
     el.setAttribute("name", "includeConsole");
     el.setAttribute("id", "rp-include-console")
     el.setAttribute("type", "hidden");
-    //TODO add waitforreadytorender
-
     this.form.appendChild(el);
+    el = document.createElement("input");
+    el.setAttribute("name", "waitForReadyToRender");
+    el.setAttribute("id", "rp-waitForReadyToRender")
+    el.setAttribute("type", "hidden");
+    this.form.appendChild(el);
+    el = document.createElement("input");
+    el.setAttribute("name", "waitForReadyToRenderTimeout");
+    el.setAttribute("id", "rp-waitForReadyToRenderTimeout")
+    el.setAttribute("type", "hidden");
+    this.form.appendChild(el);
+
+    //TODO add waitforreadytorender
     document.body.appendChild(this.form);
 
   },
@@ -90,6 +100,11 @@ var rpDesigner = {
     el.value = this.options.apiKey
     el = document.getElementById("rp-include-console")
     el.value = this.options.includeConsole ? "on" : "off"
+    el = document.getElementById("rp-waitForReadyToRender")
+    el.value = this.options.waitForReadyToRender
+    el = document.getElementById("rp-waitForReadyToRenderTimeout")
+    el.value = this.options.waitForReadyToRenderTimeout
+
     this.form.submit()
 
   }
