@@ -1,6 +1,7 @@
 
 // const browserPagePool = require('../services/browserPagePool')
 const rpContent = require('../services/rpContent')
+const util = require('../util')
 
 const runWithTimeout = (fn, ms, msg) => {
   return new Promise(async (resolve, reject) => {
@@ -57,7 +58,7 @@ const generatePdf = async (page, opt) => {
   const pdfOptions = {}
   pdfOptions.scale = 1
   pdfOptions.printBackground = true
-
+  opt.waitForReadyToRender = util.checkBoolean(opt.waitForReadyToRender)
   const rpOptions = {}
   rpOptions.landscape = opt.landscape
   rpOptions.showLoading = false;

@@ -25,10 +25,17 @@ const lookup = function (obj, field) {
     }
     return null;
 }
+const checkBoolean = function (value) {
+    if (typeof value === 'string' || value instanceof String) {
+        return !value.toLowerCase().includes('false', 'no', '0', 'off')
+    }
+    else return value
 
+}
 module.exports = {
     arrayToSelectList,
     replaceAll,
-    lookup
+    lookup,
+    checkBoolean
 
 }
