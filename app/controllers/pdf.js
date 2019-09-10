@@ -71,23 +71,71 @@ const generatePdf = async (page, opt) => {
 
   return await runWithTimeout(async (timeoutInfo) => {
 
+    const startTime = new Date
+
 
     rpOptions.consoleMessages = []
+    rpOptions.consoleMessages.push(util.getTimeStamp(startTime) + ": Processing started")
+    rpOptions.startTime = startTime
+
 
     page.setDefaultNavigationTimeout(chromeOptions.timeout)
     await page.setRequestInterception(true);
-    page.on('request', interceptedRequest => {
-      if (interceptedRequest.url().includes('responsive-paper.designer'))
-        interceptedRequest.abort();
-      else
-        interceptedRequest.continue();
+    page.on('request', async request => {
+      const url = request.url();
+      if (url.includes('responsive-paper.designer') ||
+        url.includes('responsive-paper.settings')) {
+        //interceptedRequest.abort();
+        await request.respond('');
+        return;
+      }
+      else {
+        if (url.includes('.jpg') ||
+          url.includes('.png')) {
+          rpOptions.consoleMessages.push(util.getTimeStamp(startTime) + ": " + url)
+        }
+        //TODO if multiple requests for the same url then wait
+        if (util.cache[url] && util.cache[url].expires > Date.now()) {
+          await request.respond(util.cache[url]);
+          return;
+        }
+        request.continue();
+      }
+
     });
+    page.on('response', async (response) => {
+      const url = response.url();
+      const headers = response.headers();
+      const cacheControl = headers['cache-control'] || '';
+      const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
+      const maxAge = maxAgeMatch && maxAgeMatch.length > 1 ? parseInt(maxAgeMatch[1], 10) : 0;
+      //TODO use public to store in public cache
+      if (maxAge) {
+        if (util.cache[url] && util.cache[url].expires > Date.now()) return;
+
+        let buffer;
+        try {
+          buffer = await response.buffer();
+        } catch (error) {
+          // some responses do not contain buffer and do not need to be catched
+          return;
+        }
+
+        util.cache[url] = {
+          status: response.status(),
+          headers: response.headers(),
+          body: buffer,
+          expires: Date.now() + (maxAge * 1000),
+        };
+      }
+    });
+
     page.on('console', msg => {
       //console.log(msg)
-      if (!msg._location.url.includes('responsive-paper.designer')) {
-        timeoutInfo.pageErrors.push(msg);
-        rpOptions.consoleMessages.push(msg._text)
-      }
+      //if (!msg._location.url.includes('responsive-paper.designer')) {
+      timeoutInfo.pageErrors.push(msg);
+      rpOptions.consoleMessages.push(msg._text)
+      //}
     })
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value,
@@ -99,6 +147,7 @@ const generatePdf = async (page, opt) => {
         timeoutInfo.pageErrors.push(msg);
         throw new Error("Navigation error: " + "Chrome could not navigate to page: " + response._status + " - " + response._statusText + ", host may be unreachable: " + opt.value)
       }
+      rpOptions.consoleMessages.push(util.getTimeStamp() + ": Page loaded")
     }
     else {
       page.setJavaScriptEnabled(false)
@@ -110,6 +159,7 @@ const generatePdf = async (page, opt) => {
     if (timeoutInfo.error) return
 
     if (opt.waitForReadyToRender) await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: chromeOptions.renderTimeout })
+    rpOptions.consoleMessages.push(util.getTimeStamp() + ": RESPONSIVE_PAPER_READY_TO_RENDER detected")
     //THIS Helps trigger image loading
     // await page.setViewport({ width: 1640, height: 2800 });
     // await page.evaluate(() => { window.scrollBy(0, window.innerHeight); })
@@ -174,14 +224,15 @@ const generatePdf = async (page, opt) => {
 
     //This seems to force images to completely paint
 
-    await page.evaluate(_ => {
-      window.scrollTo(0, 0);
-    });
-    await page.evaluate(_ => {
-      window.scrollTo(0, document.body.scrollHeight);
-    });
-    await page.screenshot({ fullPage: true });
+    // await page.evaluate(_ => {
+    //   window.scrollTo(0, 0);
+    // });
+    // await page.evaluate(_ => {
+    //   window.scrollTo(0, document.body.scrollHeight);
+    // });
 
+    //TODO, this may not be necessary with new way of checking images
+    await page.screenshot({ fullPage: true });
 
     const content = await page.pdf(pdfOptions)
     if (timeoutInfo.error) return

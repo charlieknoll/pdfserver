@@ -32,10 +32,18 @@ const checkBoolean = function (value) {
     else return value
 
 }
+const getTimeStamp = function (d) {
+    if (!d) d = new Date
+    return d.toISOString().substring(11)
+}
+const cache = {}
+
 module.exports = {
     arrayToSelectList,
     replaceAll,
     lookup,
-    checkBoolean
+    checkBoolean,
+    getTimeStamp,
+    cache
 
 }
