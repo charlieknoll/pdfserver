@@ -51,6 +51,7 @@ body {
   margin-bottom: 0px;
   margin-right: auto;
   margin-left: auto;
+  height: 11in;
   /*  box-shadow: 0 5px 10px 0 rgba(0,0,0,.3);*/
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvXpBPQAGdgJ3KfanbgAAAABJRU5ErkJggg==);
   background-repeat: repeat-x;
