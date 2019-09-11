@@ -12,8 +12,7 @@ const get = async function (req, res, next) {
     res.render(url.substring(1), {
         name: req.user.displayname,
         apikey: result[0].value, usedCredits: result[0].usedcredits,
-        title: "Dashboard", successMessage,
-        env: JSON.stringify(config)
+        title: "Dashboard", successMessage
     })
 }
 
