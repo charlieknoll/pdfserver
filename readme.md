@@ -194,3 +194,7 @@ Help articles:
 
 https://www.digitalocean.com/community/questions/passing-environment-variables-to-node-js-using-pm2
 https://github.com/freeCodeCamp/freeCodeCamp/blob/master/sample.env
+
+Install Redis:
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04

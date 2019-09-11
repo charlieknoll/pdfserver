@@ -59,8 +59,12 @@ var rpDesigner = {
     el.setAttribute("id", "rp-waitForReadyToRenderTimeout")
     el.setAttribute("type", "hidden");
     this.form.appendChild(el);
+    el = document.createElement("input");
+    el.setAttribute("name", "disableCache");
+    el.setAttribute("id", "rp-disableCache")
+    el.setAttribute("type", "hidden");
+    this.form.appendChild(el);
 
-    //TODO add waitforreadytorender
     document.body.appendChild(this.form);
 
   },
@@ -84,6 +88,7 @@ var rpDesigner = {
 
     if (!window.RESPONSIVE_PAPER_READY_TO_RENDER && this.options.waitForReadyToRender) {
       //TODO add READY_TO_RENDER TIMEOUT
+      if (!this.waitTime) this.waitTime = 0 //just in case preview is called manually
       this.waitTime += 100
       if (this.waitTime > this.options.waitForReadyToRenderTimeout) {
         console.log(this.options.waitForReadyToRenderTimeout + "ms timeout exceeded waiting for window.RESPONSIVE_PAPER_READY_TO_RENDER === true")
@@ -104,6 +109,8 @@ var rpDesigner = {
     el.value = this.options.waitForReadyToRender
     el = document.getElementById("rp-waitForReadyToRenderTimeout")
     el.value = this.options.waitForReadyToRenderTimeout
+    el = document.getElementById("rp-disableCache")
+    el.value = this.options.disableCache
 
     this.form.submit()
 

@@ -8,6 +8,11 @@ module.exports = {
 		max: process.env.DB_MAX_CONNECTIONS,
 		idleTimeoutMillis: process.env.DB_IDLE_TIMEOUT
 	},
+	redis: {
+		password: process.env.REDIS_PASSWORD,
+		host: process.env.REDIS_HOST,
+		port: process.env.REDIS_PORT
+	},
 	session_secret: process.env.SESSION_SECRET,
 	mailgun: {
 		apikey: process.env.MG_APIKEY,
