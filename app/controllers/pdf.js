@@ -89,7 +89,7 @@ const generatePdf = async (page, opt) => {
 
   const browserOptions = {}
   browserOptions.requestTimeout = 20000
-  browserOptions.imageDelay = 200
+  browserOptions.imageDelay = opt.imageDelay ? opt.imageDelay : (opt.disableCache ? 1000 : 200)
 
   //rpOptions.readyToFormatPropertyName = opt.readyToFormatPropertyName || "RESPONSIVE_PAPER_READY_TO_RENDER"
   let pageTitle;
