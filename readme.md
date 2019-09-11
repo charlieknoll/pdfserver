@@ -158,6 +158,7 @@ run createdb.sql or execute through pgadmin (careful of drop statements and db n
 - pm2 save
 - pm2 startup systemd (copy command)
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
 - exit out of rp_user session
 - export $(cat /home/rp_user/pdfserver/.env) to load env into
 - run systemd startup command copied above (this will have the correct env variables)

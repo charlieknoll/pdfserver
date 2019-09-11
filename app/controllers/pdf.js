@@ -89,6 +89,7 @@ const generatePdf = async (page, opt) => {
 
   const browserOptions = {}
   browserOptions.requestTimeout = 20000
+  browserOptions.imageDelay = 200
 
   //rpOptions.readyToFormatPropertyName = opt.readyToFormatPropertyName || "RESPONSIVE_PAPER_READY_TO_RENDER"
   let pageTitle;
@@ -126,6 +127,9 @@ const generatePdf = async (page, opt) => {
             complete: false,
             fromCache: false
           };
+        }
+        else {
+          requestCache[url].complete = false
         }
 
         if (!(redis.status == 'ready')) {
@@ -259,13 +263,19 @@ const generatePdf = async (page, opt) => {
 
     //await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: chromeOptions.timeout })
     // try {
-    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: 5000 })
-    // }
-    // catch (err) {
-    //   //console.log(err)
-    //   return
+    await waitFor(() => { return !Object.keys(requestCache).map(u => requestCache[u].complete ? 0 : 1).reduce((total, nc) => total + nc) }, '', 10000, 10)
 
-    // }
+    //TODO inject page messages to console
+
+    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: 5000 })
+
+    //This is one way to force images to load, wait for 2 seconds
+    await page.evaluate(async (delay) => {
+      setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
+    }, browserOptions.imageDelay)
+
+    await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: 5000 })
+
 
     if (timeoutInfo.error) return
 
@@ -293,8 +303,7 @@ const generatePdf = async (page, opt) => {
 
     //TODO, this may not be necessary with new way of checking images
     //await page.screenshot({ fullPage: true });
-    var total = await waitFor(() => { return !Object.keys(requestCache).map(u => requestCache[u].complete ? 0 : 1).reduce((total, nc) => total + nc) }, '', 10000, 10)
-    console.log(total)
+
     const content = await page.pdf(pdfOptions)
     if (timeoutInfo.error) return
 
