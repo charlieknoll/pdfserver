@@ -112,7 +112,7 @@ const generatePdf = async (page, opt) => {
       if (url.includes('responsive-paper.designer') ||
         url.includes('responsive-paper.settings')) {
         //interceptedRequest.abort();
-        await request.respond('');
+        await request.respond({ status: 204 });
         return;
       }
       else {
@@ -161,6 +161,9 @@ const generatePdf = async (page, opt) => {
 
     });
     page.on('response', async (response) => {
+      if (response._status === 204) {
+        return
+      }
       const url = response.url();
       if (requestCache[url] && requestCache[url].fromCache) {
         requestCache[url].complete = true
