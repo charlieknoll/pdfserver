@@ -155,7 +155,8 @@ run createdb.sql or execute through pgadmin (careful of drop statements and db n
 - set up db on rp-test
 - env $(cat .env) node ./app/server.js to run node with env vars
 - env $(cat .env) pm2 start ./app/server.js
-- pm2 save
+- pm2 save (note that this saves the environment variables in /home/rp_user/.pm2/pm2.dump)
+- mark pm2.dump immutable (https://www.codeproject.com/Questions/1083356/Pm-overwriting-dump-pm-at-restart)
 - pm2 startup systemd (copy command)
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
