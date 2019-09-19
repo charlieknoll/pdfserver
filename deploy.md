@@ -12,7 +12,7 @@
   - sudo cp upstream-devonly.conf upstream.conf && systemctl restart nginx
   - sudo cp upstream-testonly.conf upstream.conf && systemctl restart nginx
   - sudo cp upstream-default.conf upstream.conf && systemctl restart nginx
-- As rp_user: Git pull, npm update to that server (pm2 stop 0 && git pull && npm update)
+- As rp_user: Git pull, npm install --production to that server (pm2 stop 0 && git pull && npm install --production)
 - Restart pm2 on updated instance (pm2 restart 0)
 - Run script to shutdown next server
 - Deploy to that server
