@@ -43,11 +43,11 @@ const post = async function (req, res, next) {
   const pageContext = await browserPool().acquire();
   try {
 
-    const result = await generatePdf(pageContext.page, req.body);
+    res.set('Content-Type', 'application/pdf')
+    const result = await generatePdf(res, pageContext.page, req.body);
     let fileName = req.body.fileName || result.pageTitle
     fileName = replaceAll(fileName, ' ', '-')
     fileName += ".pdf";
-    res.set('Content-Type', 'application/pdf')
     // res.writeHead(200, {
     //   'Content-Type': 'application/pdf',
     //   'Content-Disposition': 'inline; filename=' + fileName,
@@ -55,7 +55,12 @@ const post = async function (req, res, next) {
     //   'Accept-Ranges': 'bytes',
     //   'Vary': 'Accept-Encoding'
     // });
-    res.send(result.content)
+    if (result.content) {
+      res.send(result.content)
+    }
+    else {
+      res.end()
+    }
     //res.download()
   }
   finally {

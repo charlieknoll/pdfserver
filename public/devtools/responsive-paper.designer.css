@@ -87,179 +87,179 @@ body {
   width: 8.5in;
 }
 /*Paper Sizes*/
-.rp-ps-letter {
+.rp-page.rp-ps-letter {
   width: 8.5in;
   min-height: 11in;
 }
-.rp-ps-letter .rp-full-page {
+.rp-page.rp-ps-letter .rp-full-page {
   width: 8.5in;
   height: 11in;
 }
-.rp-ps-letter-ls {
+.rp-page.rp-ps-letter-ls {
   width: 11in;
   min-height: 8.5in;
 }
-.rp-ps-letter-ls .rp-full-page {
+.rp-page.rp-ps-letter-ls .rp-full-page {
   width: 11in;
   min-height: 8.5in;
 }
-.rp-ps-legal {
+.rp-page.rp-ps-legal {
   width: 8.5in;
   min-height: 14in;
 }
-.rp-ps-legal .rp-full-page {
+.rp-page.rp-ps-legal .rp-full-page {
   width: 8.5in;
   min-height: 14in;
 }
-.rp-ps-legal-ls {
+.rp-page.rp-ps-legal-ls {
   width: 14in;
   min-height: 8.5in;
 }
-.rp-ps-legal-ls .rp-full-page {
+.rp-page.rp-ps-legal-ls .rp-full-page {
   width: 14in;
   min-height: 8.5in;
 }
-.rp-ps-tabloid-ls {
+.rp-page.rp-ps-tabloid-ls {
   width: 17in;
   min-height: 11in;
 }
-.rp-ps-tabloid-ls .rp-full-page {
+.rp-page.rp-ps-tabloid-ls .rp-full-page {
   width: 17in;
   min-height: 11in;
 }
-.rp-ps-tabloid {
+.rp-page.rp-ps-tabloid {
   width: 11in;
   min-height: 17in;
 }
-.rp-ps-tabloid .rp-full-page {
+.rp-page.rp-ps-tabloid .rp-full-page {
   width: 11in;
   min-height: 17in;
 }
-.rp-ps-ledger {
+.rp-page.rp-ps-ledger {
   width: 17in;
   min-height: 11in;
 }
-.rp-ps-ledger .rp-full-page {
+.rp-page.rp-ps-ledger .rp-full-page {
   width: 17in;
   min-height: 11in;
 }
-.rp-ps-ledger-ls {
+.rp-page.rp-ps-ledger-ls {
   width: 11in;
   min-height: 17in;
 }
-.rp-ps-ledger-ls .rp-full-page {
+.rp-page.rp-ps-ledger-ls .rp-full-page {
   width: 11in;
   min-height: 17in;
 }
-.rp-ps-a0 {
+.rp-page.rp-ps-a0 {
   width: 841mm;
   min-height: 1189mm;
 }
-.rp-ps-a0 .rp-full-page {
+.rp-page.rp-ps-a0 .rp-full-page {
   width: 841mm;
   height: 1189mm;
 }
-.rp-ps-a0-ls {
+.rp-page.rp-ps-a0-ls {
   width: 46.8in;
   min-height: 33.1in;
 }
-.rp-ps-a0-ls .rp-full-page {
+.rp-page.rp-ps-a0-ls .rp-full-page {
   width: 1189mm;
   height: 841mm;
 }
-.rp-ps-a1 {
+.rp-page.rp-ps-a1 {
   width: 594mm;
   min-height: 841mm;
 }
-.rp-ps-a1 .rp-full-page {
+.rp-page.rp-ps-a1 .rp-full-page {
   width: 594mm;
   height: 841mm;
 }
-.rp-ps-a1-ls {
+.rp-page.rp-ps-a1-ls {
   min-height: 594mm;
   width: 841mm;
 }
-.rp-ps-a1-ls .rp-full-page {
+.rp-page.rp-ps-a1-ls .rp-full-page {
   height: 594mm;
   width: 841mm;
 }
-.rp-ps-a2 {
+.rp-page.rp-ps-a2 {
   width: 420mm;
   min-height: 594mm;
 }
-.rp-ps-a2 .rp-full-page {
+.rp-page.rp-ps-a2 .rp-full-page {
   width: 420mm;
   height: 594mm;
 }
-.rp-ps-a2-ls {
+.rp-page.rp-ps-a2-ls {
   width: 594mm;
   min-height: 420mm;
 }
-.rp-ps-a2-ls .rp-full-page {
+.rp-page.rp-ps-a2-ls .rp-full-page {
   width: 594mm;
   height: 420mm;
 }
-.rp-ps-a3 {
+.rp-page.rp-ps-a3 {
   width: 297mm;
   min-height: 420mm;
 }
-.rp-ps-a3 .rp-full-page {
+.rp-page.rp-ps-a3 .rp-full-page {
   width: 297mm;
   height: 420mm;
 }
-.rp-ps-a3-ls {
+.rp-page.rp-ps-a3-ls {
   width: 420mm;
   min-height: 297mm;
 }
-.rp-ps-a3-ls .rp-full-page {
+.rp-page.rp-ps-a3-ls .rp-full-page {
   width: 420mm;
   height: 297mm;
 }
-.rp-ps-a4 {
+.rp-page.rp-ps-a4 {
   width: 210mm;
   min-height: 297mm;
 }
-.rp-ps-a4 .rp-full-page {
+.rp-page.rp-ps-a4 .rp-full-page {
   width: 210mm;
   height: 297mm;
 }
-.rp-ps-a4-ls {
+.rp-page.rp-ps-a4-ls {
   width: 297mm;
   min-height: 210mm;
 }
-.rp-ps-a4-ls .rp-full-page {
+.rp-page.rp-ps-a4-ls .rp-full-page {
   width: 297mm;
   height: 210mm;
 }
-.rp-ps-a5 {
+.rp-page.rp-ps-a5 {
   width: 148mm;
   min-height: 210mm;
 }
-.rp-ps-a5 .rp-full-page {
+.rp-page.rp-ps-a5 .rp-full-page {
   width: 148mm;
   height: 210mm;
 }
-.rp-ps-a5-ls {
+.rp-page.rp-ps-a5-ls {
   width: 210mm;
   min-height: 148mm;
 }
-.rp-ps-a5-ls .rp-full-page {
+.rp-page.rp-ps-a5-ls .rp-full-page {
   width: 210mm;
   height: 148mm;
 }
-.rp-ps-a6 {
+.rp-page.rp-ps-a6 {
   width: 105mm;
   min-height: 148mm;
 }
-.rp-ps-a6 .rp-full-page {
+.rp-page.rp-ps-a6 .rp-full-page {
   width: 105mm;
   height: 148mm;
 }
-.rp-ps-a6-ls {
+.rp-page.rp-ps-a6-ls {
   width: 148mm;
   min-height: 105mm;
 }
-.rp-ps-a6-ls .rp-full-page {
+.rp-page.rp-ps-a6-ls .rp-full-page {
   width: 148mm;
   height: 105mm;
 }

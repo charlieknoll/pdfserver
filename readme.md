@@ -200,3 +200,18 @@ https://github.com/freeCodeCamp/freeCodeCamp/blob/master/sample.env
 Install Redis:
 
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
+
+
+## Special Windows Subsystem Commands
+
+(Use sudo bash start.sh in charlie home directory to run them all)
+
+Or use https://github.com/troytse/wsl-autostart to set them up at start up
+
+- There is no systemctl so use every time machine boots (see task manager for scheduled task):
+- sudo service ssh start (restart, stop --full-restart)
+- sudo service postgresql start (restart, stop --full-restart)
+- sudo service redis-server start (restart, stop --full-restart)
+
+https://www.illuminiastudios.com/dev-diaries/ssh-on-windows-subsystem-for-linux/
+https://medium.com/@RedisLabs/windows-subsystem-for-linux-wsl-10e3ca4d434e

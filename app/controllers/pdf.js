@@ -3,7 +3,9 @@
 const rpContent = require('../services/rpContent')
 const util = require('../util')
 const { redis } = require('../services')
+const hummus = require('hummus');
 const cache = {}
+const PDFWStreamForBuffer = require('./PDFWStreamForBuffer')
 
 const timeout = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -63,7 +65,7 @@ function boolOrUndefined(par) {
   return (par === true || par === 'true') ? true : undefined
 }
 
-const generatePdf = async (page, opt) => {
+const generatePdf = async (res, page, opt) => {
 
 
   const requestCache = {} //For handling mulitple requests to same URI
@@ -98,6 +100,7 @@ const generatePdf = async (page, opt) => {
   return await runWithTimeout(async (timeoutInfo) => {
 
     const startTime = new Date
+    let readyToRender = false
 
 
     rpOptions.consoleMessages = []
@@ -116,6 +119,12 @@ const generatePdf = async (page, opt) => {
         return;
       }
       else {
+        if (request._resourceType === 'image' && readyToRender && requestCache[url] && requestCache[url].complete) {
+          //TODO load from requestCache
+          requestCache[url].fromCache = true
+          await request.respond(requestCache[url].response);
+          return
+        }
         rpOptions.consoleMessages.push(util.getTimeStamp() + ": Requesting " + url)
         if (requestCache[url] && !requestCache[url].complete) {
           rpOptions.consoleMessages.push(util.getTimeStamp() + ": Waiting " + url)
@@ -175,8 +184,10 @@ const generatePdf = async (page, opt) => {
       const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
       const maxAge = maxAgeMatch && maxAgeMatch.length > 1 ? parseInt(maxAgeMatch[1], 10) : 0;
       rpOptions.consoleMessages.push(util.getTimeStamp() + ": Received " + url)
+
+
       //TODO use public to store in public cache?
-      if (maxAge && !opt.disableCache && redis.status == 'ready') {
+      if (maxAge && !opt.disableCache && redis.status == 'ready' || (response._request._resourceType === "image")) {
 
         let buffer;
         try {
@@ -187,7 +198,16 @@ const generatePdf = async (page, opt) => {
           requestCache[url].complete = true
           return;
         }
+
         if (buffer.byteLength > 0) {
+          if (response._request._resourceType === "image") {
+            requestCache[url].response = {
+              status: response.status(),
+              headers: response.headers(),
+              body: buffer
+            };
+          }
+
           const cacheKey = cacheControl.includes('public') ? url : opt.apikey + ':' + url
           try {
             await redis.setex(cacheKey, maxAge, JSON.stringify(
@@ -234,7 +254,8 @@ const generatePdf = async (page, opt) => {
     if (timeoutInfo.error) return
 
     if (opt.waitForReadyToRender) await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: chromeOptions.renderTimeout })
-    rpOptions.consoleMessages.push(util.getTimeStamp() + ": RESPONSIVE_PAPER_READY_TO_RENDER detected")
+    rpOptions.consoleMessages.push(util.getTimeStamp() + ": RESPONSIVE_PAPER_READY_TO_RENDER")
+    readyToRender = true
 
     pageTitle = await page.title();
 
@@ -282,17 +303,65 @@ const generatePdf = async (page, opt) => {
 
     if (timeoutInfo.error) return
 
-    const newPdfOptions = await page.evaluate(() => window.RESPONSIVE_PAPER_CHROME_PDF_OPTIONS)
-    Object.assign(pdfOptions, newPdfOptions)
+    const paperSizesByPage = await page.evaluate(() => rp.getPagePaperTypes())
 
-    //Don't set margins this way?
-    pdfOptions.margin = {
-      top: pdfOptions.marginTop,
-      right: pdfOptions.marginRight,
-      bottom: pdfOptions.marginBottom,
-      left: pdfOptions.marginLeft
+    const paperSizes = paperSizesByPage.filter((ps, i, a) => a.indexOf(ps) === i)
+    //TODO, this may not be necessary with new way of checking images
+    //await page.screenshot({ fullPage: true });
+
+    let pdfStreams = {}
+    for (var i = 0; i < paperSizes.length; i++) {
+      const newPdfOptions = await page.evaluate((paperType) => rp.showPaperType(paperType), paperSizes[i])
+      Object.assign(pdfOptions, newPdfOptions)
+      //Don't set margins this way?
+      pdfOptions.margin = {
+        top: pdfOptions.marginTop,
+        right: pdfOptions.marginRight,
+        bottom: pdfOptions.marginBottom,
+        left: pdfOptions.marginLeft
+      }
+      pdfStreams[paperSizes[i]] = await page.pdf(pdfOptions)
     }
-    //TODO delete script, server side styles
+
+    if (timeoutInfo.error) return
+    if (paperSizes.length === 1) {
+      return { content: pdfStreams[paperSizes[0]], pageTitle }
+    }
+    try {
+      const writeStream = new PDFWStreamForBuffer()
+      const pdfWriter = hummus.createWriter(writeStream)
+      let cPaperSize = paperSizesByPage[0]
+      let pagesToWrite = 1
+      for (var i = 0; i < paperSizesByPage.length - 1; i++) {
+
+        if (paperSizesByPage[i + 1] !== cPaperSize) {
+          //write out previous index through previ
+          const bufferStream = new hummus.PDFRStreamForBuffer(pdfStreams[cPaperSize])
+          pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage ? pdfStreams[cPaperSize].nextPage : 0
+          pdfWriter.appendPDFPagesFromPDF(bufferStream,
+            { type: hummus.eRangeTypeSpecific, specificRanges: [[pdfStreams[cPaperSize].nextPage, pdfStreams[cPaperSize].nextPage + pagesToWrite - 1]] })
+          pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage + pagesToWrite
+          pagesToWrite = 1
+          cPaperSize = paperSizesByPage[i + 1]
+        }
+        else {
+          pagesToWrite++
+        }
+      }
+      //Write out last page
+      const bufferStream = new hummus.PDFRStreamForBuffer(pdfStreams[cPaperSize])
+      pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage ? pdfStreams[cPaperSize].nextPage : 0
+      pdfWriter.appendPDFPagesFromPDF(bufferStream,
+        { type: hummus.eRangeTypeSpecific, specificRanges: [[pdfStreams[cPaperSize].nextPage, pdfStreams[cPaperSize].nextPage + pagesToWrite - 1]] })
+
+      pdfWriter.end()
+      return { content: writeStream.buffer, pageTitle }
+    } catch (error) {
+      console.log(error)
+    }
+
+
+
 
 
     //This seems to force images to completely paint
@@ -304,13 +373,9 @@ const generatePdf = async (page, opt) => {
     //   window.scrollTo(0, document.body.scrollHeight);
     // });
 
-    //TODO, this may not be necessary with new way of checking images
-    //await page.screenshot({ fullPage: true });
 
-    const content = await page.pdf(pdfOptions)
-    if (timeoutInfo.error) return
 
-    return { content, pageTitle }
+
 
   }, chromeOptions.timeout, `pdf generation not completed after ${chromeOptions.timeout}ms`)
 
