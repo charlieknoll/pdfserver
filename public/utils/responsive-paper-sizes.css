@@ -1,242 +1,484 @@
-.rp-ps-letter .rp-visible-tabloid{ display: none; }
-.rp-ps-letter .rp-visible-ledger{ display: none; }
-.rp-ps-letter .rp-visible-a0{ display: none; }
-.rp-ps-letter .rp-visible-a1{ display: none; }
-.rp-ps-letter .rp-visible-a2{ display: none; }
-.rp-ps-letter .rp-visible-a3{ display: none; }
-.rp-ps-letter .rp-visible-letter-ls{ display: none; }
-.rp-ps-letter .rp-visible-legal-ls{ display: none; }
-.rp-ps-letter .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-letter .rp-visible-ledger-ls{ display: none; }
-.rp-ps-letter .rp-visible-a0-ls{ display: none; }
-.rp-ps-letter .rp-visible-a1-ls{ display: none; }
-.rp-ps-letter .rp-visible-a2-ls{ display: none; }
-.rp-ps-letter .rp-visible-a3-ls{ display: none; }
-.rp-ps-letter .rp-visible-a4-ls{ display: none; }
-.rp-ps-letter .rp-visible-letter{ display: initial; }
-.rp-ps-letter .rp-visible-legal{ display: initial; }
-.rp-ps-letter .rp-visible-a4{ display: initial; }
-.rp-ps-letter .rp-visible-a5{ display: initial; }
-.rp-ps-letter .rp-visible-a6{ display: initial; }
-.rp-ps-letter .rp-visible-a5-ls{ display: initial; }
-.rp-ps-letter .rp-visible-a6-ls{ display: initial; }
-.rp-ps-legal .rp-visible-tabloid{ display: none; }
-.rp-ps-legal .rp-visible-ledger{ display: none; }
-.rp-ps-legal .rp-visible-a0{ display: none; }
-.rp-ps-legal .rp-visible-a1{ display: none; }
-.rp-ps-legal .rp-visible-a2{ display: none; }
-.rp-ps-legal .rp-visible-a3{ display: none; }
-.rp-ps-legal .rp-visible-letter-ls{ display: none; }
-.rp-ps-legal .rp-visible-legal-ls{ display: none; }
-.rp-ps-legal .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-legal .rp-visible-ledger-ls{ display: none; }
-.rp-ps-legal .rp-visible-a0-ls{ display: none; }
-.rp-ps-legal .rp-visible-a1-ls{ display: none; }
-.rp-ps-legal .rp-visible-a2-ls{ display: none; }
-.rp-ps-legal .rp-visible-a3-ls{ display: none; }
-.rp-ps-legal .rp-visible-a4-ls{ display: none; }
-.rp-ps-legal .rp-visible-letter{ display: initial; }
-.rp-ps-legal .rp-visible-legal{ display: initial; }
-.rp-ps-legal .rp-visible-a4{ display: initial; }
-.rp-ps-legal .rp-visible-a5{ display: initial; }
-.rp-ps-legal .rp-visible-a6{ display: initial; }
-.rp-ps-legal .rp-visible-a5-ls{ display: initial; }
-.rp-ps-legal .rp-visible-a6-ls{ display: initial; }
-.rp-ps-tabloid .rp-visible-ledger{ display: none; }
-.rp-ps-tabloid .rp-visible-a0{ display: none; }
-.rp-ps-tabloid .rp-visible-a1{ display: none; }
-.rp-ps-tabloid .rp-visible-a2{ display: none; }
-.rp-ps-tabloid .rp-visible-a3{ display: none; }
-.rp-ps-tabloid .rp-visible-legal-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-a0-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-a1-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-a2-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-a3-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-a4-ls{ display: none; }
-.rp-ps-tabloid .rp-visible-letter{ display: initial; }
-.rp-ps-tabloid .rp-visible-legal{ display: initial; }
-.rp-ps-tabloid .rp-visible-tabloid{ display: initial; }
-.rp-ps-tabloid .rp-visible-a4{ display: initial; }
-.rp-ps-tabloid .rp-visible-a5{ display: initial; }
-.rp-ps-tabloid .rp-visible-a6{ display: initial; }
-.rp-ps-tabloid .rp-visible-letter-ls{ display: initial; }
-.rp-ps-tabloid .rp-visible-ledger-ls{ display: initial; }
-.rp-ps-tabloid .rp-visible-a5-ls{ display: initial; }
-.rp-ps-tabloid .rp-visible-a6-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-a0{ display: none; }
-.rp-ps-ledger .rp-visible-a1{ display: none; }
-.rp-ps-ledger .rp-visible-a0-ls{ display: none; }
-.rp-ps-ledger .rp-visible-a1-ls{ display: none; }
-.rp-ps-ledger .rp-visible-a2-ls{ display: none; }
-.rp-ps-ledger .rp-visible-letter{ display: initial; }
-.rp-ps-ledger .rp-visible-legal{ display: initial; }
-.rp-ps-ledger .rp-visible-tabloid{ display: initial; }
-.rp-ps-ledger .rp-visible-ledger{ display: initial; }
-.rp-ps-ledger .rp-visible-a2{ display: initial; }
-.rp-ps-ledger .rp-visible-a3{ display: initial; }
-.rp-ps-ledger .rp-visible-a4{ display: initial; }
-.rp-ps-ledger .rp-visible-a5{ display: initial; }
-.rp-ps-ledger .rp-visible-a6{ display: initial; }
-.rp-ps-ledger .rp-visible-letter-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-legal-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-tabloid-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-ledger-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-a3-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-a4-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-a5-ls{ display: initial; }
-.rp-ps-ledger .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a0 .rp-visible-letter{ display: initial; }
-.rp-ps-a0 .rp-visible-legal{ display: initial; }
-.rp-ps-a0 .rp-visible-tabloid{ display: initial; }
-.rp-ps-a0 .rp-visible-ledger{ display: initial; }
-.rp-ps-a0 .rp-visible-a0{ display: initial; }
-.rp-ps-a0 .rp-visible-a1{ display: initial; }
-.rp-ps-a0 .rp-visible-a2{ display: initial; }
-.rp-ps-a0 .rp-visible-a3{ display: initial; }
-.rp-ps-a0 .rp-visible-a4{ display: initial; }
-.rp-ps-a0 .rp-visible-a5{ display: initial; }
-.rp-ps-a0 .rp-visible-a6{ display: initial; }
-.rp-ps-a0 .rp-visible-letter-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-legal-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-tabloid-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-ledger-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a1-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a2-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a3-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a4-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a5-ls{ display: initial; }
-.rp-ps-a0 .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-a0{ display: none; }
-.rp-ps-a1 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a1 .rp-visible-a1-ls{ display: none; }
-.rp-ps-a1 .rp-visible-letter{ display: initial; }
-.rp-ps-a1 .rp-visible-legal{ display: initial; }
-.rp-ps-a1 .rp-visible-tabloid{ display: initial; }
-.rp-ps-a1 .rp-visible-ledger{ display: initial; }
-.rp-ps-a1 .rp-visible-a1{ display: initial; }
-.rp-ps-a1 .rp-visible-a2{ display: initial; }
-.rp-ps-a1 .rp-visible-a3{ display: initial; }
-.rp-ps-a1 .rp-visible-a4{ display: initial; }
-.rp-ps-a1 .rp-visible-a5{ display: initial; }
-.rp-ps-a1 .rp-visible-a6{ display: initial; }
-.rp-ps-a1 .rp-visible-letter-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-legal-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-tabloid-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-ledger-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-a2-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-a3-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-a4-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-a5-ls{ display: initial; }
-.rp-ps-a1 .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-ledger{ display: none; }
-.rp-ps-a2 .rp-visible-a0{ display: none; }
-.rp-ps-a2 .rp-visible-a1{ display: none; }
-.rp-ps-a2 .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-a2 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a2 .rp-visible-a1-ls{ display: none; }
-.rp-ps-a2 .rp-visible-a2-ls{ display: none; }
-.rp-ps-a2 .rp-visible-letter{ display: initial; }
-.rp-ps-a2 .rp-visible-legal{ display: initial; }
-.rp-ps-a2 .rp-visible-tabloid{ display: initial; }
-.rp-ps-a2 .rp-visible-a2{ display: initial; }
-.rp-ps-a2 .rp-visible-a3{ display: initial; }
-.rp-ps-a2 .rp-visible-a4{ display: initial; }
-.rp-ps-a2 .rp-visible-a5{ display: initial; }
-.rp-ps-a2 .rp-visible-a6{ display: initial; }
-.rp-ps-a2 .rp-visible-letter-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-legal-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-ledger-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-a3-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-a4-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-a5-ls{ display: initial; }
-.rp-ps-a2 .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a3 .rp-visible-ledger{ display: none; }
-.rp-ps-a3 .rp-visible-a0{ display: none; }
-.rp-ps-a3 .rp-visible-a1{ display: none; }
-.rp-ps-a3 .rp-visible-a2{ display: none; }
-.rp-ps-a3 .rp-visible-legal-ls{ display: none; }
-.rp-ps-a3 .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-a3 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a3 .rp-visible-a1-ls{ display: none; }
-.rp-ps-a3 .rp-visible-a2-ls{ display: none; }
-.rp-ps-a3 .rp-visible-a3-ls{ display: none; }
-.rp-ps-a3 .rp-visible-letter{ display: initial; }
-.rp-ps-a3 .rp-visible-legal{ display: initial; }
-.rp-ps-a3 .rp-visible-tabloid{ display: initial; }
-.rp-ps-a3 .rp-visible-a3{ display: initial; }
-.rp-ps-a3 .rp-visible-a4{ display: initial; }
-.rp-ps-a3 .rp-visible-a5{ display: initial; }
-.rp-ps-a3 .rp-visible-a6{ display: initial; }
-.rp-ps-a3 .rp-visible-letter-ls{ display: initial; }
-.rp-ps-a3 .rp-visible-ledger-ls{ display: initial; }
-.rp-ps-a3 .rp-visible-a4-ls{ display: initial; }
-.rp-ps-a3 .rp-visible-a5-ls{ display: initial; }
-.rp-ps-a3 .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a4 .rp-visible-letter{ display: none; }
-.rp-ps-a4 .rp-visible-legal{ display: none; }
-.rp-ps-a4 .rp-visible-tabloid{ display: none; }
-.rp-ps-a4 .rp-visible-ledger{ display: none; }
-.rp-ps-a4 .rp-visible-a0{ display: none; }
-.rp-ps-a4 .rp-visible-a1{ display: none; }
-.rp-ps-a4 .rp-visible-a2{ display: none; }
-.rp-ps-a4 .rp-visible-a3{ display: none; }
-.rp-ps-a4 .rp-visible-letter-ls{ display: none; }
-.rp-ps-a4 .rp-visible-legal-ls{ display: none; }
-.rp-ps-a4 .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-a4 .rp-visible-ledger-ls{ display: none; }
-.rp-ps-a4 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a4 .rp-visible-a1-ls{ display: none; }
-.rp-ps-a4 .rp-visible-a2-ls{ display: none; }
-.rp-ps-a4 .rp-visible-a3-ls{ display: none; }
-.rp-ps-a4 .rp-visible-a4-ls{ display: none; }
-.rp-ps-a4 .rp-visible-a4{ display: initial; }
-.rp-ps-a4 .rp-visible-a5{ display: initial; }
-.rp-ps-a4 .rp-visible-a6{ display: initial; }
-.rp-ps-a4 .rp-visible-a5-ls{ display: initial; }
-.rp-ps-a4 .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a5 .rp-visible-letter{ display: none; }
-.rp-ps-a5 .rp-visible-legal{ display: none; }
-.rp-ps-a5 .rp-visible-tabloid{ display: none; }
-.rp-ps-a5 .rp-visible-ledger{ display: none; }
-.rp-ps-a5 .rp-visible-a0{ display: none; }
-.rp-ps-a5 .rp-visible-a1{ display: none; }
-.rp-ps-a5 .rp-visible-a2{ display: none; }
-.rp-ps-a5 .rp-visible-a3{ display: none; }
-.rp-ps-a5 .rp-visible-a4{ display: none; }
-.rp-ps-a5 .rp-visible-letter-ls{ display: none; }
-.rp-ps-a5 .rp-visible-legal-ls{ display: none; }
-.rp-ps-a5 .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-a5 .rp-visible-ledger-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a1-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a2-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a3-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a4-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a5-ls{ display: none; }
-.rp-ps-a5 .rp-visible-a5{ display: initial; }
-.rp-ps-a5 .rp-visible-a6{ display: initial; }
-.rp-ps-a5 .rp-visible-a6-ls{ display: initial; }
-.rp-ps-a6 .rp-visible-letter{ display: none; }
-.rp-ps-a6 .rp-visible-legal{ display: none; }
-.rp-ps-a6 .rp-visible-tabloid{ display: none; }
-.rp-ps-a6 .rp-visible-ledger{ display: none; }
-.rp-ps-a6 .rp-visible-a0{ display: none; }
-.rp-ps-a6 .rp-visible-a1{ display: none; }
-.rp-ps-a6 .rp-visible-a2{ display: none; }
-.rp-ps-a6 .rp-visible-a3{ display: none; }
-.rp-ps-a6 .rp-visible-a4{ display: none; }
-.rp-ps-a6 .rp-visible-a5{ display: none; }
-.rp-ps-a6 .rp-visible-letter-ls{ display: none; }
-.rp-ps-a6 .rp-visible-legal-ls{ display: none; }
-.rp-ps-a6 .rp-visible-tabloid-ls{ display: none; }
-.rp-ps-a6 .rp-visible-ledger-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a0-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a1-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a2-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a3-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a4-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a5-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a6-ls{ display: none; }
-.rp-ps-a6 .rp-visible-a6{ display: initial; }
+.rp-ps-letter .rp-visible-tabloid { display: none; }
+.rp-ps-letter .rp-visible-ledger { display: none; }
+.rp-ps-letter .rp-visible-a0 { display: none; }
+.rp-ps-letter .rp-visible-a1 { display: none; }
+.rp-ps-letter .rp-visible-a2 { display: none; }
+.rp-ps-letter .rp-visible-a3 { display: none; }
+.rp-ps-letter .rp-visible-letter-ls { display: none; }
+.rp-ps-letter .rp-visible-legal-ls { display: none; }
+.rp-ps-letter .rp-visible-tabloid-ls { display: none; }
+.rp-ps-letter .rp-visible-ledger-ls { display: none; }
+.rp-ps-letter .rp-visible-a0-ls { display: none; }
+.rp-ps-letter .rp-visible-a1-ls { display: none; }
+.rp-ps-letter .rp-visible-a2-ls { display: none; }
+.rp-ps-letter .rp-visible-a3-ls { display: none; }
+.rp-ps-letter .rp-visible-a4-ls { display: none; }
+.rp-ps-letter .rp-visible-letter { display: initial; }
+.rp-ps-letter .rp-visible-legal { display: initial; }
+.rp-ps-letter .rp-visible-a4 { display: initial; }
+.rp-ps-letter .rp-visible-a5 { display: initial; }
+.rp-ps-letter .rp-visible-a6 { display: initial; }
+.rp-ps-letter .rp-visible-a5-ls { display: initial; }
+.rp-ps-letter .rp-visible-a6-ls { display: initial; }
+.rp-ps-letter .rp-hidden-tabloid { display: initial; }
+.rp-ps-letter .rp-hidden-ledger { display: initial; }
+.rp-ps-letter .rp-hidden-a0 { display: initial; }
+.rp-ps-letter .rp-hidden-a1 { display: initial; }
+.rp-ps-letter .rp-hidden-a2 { display: initial; }
+.rp-ps-letter .rp-hidden-a3 { display: initial; }
+.rp-ps-letter .rp-hidden-letter-ls { display: initial; }
+.rp-ps-letter .rp-hidden-legal-ls { display: initial; }
+.rp-ps-letter .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-letter .rp-hidden-ledger-ls { display: initial; }
+.rp-ps-letter .rp-hidden-a0-ls { display: initial; }
+.rp-ps-letter .rp-hidden-a1-ls { display: initial; }
+.rp-ps-letter .rp-hidden-a2-ls { display: initial; }
+.rp-ps-letter .rp-hidden-a3-ls { display: initial; }
+.rp-ps-letter .rp-hidden-a4-ls { display: initial; }
+.rp-ps-letter .rp-hidden-letter { display: none; }
+.rp-ps-letter .rp-hidden-legal { display: none; }
+.rp-ps-letter .rp-hidden-a4 { display: none; }
+.rp-ps-letter .rp-hidden-a5 { display: none; }
+.rp-ps-letter .rp-hidden-a6 { display: none; }
+.rp-ps-letter .rp-hidden-a5-ls { display: none; }
+.rp-ps-letter .rp-hidden-a6-ls { display: none; }
+.rp-ps-legal .rp-visible-tabloid { display: none; }
+.rp-ps-legal .rp-visible-ledger { display: none; }
+.rp-ps-legal .rp-visible-a0 { display: none; }
+.rp-ps-legal .rp-visible-a1 { display: none; }
+.rp-ps-legal .rp-visible-a2 { display: none; }
+.rp-ps-legal .rp-visible-a3 { display: none; }
+.rp-ps-legal .rp-visible-letter-ls { display: none; }
+.rp-ps-legal .rp-visible-legal-ls { display: none; }
+.rp-ps-legal .rp-visible-tabloid-ls { display: none; }
+.rp-ps-legal .rp-visible-ledger-ls { display: none; }
+.rp-ps-legal .rp-visible-a0-ls { display: none; }
+.rp-ps-legal .rp-visible-a1-ls { display: none; }
+.rp-ps-legal .rp-visible-a2-ls { display: none; }
+.rp-ps-legal .rp-visible-a3-ls { display: none; }
+.rp-ps-legal .rp-visible-a4-ls { display: none; }
+.rp-ps-legal .rp-visible-letter { display: initial; }
+.rp-ps-legal .rp-visible-legal { display: initial; }
+.rp-ps-legal .rp-visible-a4 { display: initial; }
+.rp-ps-legal .rp-visible-a5 { display: initial; }
+.rp-ps-legal .rp-visible-a6 { display: initial; }
+.rp-ps-legal .rp-visible-a5-ls { display: initial; }
+.rp-ps-legal .rp-visible-a6-ls { display: initial; }
+.rp-ps-legal .rp-hidden-tabloid { display: initial; }
+.rp-ps-legal .rp-hidden-ledger { display: initial; }
+.rp-ps-legal .rp-hidden-a0 { display: initial; }
+.rp-ps-legal .rp-hidden-a1 { display: initial; }
+.rp-ps-legal .rp-hidden-a2 { display: initial; }
+.rp-ps-legal .rp-hidden-a3 { display: initial; }
+.rp-ps-legal .rp-hidden-letter-ls { display: initial; }
+.rp-ps-legal .rp-hidden-legal-ls { display: initial; }
+.rp-ps-legal .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-legal .rp-hidden-ledger-ls { display: initial; }
+.rp-ps-legal .rp-hidden-a0-ls { display: initial; }
+.rp-ps-legal .rp-hidden-a1-ls { display: initial; }
+.rp-ps-legal .rp-hidden-a2-ls { display: initial; }
+.rp-ps-legal .rp-hidden-a3-ls { display: initial; }
+.rp-ps-legal .rp-hidden-a4-ls { display: initial; }
+.rp-ps-legal .rp-hidden-letter { display: none; }
+.rp-ps-legal .rp-hidden-legal { display: none; }
+.rp-ps-legal .rp-hidden-a4 { display: none; }
+.rp-ps-legal .rp-hidden-a5 { display: none; }
+.rp-ps-legal .rp-hidden-a6 { display: none; }
+.rp-ps-legal .rp-hidden-a5-ls { display: none; }
+.rp-ps-legal .rp-hidden-a6-ls { display: none; }
+.rp-ps-tabloid .rp-visible-ledger { display: none; }
+.rp-ps-tabloid .rp-visible-a0 { display: none; }
+.rp-ps-tabloid .rp-visible-a1 { display: none; }
+.rp-ps-tabloid .rp-visible-a2 { display: none; }
+.rp-ps-tabloid .rp-visible-a3 { display: none; }
+.rp-ps-tabloid .rp-visible-legal-ls { display: none; }
+.rp-ps-tabloid .rp-visible-tabloid-ls { display: none; }
+.rp-ps-tabloid .rp-visible-a0-ls { display: none; }
+.rp-ps-tabloid .rp-visible-a1-ls { display: none; }
+.rp-ps-tabloid .rp-visible-a2-ls { display: none; }
+.rp-ps-tabloid .rp-visible-a3-ls { display: none; }
+.rp-ps-tabloid .rp-visible-a4-ls { display: none; }
+.rp-ps-tabloid .rp-visible-letter { display: initial; }
+.rp-ps-tabloid .rp-visible-legal { display: initial; }
+.rp-ps-tabloid .rp-visible-tabloid { display: initial; }
+.rp-ps-tabloid .rp-visible-a4 { display: initial; }
+.rp-ps-tabloid .rp-visible-a5 { display: initial; }
+.rp-ps-tabloid .rp-visible-a6 { display: initial; }
+.rp-ps-tabloid .rp-visible-letter-ls { display: initial; }
+.rp-ps-tabloid .rp-visible-ledger-ls { display: initial; }
+.rp-ps-tabloid .rp-visible-a5-ls { display: initial; }
+.rp-ps-tabloid .rp-visible-a6-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-ledger { display: initial; }
+.rp-ps-tabloid .rp-hidden-a0 { display: initial; }
+.rp-ps-tabloid .rp-hidden-a1 { display: initial; }
+.rp-ps-tabloid .rp-hidden-a2 { display: initial; }
+.rp-ps-tabloid .rp-hidden-a3 { display: initial; }
+.rp-ps-tabloid .rp-hidden-legal-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-a0-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-a1-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-a2-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-a3-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-a4-ls { display: initial; }
+.rp-ps-tabloid .rp-hidden-letter { display: none; }
+.rp-ps-tabloid .rp-hidden-legal { display: none; }
+.rp-ps-tabloid .rp-hidden-tabloid { display: none; }
+.rp-ps-tabloid .rp-hidden-a4 { display: none; }
+.rp-ps-tabloid .rp-hidden-a5 { display: none; }
+.rp-ps-tabloid .rp-hidden-a6 { display: none; }
+.rp-ps-tabloid .rp-hidden-letter-ls { display: none; }
+.rp-ps-tabloid .rp-hidden-ledger-ls { display: none; }
+.rp-ps-tabloid .rp-hidden-a5-ls { display: none; }
+.rp-ps-tabloid .rp-hidden-a6-ls { display: none; }
+.rp-ps-ledger .rp-visible-a0 { display: none; }
+.rp-ps-ledger .rp-visible-a1 { display: none; }
+.rp-ps-ledger .rp-visible-a0-ls { display: none; }
+.rp-ps-ledger .rp-visible-a1-ls { display: none; }
+.rp-ps-ledger .rp-visible-a2-ls { display: none; }
+.rp-ps-ledger .rp-visible-letter { display: initial; }
+.rp-ps-ledger .rp-visible-legal { display: initial; }
+.rp-ps-ledger .rp-visible-tabloid { display: initial; }
+.rp-ps-ledger .rp-visible-ledger { display: initial; }
+.rp-ps-ledger .rp-visible-a2 { display: initial; }
+.rp-ps-ledger .rp-visible-a3 { display: initial; }
+.rp-ps-ledger .rp-visible-a4 { display: initial; }
+.rp-ps-ledger .rp-visible-a5 { display: initial; }
+.rp-ps-ledger .rp-visible-a6 { display: initial; }
+.rp-ps-ledger .rp-visible-letter-ls { display: initial; }
+.rp-ps-ledger .rp-visible-legal-ls { display: initial; }
+.rp-ps-ledger .rp-visible-tabloid-ls { display: initial; }
+.rp-ps-ledger .rp-visible-ledger-ls { display: initial; }
+.rp-ps-ledger .rp-visible-a3-ls { display: initial; }
+.rp-ps-ledger .rp-visible-a4-ls { display: initial; }
+.rp-ps-ledger .rp-visible-a5-ls { display: initial; }
+.rp-ps-ledger .rp-visible-a6-ls { display: initial; }
+.rp-ps-ledger .rp-hidden-a0 { display: initial; }
+.rp-ps-ledger .rp-hidden-a1 { display: initial; }
+.rp-ps-ledger .rp-hidden-a0-ls { display: initial; }
+.rp-ps-ledger .rp-hidden-a1-ls { display: initial; }
+.rp-ps-ledger .rp-hidden-a2-ls { display: initial; }
+.rp-ps-ledger .rp-hidden-letter { display: none; }
+.rp-ps-ledger .rp-hidden-legal { display: none; }
+.rp-ps-ledger .rp-hidden-tabloid { display: none; }
+.rp-ps-ledger .rp-hidden-ledger { display: none; }
+.rp-ps-ledger .rp-hidden-a2 { display: none; }
+.rp-ps-ledger .rp-hidden-a3 { display: none; }
+.rp-ps-ledger .rp-hidden-a4 { display: none; }
+.rp-ps-ledger .rp-hidden-a5 { display: none; }
+.rp-ps-ledger .rp-hidden-a6 { display: none; }
+.rp-ps-ledger .rp-hidden-letter-ls { display: none; }
+.rp-ps-ledger .rp-hidden-legal-ls { display: none; }
+.rp-ps-ledger .rp-hidden-tabloid-ls { display: none; }
+.rp-ps-ledger .rp-hidden-ledger-ls { display: none; }
+.rp-ps-ledger .rp-hidden-a3-ls { display: none; }
+.rp-ps-ledger .rp-hidden-a4-ls { display: none; }
+.rp-ps-ledger .rp-hidden-a5-ls { display: none; }
+.rp-ps-ledger .rp-hidden-a6-ls { display: none; }
+.rp-ps-a0 .rp-visible-a0-ls { display: none; }
+.rp-ps-a0 .rp-visible-letter { display: initial; }
+.rp-ps-a0 .rp-visible-legal { display: initial; }
+.rp-ps-a0 .rp-visible-tabloid { display: initial; }
+.rp-ps-a0 .rp-visible-ledger { display: initial; }
+.rp-ps-a0 .rp-visible-a0 { display: initial; }
+.rp-ps-a0 .rp-visible-a1 { display: initial; }
+.rp-ps-a0 .rp-visible-a2 { display: initial; }
+.rp-ps-a0 .rp-visible-a3 { display: initial; }
+.rp-ps-a0 .rp-visible-a4 { display: initial; }
+.rp-ps-a0 .rp-visible-a5 { display: initial; }
+.rp-ps-a0 .rp-visible-a6 { display: initial; }
+.rp-ps-a0 .rp-visible-letter-ls { display: initial; }
+.rp-ps-a0 .rp-visible-legal-ls { display: initial; }
+.rp-ps-a0 .rp-visible-tabloid-ls { display: initial; }
+.rp-ps-a0 .rp-visible-ledger-ls { display: initial; }
+.rp-ps-a0 .rp-visible-a1-ls { display: initial; }
+.rp-ps-a0 .rp-visible-a2-ls { display: initial; }
+.rp-ps-a0 .rp-visible-a3-ls { display: initial; }
+.rp-ps-a0 .rp-visible-a4-ls { display: initial; }
+.rp-ps-a0 .rp-visible-a5-ls { display: initial; }
+.rp-ps-a0 .rp-visible-a6-ls { display: initial; }
+.rp-ps-a0 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a0 .rp-hidden-letter { display: none; }
+.rp-ps-a0 .rp-hidden-legal { display: none; }
+.rp-ps-a0 .rp-hidden-tabloid { display: none; }
+.rp-ps-a0 .rp-hidden-ledger { display: none; }
+.rp-ps-a0 .rp-hidden-a0 { display: none; }
+.rp-ps-a0 .rp-hidden-a1 { display: none; }
+.rp-ps-a0 .rp-hidden-a2 { display: none; }
+.rp-ps-a0 .rp-hidden-a3 { display: none; }
+.rp-ps-a0 .rp-hidden-a4 { display: none; }
+.rp-ps-a0 .rp-hidden-a5 { display: none; }
+.rp-ps-a0 .rp-hidden-a6 { display: none; }
+.rp-ps-a0 .rp-hidden-letter-ls { display: none; }
+.rp-ps-a0 .rp-hidden-legal-ls { display: none; }
+.rp-ps-a0 .rp-hidden-tabloid-ls { display: none; }
+.rp-ps-a0 .rp-hidden-ledger-ls { display: none; }
+.rp-ps-a0 .rp-hidden-a1-ls { display: none; }
+.rp-ps-a0 .rp-hidden-a2-ls { display: none; }
+.rp-ps-a0 .rp-hidden-a3-ls { display: none; }
+.rp-ps-a0 .rp-hidden-a4-ls { display: none; }
+.rp-ps-a0 .rp-hidden-a5-ls { display: none; }
+.rp-ps-a0 .rp-hidden-a6-ls { display: none; }
+.rp-ps-a1 .rp-visible-a0 { display: none; }
+.rp-ps-a1 .rp-visible-a0-ls { display: none; }
+.rp-ps-a1 .rp-visible-a1-ls { display: none; }
+.rp-ps-a1 .rp-visible-letter { display: initial; }
+.rp-ps-a1 .rp-visible-legal { display: initial; }
+.rp-ps-a1 .rp-visible-tabloid { display: initial; }
+.rp-ps-a1 .rp-visible-ledger { display: initial; }
+.rp-ps-a1 .rp-visible-a1 { display: initial; }
+.rp-ps-a1 .rp-visible-a2 { display: initial; }
+.rp-ps-a1 .rp-visible-a3 { display: initial; }
+.rp-ps-a1 .rp-visible-a4 { display: initial; }
+.rp-ps-a1 .rp-visible-a5 { display: initial; }
+.rp-ps-a1 .rp-visible-a6 { display: initial; }
+.rp-ps-a1 .rp-visible-letter-ls { display: initial; }
+.rp-ps-a1 .rp-visible-legal-ls { display: initial; }
+.rp-ps-a1 .rp-visible-tabloid-ls { display: initial; }
+.rp-ps-a1 .rp-visible-ledger-ls { display: initial; }
+.rp-ps-a1 .rp-visible-a2-ls { display: initial; }
+.rp-ps-a1 .rp-visible-a3-ls { display: initial; }
+.rp-ps-a1 .rp-visible-a4-ls { display: initial; }
+.rp-ps-a1 .rp-visible-a5-ls { display: initial; }
+.rp-ps-a1 .rp-visible-a6-ls { display: initial; }
+.rp-ps-a1 .rp-hidden-a0 { display: initial; }
+.rp-ps-a1 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a1 .rp-hidden-a1-ls { display: initial; }
+.rp-ps-a1 .rp-hidden-letter { display: none; }
+.rp-ps-a1 .rp-hidden-legal { display: none; }
+.rp-ps-a1 .rp-hidden-tabloid { display: none; }
+.rp-ps-a1 .rp-hidden-ledger { display: none; }
+.rp-ps-a1 .rp-hidden-a1 { display: none; }
+.rp-ps-a1 .rp-hidden-a2 { display: none; }
+.rp-ps-a1 .rp-hidden-a3 { display: none; }
+.rp-ps-a1 .rp-hidden-a4 { display: none; }
+.rp-ps-a1 .rp-hidden-a5 { display: none; }
+.rp-ps-a1 .rp-hidden-a6 { display: none; }
+.rp-ps-a1 .rp-hidden-letter-ls { display: none; }
+.rp-ps-a1 .rp-hidden-legal-ls { display: none; }
+.rp-ps-a1 .rp-hidden-tabloid-ls { display: none; }
+.rp-ps-a1 .rp-hidden-ledger-ls { display: none; }
+.rp-ps-a1 .rp-hidden-a2-ls { display: none; }
+.rp-ps-a1 .rp-hidden-a3-ls { display: none; }
+.rp-ps-a1 .rp-hidden-a4-ls { display: none; }
+.rp-ps-a1 .rp-hidden-a5-ls { display: none; }
+.rp-ps-a1 .rp-hidden-a6-ls { display: none; }
+.rp-ps-a2 .rp-visible-ledger { display: none; }
+.rp-ps-a2 .rp-visible-a0 { display: none; }
+.rp-ps-a2 .rp-visible-a1 { display: none; }
+.rp-ps-a2 .rp-visible-tabloid-ls { display: none; }
+.rp-ps-a2 .rp-visible-a0-ls { display: none; }
+.rp-ps-a2 .rp-visible-a1-ls { display: none; }
+.rp-ps-a2 .rp-visible-a2-ls { display: none; }
+.rp-ps-a2 .rp-visible-letter { display: initial; }
+.rp-ps-a2 .rp-visible-legal { display: initial; }
+.rp-ps-a2 .rp-visible-tabloid { display: initial; }
+.rp-ps-a2 .rp-visible-a2 { display: initial; }
+.rp-ps-a2 .rp-visible-a3 { display: initial; }
+.rp-ps-a2 .rp-visible-a4 { display: initial; }
+.rp-ps-a2 .rp-visible-a5 { display: initial; }
+.rp-ps-a2 .rp-visible-a6 { display: initial; }
+.rp-ps-a2 .rp-visible-letter-ls { display: initial; }
+.rp-ps-a2 .rp-visible-legal-ls { display: initial; }
+.rp-ps-a2 .rp-visible-ledger-ls { display: initial; }
+.rp-ps-a2 .rp-visible-a3-ls { display: initial; }
+.rp-ps-a2 .rp-visible-a4-ls { display: initial; }
+.rp-ps-a2 .rp-visible-a5-ls { display: initial; }
+.rp-ps-a2 .rp-visible-a6-ls { display: initial; }
+.rp-ps-a2 .rp-hidden-ledger { display: initial; }
+.rp-ps-a2 .rp-hidden-a0 { display: initial; }
+.rp-ps-a2 .rp-hidden-a1 { display: initial; }
+.rp-ps-a2 .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-a2 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a2 .rp-hidden-a1-ls { display: initial; }
+.rp-ps-a2 .rp-hidden-a2-ls { display: initial; }
+.rp-ps-a2 .rp-hidden-letter { display: none; }
+.rp-ps-a2 .rp-hidden-legal { display: none; }
+.rp-ps-a2 .rp-hidden-tabloid { display: none; }
+.rp-ps-a2 .rp-hidden-a2 { display: none; }
+.rp-ps-a2 .rp-hidden-a3 { display: none; }
+.rp-ps-a2 .rp-hidden-a4 { display: none; }
+.rp-ps-a2 .rp-hidden-a5 { display: none; }
+.rp-ps-a2 .rp-hidden-a6 { display: none; }
+.rp-ps-a2 .rp-hidden-letter-ls { display: none; }
+.rp-ps-a2 .rp-hidden-legal-ls { display: none; }
+.rp-ps-a2 .rp-hidden-ledger-ls { display: none; }
+.rp-ps-a2 .rp-hidden-a3-ls { display: none; }
+.rp-ps-a2 .rp-hidden-a4-ls { display: none; }
+.rp-ps-a2 .rp-hidden-a5-ls { display: none; }
+.rp-ps-a2 .rp-hidden-a6-ls { display: none; }
+.rp-ps-a3 .rp-visible-ledger { display: none; }
+.rp-ps-a3 .rp-visible-a0 { display: none; }
+.rp-ps-a3 .rp-visible-a1 { display: none; }
+.rp-ps-a3 .rp-visible-a2 { display: none; }
+.rp-ps-a3 .rp-visible-legal-ls { display: none; }
+.rp-ps-a3 .rp-visible-tabloid-ls { display: none; }
+.rp-ps-a3 .rp-visible-a0-ls { display: none; }
+.rp-ps-a3 .rp-visible-a1-ls { display: none; }
+.rp-ps-a3 .rp-visible-a2-ls { display: none; }
+.rp-ps-a3 .rp-visible-a3-ls { display: none; }
+.rp-ps-a3 .rp-visible-letter { display: initial; }
+.rp-ps-a3 .rp-visible-legal { display: initial; }
+.rp-ps-a3 .rp-visible-tabloid { display: initial; }
+.rp-ps-a3 .rp-visible-a3 { display: initial; }
+.rp-ps-a3 .rp-visible-a4 { display: initial; }
+.rp-ps-a3 .rp-visible-a5 { display: initial; }
+.rp-ps-a3 .rp-visible-a6 { display: initial; }
+.rp-ps-a3 .rp-visible-letter-ls { display: initial; }
+.rp-ps-a3 .rp-visible-ledger-ls { display: initial; }
+.rp-ps-a3 .rp-visible-a4-ls { display: initial; }
+.rp-ps-a3 .rp-visible-a5-ls { display: initial; }
+.rp-ps-a3 .rp-visible-a6-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-ledger { display: initial; }
+.rp-ps-a3 .rp-hidden-a0 { display: initial; }
+.rp-ps-a3 .rp-hidden-a1 { display: initial; }
+.rp-ps-a3 .rp-hidden-a2 { display: initial; }
+.rp-ps-a3 .rp-hidden-legal-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-a1-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-a2-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-a3-ls { display: initial; }
+.rp-ps-a3 .rp-hidden-letter { display: none; }
+.rp-ps-a3 .rp-hidden-legal { display: none; }
+.rp-ps-a3 .rp-hidden-tabloid { display: none; }
+.rp-ps-a3 .rp-hidden-a3 { display: none; }
+.rp-ps-a3 .rp-hidden-a4 { display: none; }
+.rp-ps-a3 .rp-hidden-a5 { display: none; }
+.rp-ps-a3 .rp-hidden-a6 { display: none; }
+.rp-ps-a3 .rp-hidden-letter-ls { display: none; }
+.rp-ps-a3 .rp-hidden-ledger-ls { display: none; }
+.rp-ps-a3 .rp-hidden-a4-ls { display: none; }
+.rp-ps-a3 .rp-hidden-a5-ls { display: none; }
+.rp-ps-a3 .rp-hidden-a6-ls { display: none; }
+.rp-ps-a4 .rp-visible-letter { display: none; }
+.rp-ps-a4 .rp-visible-legal { display: none; }
+.rp-ps-a4 .rp-visible-tabloid { display: none; }
+.rp-ps-a4 .rp-visible-ledger { display: none; }
+.rp-ps-a4 .rp-visible-a0 { display: none; }
+.rp-ps-a4 .rp-visible-a1 { display: none; }
+.rp-ps-a4 .rp-visible-a2 { display: none; }
+.rp-ps-a4 .rp-visible-a3 { display: none; }
+.rp-ps-a4 .rp-visible-letter-ls { display: none; }
+.rp-ps-a4 .rp-visible-legal-ls { display: none; }
+.rp-ps-a4 .rp-visible-tabloid-ls { display: none; }
+.rp-ps-a4 .rp-visible-ledger-ls { display: none; }
+.rp-ps-a4 .rp-visible-a0-ls { display: none; }
+.rp-ps-a4 .rp-visible-a1-ls { display: none; }
+.rp-ps-a4 .rp-visible-a2-ls { display: none; }
+.rp-ps-a4 .rp-visible-a3-ls { display: none; }
+.rp-ps-a4 .rp-visible-a4-ls { display: none; }
+.rp-ps-a4 .rp-visible-a4 { display: initial; }
+.rp-ps-a4 .rp-visible-a5 { display: initial; }
+.rp-ps-a4 .rp-visible-a6 { display: initial; }
+.rp-ps-a4 .rp-visible-a5-ls { display: initial; }
+.rp-ps-a4 .rp-visible-a6-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-letter { display: initial; }
+.rp-ps-a4 .rp-hidden-legal { display: initial; }
+.rp-ps-a4 .rp-hidden-tabloid { display: initial; }
+.rp-ps-a4 .rp-hidden-ledger { display: initial; }
+.rp-ps-a4 .rp-hidden-a0 { display: initial; }
+.rp-ps-a4 .rp-hidden-a1 { display: initial; }
+.rp-ps-a4 .rp-hidden-a2 { display: initial; }
+.rp-ps-a4 .rp-hidden-a3 { display: initial; }
+.rp-ps-a4 .rp-hidden-letter-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-legal-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-ledger-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-a1-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-a2-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-a3-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-a4-ls { display: initial; }
+.rp-ps-a4 .rp-hidden-a4 { display: none; }
+.rp-ps-a4 .rp-hidden-a5 { display: none; }
+.rp-ps-a4 .rp-hidden-a6 { display: none; }
+.rp-ps-a4 .rp-hidden-a5-ls { display: none; }
+.rp-ps-a4 .rp-hidden-a6-ls { display: none; }
+.rp-ps-a5 .rp-visible-letter { display: none; }
+.rp-ps-a5 .rp-visible-legal { display: none; }
+.rp-ps-a5 .rp-visible-tabloid { display: none; }
+.rp-ps-a5 .rp-visible-ledger { display: none; }
+.rp-ps-a5 .rp-visible-a0 { display: none; }
+.rp-ps-a5 .rp-visible-a1 { display: none; }
+.rp-ps-a5 .rp-visible-a2 { display: none; }
+.rp-ps-a5 .rp-visible-a3 { display: none; }
+.rp-ps-a5 .rp-visible-a4 { display: none; }
+.rp-ps-a5 .rp-visible-letter-ls { display: none; }
+.rp-ps-a5 .rp-visible-legal-ls { display: none; }
+.rp-ps-a5 .rp-visible-tabloid-ls { display: none; }
+.rp-ps-a5 .rp-visible-ledger-ls { display: none; }
+.rp-ps-a5 .rp-visible-a0-ls { display: none; }
+.rp-ps-a5 .rp-visible-a1-ls { display: none; }
+.rp-ps-a5 .rp-visible-a2-ls { display: none; }
+.rp-ps-a5 .rp-visible-a3-ls { display: none; }
+.rp-ps-a5 .rp-visible-a4-ls { display: none; }
+.rp-ps-a5 .rp-visible-a5-ls { display: none; }
+.rp-ps-a5 .rp-visible-a5 { display: initial; }
+.rp-ps-a5 .rp-visible-a6 { display: initial; }
+.rp-ps-a5 .rp-visible-a6-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-letter { display: initial; }
+.rp-ps-a5 .rp-hidden-legal { display: initial; }
+.rp-ps-a5 .rp-hidden-tabloid { display: initial; }
+.rp-ps-a5 .rp-hidden-ledger { display: initial; }
+.rp-ps-a5 .rp-hidden-a0 { display: initial; }
+.rp-ps-a5 .rp-hidden-a1 { display: initial; }
+.rp-ps-a5 .rp-hidden-a2 { display: initial; }
+.rp-ps-a5 .rp-hidden-a3 { display: initial; }
+.rp-ps-a5 .rp-hidden-a4 { display: initial; }
+.rp-ps-a5 .rp-hidden-letter-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-legal-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-ledger-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a1-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a2-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a3-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a4-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a5-ls { display: initial; }
+.rp-ps-a5 .rp-hidden-a5 { display: none; }
+.rp-ps-a5 .rp-hidden-a6 { display: none; }
+.rp-ps-a5 .rp-hidden-a6-ls { display: none; }
+.rp-ps-a6 .rp-visible-letter { display: none; }
+.rp-ps-a6 .rp-visible-legal { display: none; }
+.rp-ps-a6 .rp-visible-tabloid { display: none; }
+.rp-ps-a6 .rp-visible-ledger { display: none; }
+.rp-ps-a6 .rp-visible-a0 { display: none; }
+.rp-ps-a6 .rp-visible-a1 { display: none; }
+.rp-ps-a6 .rp-visible-a2 { display: none; }
+.rp-ps-a6 .rp-visible-a3 { display: none; }
+.rp-ps-a6 .rp-visible-a4 { display: none; }
+.rp-ps-a6 .rp-visible-a5 { display: none; }
+.rp-ps-a6 .rp-visible-letter-ls { display: none; }
+.rp-ps-a6 .rp-visible-legal-ls { display: none; }
+.rp-ps-a6 .rp-visible-tabloid-ls { display: none; }
+.rp-ps-a6 .rp-visible-ledger-ls { display: none; }
+.rp-ps-a6 .rp-visible-a0-ls { display: none; }
+.rp-ps-a6 .rp-visible-a1-ls { display: none; }
+.rp-ps-a6 .rp-visible-a2-ls { display: none; }
+.rp-ps-a6 .rp-visible-a3-ls { display: none; }
+.rp-ps-a6 .rp-visible-a4-ls { display: none; }
+.rp-ps-a6 .rp-visible-a5-ls { display: none; }
+.rp-ps-a6 .rp-visible-a6-ls { display: none; }
+.rp-ps-a6 .rp-visible-a6 { display: initial; }
+.rp-ps-a6 .rp-hidden-letter { display: initial; }
+.rp-ps-a6 .rp-hidden-legal { display: initial; }
+.rp-ps-a6 .rp-hidden-tabloid { display: initial; }
+.rp-ps-a6 .rp-hidden-ledger { display: initial; }
+.rp-ps-a6 .rp-hidden-a0 { display: initial; }
+.rp-ps-a6 .rp-hidden-a1 { display: initial; }
+.rp-ps-a6 .rp-hidden-a2 { display: initial; }
+.rp-ps-a6 .rp-hidden-a3 { display: initial; }
+.rp-ps-a6 .rp-hidden-a4 { display: initial; }
+.rp-ps-a6 .rp-hidden-a5 { display: initial; }
+.rp-ps-a6 .rp-hidden-letter-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-legal-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-tabloid-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-ledger-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a0-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a1-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a2-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a3-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a4-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a5-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a6-ls { display: initial; }
+.rp-ps-a6 .rp-hidden-a6 { display: none; }
