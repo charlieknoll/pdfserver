@@ -83,7 +83,9 @@ const generatePdf = async (res, page, opt) => {
   opt.disableCache = util.checkBoolean(opt.disableCache)
 
   const rpOptions = {}
-  rpOptions.landscape = opt.landscape
+  //this sets landscape to undefined if not explicitly set as false, if undefined the engine will use report default
+  //The array is called if this is sent via a form post request
+  rpOptions.landscape = Array.isArray(opt.landscape) ? true : opt.landscape === 'false' ? false : opt.landscape
   rpOptions.format = opt.format;
   rpOptions.debug = opt.includeConsole === "on";
 
