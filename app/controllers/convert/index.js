@@ -51,20 +51,13 @@ const post = async function (req, res, next) {
     let fileName = req.body.fileName || result.pageTitle
     fileName = replaceAll(fileName, ' ', '-')
     fileName += ".pdf";
-    // res.writeHead(200, {
-    //   'Content-Type': 'application/pdf',
-    //   'Content-Disposition': 'inline; filename=' + fileName,
-    //   'Content-Length': result.content.length,
-    //   'Accept-Ranges': 'bytes',
-    //   'Vary': 'Accept-Encoding'
-    // });
+    res.set('Content-Disposition', 'inline; filename=' + fileName)
     if (result.content) {
       res.send(result.content)
     }
     else {
       res.end()
     }
-    //res.download()
   }
   finally {
     //TODO Instead of destroy, call release and delete cookies, navigate back, verify "Hi" is content of page, if not destroy
