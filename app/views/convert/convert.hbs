@@ -80,6 +80,36 @@
         <div class="col-lg-2">
             <div class="form-group">
                 <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="includeConsole" name="includeConsole"
+                        {{#if includeConsole}}checked="true" {{/if}}>
+                    <label class="custom-control-label" for="includeConsole">Include Console Logs</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="disableCache" name="disableCache"
+                        {{#if disableCache}}checked="true" {{/if}}>
+                    <label class="custom-control-label" for="disableCache">Disable Cache</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="waitForReadyToRender"
+                        name="waitForReadyToRender" {{#if waitForReadyToRender}}checked="true" {{/if}}>
+                    <label class="custom-control-label" for="waitForReadyToRender">Wait For Ready To Render</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="landscape" name="landscape">
                     <label class="custom-control-label" for="landscape">Landscape</label>
                 </div>
@@ -94,23 +124,17 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-2">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="includeConsole" name="includeConsole"
-                        {{#if debug}}checked="true" {{/if}}>
-                    <label class="custom-control-label" for="includeConsole">Include Console Logs</label>
-                </div>
-            </div>
-        </div>
 
-    </div>
     <div class="row">
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="">Version (leave blank for latest):</label>
-                <input type="text" id="version" class="form-control" placeholder="" value="{{version}}" name="version">
+                <select class="form-control" name="version" id="version">
+
+                    {{#each versions}}
+                    <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
+                    {{/each}}
+                </select>
             </div>
         </div>
 

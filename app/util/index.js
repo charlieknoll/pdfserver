@@ -1,12 +1,15 @@
-const arrayToSelectList = function (strArray, value) {
+const arrayToSelectList = function (strArray, value, addBlank) {
 
-    return selectList = strArray.map(v => {
+    const selectList = strArray.map(v => {
         return {
             value: v,
             selected: v.toLowerCase() === value.toLowerCase()
         }
     })
-
+    if (addBlank) {
+        selectList.unshift({ value: '', selected: value == '' })
+    }
+    return selectList
 }
 
 const replaceAll = function (str, search, replacement) {

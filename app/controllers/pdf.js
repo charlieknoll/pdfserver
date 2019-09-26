@@ -84,8 +84,6 @@ const generatePdf = async (res, page, opt) => {
 
   const rpOptions = {}
   rpOptions.landscape = opt.landscape
-  rpOptions.showLoading = false;
-  rpOptions.hideSource = true;
   rpOptions.format = opt.format;
   rpOptions.debug = opt.includeConsole === "on";
 
@@ -253,8 +251,13 @@ const generatePdf = async (res, page, opt) => {
 
     if (timeoutInfo.error) return
 
-    if (opt.waitForReadyToRender) await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: chromeOptions.renderTimeout })
-    rpOptions.consoleMessages.push(util.getTimeStamp() + ": RESPONSIVE_PAPER_READY_TO_RENDER")
+    if (opt.waitForReadyToRender) {
+      await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: chromeOptions.renderTimeout })
+      rpOptions.consoleMessages.push(util.getTimeStamp() + ": RESPONSIVE_PAPER_READY_TO_RENDER DETECTED")
+    } else {
+      rpOptions.consoleMessages.push(util.getTimeStamp() + ": NOT WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER")
+
+    }
     readyToRender = true
 
     pageTitle = await page.title();
@@ -265,8 +268,8 @@ const generatePdf = async (res, page, opt) => {
     page.setJavaScriptEnabled(true)
 
     //TODO, this is checking responsivepaper files
-    const rpScriptTag = await page.addScriptTag({ content: opt.version ? await rpContent.rpContentsProvider.js(opt.version) : rpContent.rpScriptContents })
-    const rpContentTag = await page.addStyleTag({ content: opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
+    const rpScriptTag = await page.addScriptTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.js(opt.version) : rpContent.rpScriptContents })
+    const rpContentTag = await page.addStyleTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
 
     page.on('pageerror', msg => {
       timeoutInfo.pageErrors.push(msg);

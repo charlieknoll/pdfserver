@@ -8,6 +8,7 @@ const qs = require('qs')
 const asyncHandler = require('express-async-handler')
 const generatePdf = require('../pdf')
 const { replaceAll } = require('../../util')
+const rpContent = require('../../services/rpContent')
 
 const url = '/convert'
 const viewPath = url.substring(1) + '/convert'
@@ -19,13 +20,15 @@ const actionVm = function (req, errors) {
 
   const formData = {
     title: 'Pdf Converter',
-    formats: ['', 'Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6'],
+    formats: ['Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6'],
+    versions: rpContent.versions,
     apikey: req.user.apikey
   }
   if (vals) {
     Object.assign(formData, vals)
   }
-  formData.formats = arrayToSelectList(formData.formats, vals['format'] || '')
+  formData.formats = arrayToSelectList(formData.formats, vals['format'] || '', true)
+  formData.versions = arrayToSelectList(formData.versions, vals['version'] || '', true)
   formData.errors = (errors || []).map(e => e.msg)
   //TODO look up user's developer apiKey
 

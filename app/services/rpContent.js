@@ -3,19 +3,13 @@ const path = require('path');
 const fs = require('fs');
 const { promisify } = require('util')
 const readFileAsync = promisify(fs.readFile)
-
-const rpScriptContents = (function () {
-    const filename = path.join(__dirname, '..', 'resources', 'reportsjs.min.js')
-    return fs.readFileSync(filename, 'utf8')
-})();
-const rpStyleContents = (function () {
-    const filename = path.join(__dirname, '..', 'resources', 'reportsjs.min.css')
-    return fs.readFileSync(filename, 'utf8')
+const readdirAsync = promisify(fs.readdir)
+const rpScriptContents = {}
+const rpStyleContents = {}
+const versions = (function () {
 })();
 
-//TODO enumerate js and css versions
-//TODO validate version
-//TODO return default version if requested version not available
+
 const rpContentsProvider = {
     js: async function (version) {
         try {
@@ -36,9 +30,30 @@ const rpContentsProvider = {
             return rpStyleContents
         }
 
+    },
+    readVersions: async function () {
+        const filePath = path.join(__dirname, '..', 'resources')
+        const versionList = []
+        const items = await readdirAsync(filePath)
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].startsWith('reportsjs-') && items[i].endsWith('.js')) {
+                versionList.push(items[i].replace('reportsjs-', '').replace('.min.js', ''))
+            }
+        }
+        return versionList.sort(function (a, b) { return a < b })
+
+
+    },
+    rpScriptContents: {},
+    rpStyleContents: {},
+    versions: [],
+    init: async function () {
+        this.versions = await this.readVersions()
+        const results = await Promise.all([this.js(this.versions[0]), this.css(this.versions[0])])
+        this.rpScriptContents = results[0]
+        this.rpStyleContents = results[1]
     }
-
 }
+rpContentsProvider.init()
 
-
-module.exports = { rpScriptContents, rpStyleContents, rpContentsProvider };
+module.exports = rpContentsProvider;
