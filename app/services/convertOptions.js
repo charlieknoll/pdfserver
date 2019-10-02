@@ -3,8 +3,8 @@ const util = require('../util')
 module.exports = function (opt) {
   //TODO don't allow for too long a timeout
   const chromeOptions = {}
-  chromeOptions.emulateMedia = opt.printMedia ? "print" : "screen"
-  chromeOptions.imageDelay = opt.imageDelay ? opt.imageDelay : (opt.disableCache ? 1000 : 200)
+  chromeOptions.emulateMedia = util.checkBoolean(opt.printMedia) ? "print" : "screen"
+  //chromeOptions.imageDelay = opt.imageDelay ? opt.imageDelay : (opt.disableCache ? 1000 : 200)
 
   const pdfOptions = {}
   pdfOptions.scale = 1
@@ -15,19 +15,23 @@ module.exports = function (opt) {
   const rpOptions = {}
   //this sets landscape to undefined if not explicitly set as false, if undefined the engine will use report default
   //The array is called if this is sent via a form post request
-  rpOptions.landscape = Array.isArray(opt.landscape) ? true : opt.landscape === 'false' ? false : opt.landscape
+  rpOptions.landscape = Array.isArray(opt.landscape) ? true : util.checkBoolean(opt.landscape)
+  //TODO check format and add console message
   rpOptions.format = opt.format;
-  rpOptions.debug = opt.includeConsole === "on";
+  rpOptions.debug = util.checkBoolean(opt.includeConsole)
   rpOptions.startTime = new Date
   rpOptions.readyToRender = false
   rpOptions.consoleMessages = []
-  rpOptions.timeout = opt.timeout ? opt.timeout : 30000
+  //TODO validate that timeout is number and less than or equal to account's timeout
+  rpOptions.timeout = opt.timeout ? Math.round(opt.timeout) : 30000
   rpOptions.addConsoleMessage = function (mgs) {
     this.consoleMessages.push(util.getTimeStamp(this.startTime) + ": ")
   }
   rpOptions.msRemaining = function () {
     //leave a 100ms buffer so that proper timeout message is thrown
-    return this.timeout - (new Date - this.startTime) - 100
+    const remaining = this.timeout - (new Date - this.startTime) - 100
+    if (remaining < 0) throw new Error(rpOptions.timeout + "ms timeout exceeded")
+    return remaining
   }
   return {
     chromeOptions,
