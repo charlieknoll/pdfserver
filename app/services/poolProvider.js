@@ -1,16 +1,30 @@
 var debug = require('debug')('pdfserver:browserPagePool');
 const genericPool = require('generic-pool');
 
-const browserFactory = require('./browser')
-let browser
-let browserPoolInstance
+const browserFactory = require('./browserFactory')
 
+const poolProvider = {
+  browser: null,
+  pagePool: null,
+  init: async function () {
+    browserFactory.then(b => {
+      this.browser = b
+      this.pagePool = genericPool.createPool(pageFactory, {
+        max: 2,
+        min: 2,
+        maxWaitingClients: 50,
+        autostart: true,
+      })
+    })
 
-const factory = {
+  }
+}
+
+const pageFactory = {
   create: async function () {
     try {
       debug('opening incognito context');
-      const context = await browser.createIncognitoBrowserContext();
+      const context = await poolProvider.browser.createIncognitoBrowserContext();
       // Create a new page in a pristine context.
       const page = await context.newPage();
       await page.goto('data:text/html,hi');
@@ -23,21 +37,10 @@ const factory = {
   destroy: function (pageContext) {
     debug('closing context');
     pageContext.context.close();
-  },
+  }
 };
 
-browserFactory.then(b => {
-  browser = b
-  browserPoolInstance = genericPool.createPool(factory, {
-    max: 2,
-    min: 2,
-    maxWaitingClients: 50,
-    autostart: true,
-  })
-})
+poolProvider.init()
 
-const browserPool = function () {
-  return browserPoolInstance
-}
 
-module.exports = browserPool;
+module.exports = poolProvider;

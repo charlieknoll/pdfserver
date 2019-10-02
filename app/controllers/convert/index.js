@@ -1,12 +1,8 @@
 const auth = require('../../middlewares/authorization')
-const { validationResult, body } = require('express-validator/check')
-const { sanitizeBody } = require('express-validator/filter')
-const { db, sendEmail, logger, browserPool } = require('../../services')
-
 const { arrayToSelectList } = require('../../util')
 const qs = require('qs')
 const asyncHandler = require('express-async-handler')
-const generatePdf = require('../pdf')
+const generatePdf = require('../../services/generatePdf')
 const { replaceAll } = require('../../util')
 const rpContent = require('../../services/rpContent')
 
@@ -20,7 +16,7 @@ const actionVm = function (req, errors) {
 
   const formData = {
     title: 'Pdf Converter',
-    formats: ['Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6'],
+    formats: rpContent.formats,
     versions: rpContent.versions,
     apikey: req.user.apikey
   }
@@ -43,11 +39,10 @@ const get = function (req, res, next) {
   res.render(viewPath, actionVm(req, errors));
 }
 const post = async function (req, res, next) {
-  const pageContext = await browserPool().acquire();
-  try {
 
+  try {
+    const result = await generatePdf(req.body);
     res.set('Content-Type', 'application/pdf')
-    const result = await generatePdf(res, pageContext.page, req.body);
     let fileName = req.body.fileName || result.pageTitle
     fileName = replaceAll(fileName, ' ', '-')
     fileName += ".pdf";
@@ -59,11 +54,11 @@ const post = async function (req, res, next) {
       res.end()
     }
   }
-  finally {
-    //TODO Instead of destroy, call release and delete cookies, navigate back, verify "Hi" is content of page, if not destroy
-    //TODO maybe only do that in production so that in debug mode cache is invalidated every request?
-    await browserPool().destroy(pageContext)
+  catch (e) {
+    next(e)
+
   }
+
 }
 
 module.exports = function (app) {

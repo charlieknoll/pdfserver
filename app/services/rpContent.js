@@ -6,8 +6,8 @@ const readFileAsync = promisify(fs.readFile)
 const readdirAsync = promisify(fs.readdir)
 const rpScriptContents = {}
 const rpStyleContents = {}
-const versions = (function () {
-})();
+// const versions = (function () {
+// })();
 
 
 const rpContentsProvider = {
@@ -52,6 +52,8 @@ const rpContentsProvider = {
         const results = await Promise.all([this.js(this.versions[0]), this.css(this.versions[0])])
         this.rpScriptContents = results[0]
         this.rpStyleContents = results[1]
+        this.formats = ['Letter', 'Legal', 'Ledger', 'Tabloid', 'A4', 'A5', 'A6']
+
     }
 }
 rpContentsProvider.init()

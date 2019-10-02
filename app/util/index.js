@@ -41,12 +41,73 @@ const getTimeStamp = function (d) {
 }
 const cache = {}
 
+
+const waitFor = async function (fn, args, ms, interval) {
+    const timeout = function (ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    let timeoutCtr = 0
+    const iterations = ms / interval
+
+    while (timeoutCtr < iterations) {
+        timeoutCtr++
+        if (await fn(...args)) return true
+        await timeout(interval)
+    }
+    return false
+
+}
+const runWithTimeout = (fn, ms, msg) => {
+    return new Promise(async (resolve, reject) => {
+        let resolved = false
+
+        const info = {
+            // information to pass to fn to ensure it can cancel
+            // things if it needs to
+            error: null,
+            pageErrors: [],
+            reject: reject
+        }
+
+        const timer = setTimeout(() => {
+            const err = new Error(`Timeout Error: ${msg}`)
+            info.error = err
+            err.pageErrors = info.pageErrors
+            resolved = true
+            reject(err)
+        }, ms)
+
+        try {
+            const result = await fn(info)
+
+            if (resolved) {
+                return
+            }
+
+            resolve(result)
+        } catch (e) {
+            if (resolved) {
+                return
+            }
+            e.pageErrors = info.pageErrors
+            reject(e)
+        } finally {
+            clearTimeout(timer)
+        }
+    })
+}
+const boolOrUndefined = function (par) {
+    return (par === true || par === 'true') ? true : undefined
+}
+
 module.exports = {
     arrayToSelectList,
     replaceAll,
     lookup,
     checkBoolean,
     getTimeStamp,
-    cache
+    boolOrUndefined,
+    runWithTimeout,
+    waitFor,
 
 }

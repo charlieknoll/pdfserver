@@ -1,5 +1,5 @@
-const { validationResult, body } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { validationResult, body } = require('express-validator');
+const { sanitizeBody } = require('express-validator');
 const { db, sendEmail, logger } = require('../../services')
 const uuidv4 = require('uuid/v4')
 
@@ -62,7 +62,7 @@ const handleValidEmail = async function (email) {
         <br/><br/>
         Responsive Paper Support<br/>
         www.responsivepaper.com
-        
+
         `,
         "o:tracking": 'False'
     };

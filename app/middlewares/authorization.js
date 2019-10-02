@@ -23,7 +23,8 @@ module.exports = {
 			|| lookup(req.headers, apiKeyHeader);
 
 		if (!apikey) {
-			res.status(400).send("Missing API Key")
+			res.statusMessage = "Missing ACCESS TOKEN"
+			res.status(401).send()
 			return
 		}
 		const result = await db.any('SELECT id FROM apikey WHERE value=$1', [apikey])

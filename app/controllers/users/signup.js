@@ -1,6 +1,6 @@
 //dependencies
-const { validationResult, body } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { validationResult, body } = require('express-validator');
+const { sanitizeBody } = require('express-validator');
 const { db, sendEmail, logger } = require('../../services')
 const bcrypt = require('bcrypt')
 const speakeasy = require('speakeasy')
