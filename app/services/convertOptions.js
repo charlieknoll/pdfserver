@@ -24,12 +24,11 @@ module.exports = function (opt) {
   rpOptions.consoleMessages = []
   //TODO validate that timeout is number and less than or equal to account's timeout
   rpOptions.timeout = opt.timeout ? Math.round(opt.timeout) : 30000
-  rpOptions.addConsoleMessage = function (mgs) {
-    this.consoleMessages.push(util.getTimeStamp(this.startTime) + ": ")
+  rpOptions.addConsoleMessage = function (msg) {
+    this.consoleMessages.push(util.getTimeStamp(this.startTime) + ": " + msg)
   }
   rpOptions.msRemaining = function () {
-    //leave a 100ms buffer so that proper timeout message is thrown
-    const remaining = this.timeout - (new Date - this.startTime) - 100
+    const remaining = this.timeout - (new Date - this.startTime)
     if (remaining < 0) throw new Error(rpOptions.timeout + "ms timeout exceeded")
     return remaining
   }

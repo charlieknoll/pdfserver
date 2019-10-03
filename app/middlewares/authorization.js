@@ -15,7 +15,6 @@ module.exports = {
 		res.sendStatus(401)
 	},
 	requiresApiKey: async (req, res, next) => {
-
 		const apiKeyField = 'apikey';
 		const apiKeyHeader = 'apikey';
 		var apikey = lookup(req.body, apiKeyField)
@@ -23,16 +22,18 @@ module.exports = {
 			|| lookup(req.headers, apiKeyHeader);
 
 		if (!apikey) {
-			res.statusMessage = "Missing ACCESS TOKEN"
-			res.status(401).send()
+			res.setHeader('Content-Type', 'application/json');
+			res.statusMessage = "Missing API Key"
+			res.status(401).send({ "error": res.statusMessage })
 			return
 		}
 		const result = await db.any('SELECT id FROM apikey WHERE value=$1', [apikey])
 		if (result.length != 1) {
-			res.status(400).send("Invalid API Key")
+			res.setHeader('Content-Type', 'application/json');
+			res.statusMessage = "Invalid API Key"
+			res.status(403).send({ "error": res.statusMessage })
 			return
 		}
 		return next()
-
 	}
 }

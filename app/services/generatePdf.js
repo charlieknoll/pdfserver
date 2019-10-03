@@ -31,6 +31,7 @@ const generatePdf = async (opt) => {
     await page.setRequestInterception(true);
     wirePageEvents(page, rpOptions, requestCache, opt, timeoutInfo)
 
+    page.emulateMedia(chromeOptions.emulateMedia)
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value, { waitUntil: 'load' })
       if (response._status !== 200) {
@@ -46,11 +47,21 @@ const generatePdf = async (opt) => {
 
     if (timeoutInfo.error) return
 
+    const msRemaining = rpOptions.msRemaining()
     if (opt.waitForReadyToRender) {
-      await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: rpOptions.msRemaining() })
-      rpOptions.addConsoleMessage("RESPONSIVE_PAPER_READY_TO_RENDER DETECTED")
+      try {
+        //If more than 2000ms remain to render then wait for remaining ms less 50% of the msRemaining over 2000 up to 500ms
+        const renderTimeout = msRemaining < 2000 ? msRemaining : msRemaining - Math.min(Math.round(((msRemaining - 2000) * .5)), 500)
+        rpOptions.addConsoleMessage("WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER for " + renderTimeout + "ms")
+        await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: renderTimeout })
+        rpOptions.addConsoleMessage("RESPONSIVE_PAPER_READY_TO_RENDER DETECTED, " + rpOptions.msRemaining() + "ms remaining of initial " + rpOptions.timeout + "ms timeout")
+      }
+      catch (e) {
+        rpOptions.addConsoleMessage("WARNING: RESPONSIVE_PAPER_READY_TO_RENDER TIMED OUT, please set waitForReadyToRender = false in options to skip waiting ")
+        rpOptions.addConsoleMessage(rpOptions.msRemaining() + "ms remaining of initial " + rpOptions.timeout + "ms timeout")
+      }
     } else {
-      rpOptions.addConsoleMessage("NOT WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER")
+      rpOptions.addConsoleMessage("NOT WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER, " + rpOptions.msRemaining() + "ms remaining of initial " + rpOptions.timeout + "ms timeout")
     }
     rpOptions.readyToRender = true
 
@@ -95,7 +106,6 @@ const generatePdf = async (opt) => {
     //await page.screenshot({ fullPage: true });
 
 
-    page.emulateMedia(chromeOptions.emulateMedia)
     return generatePdfStream(timeoutInfo, page, pdfOptions, pageTitle)
   }
 }

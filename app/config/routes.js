@@ -6,6 +6,7 @@ const auth = require('./../middlewares/authorization')
 const configUserRoutes = require('../controllers/users')
 const configConvertRoutes = require('../controllers/convert')
 const { logger } = require('../services')
+const apiV2 = require('../controllers/api/v2')
 
 module.exports = (app) => {
 
@@ -14,22 +15,8 @@ module.exports = (app) => {
     })
     configUserRoutes(app)
     configConvertRoutes(app)
+    app.use('/api/html2pdf/v2', apiV2)
 
-
-    //User related endpoints
-    // app.get('/user/login', userController.getLogin)
-    // app.post('/user/login', userController.postLogin)
-    // app.get('/user/logout', auth.requiresUser, userController.getLogout)
-    // app.post('/user/logout', auth.requiresUser, userController.postLogout)
-    // app.get('/user/reset-password', userController.getResetPassword)
-    // app.post('/user/reset-password', validateUserResetPassword, userController.postResetPassword)
-    // app.get('/user/signup', userController.getSignup)
-    // app.post('/user/signup', validateRegister, userController.postSignup)
-    // app.get('/user/dashboard', auth.requiresUser, userController.getDashboard)
-
-
-    //pdf endpoints
-    //app.get('/urlconvert', auth.requiresUser, homeController.urlConvert)
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
