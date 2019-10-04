@@ -110,7 +110,8 @@
         <div class="col-lg-2">
             <div class="form-group">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="landscape" name="landscape">
+                    <input type="checkbox" class="custom-control-input" id="landscape" name="landscape"
+                        {{#if waitForReadyToRender}}checked="true" {{/if}}>
                     <input type="hidden" name="landscape" value="false">
                     <label class="custom-control-label" for="landscape">Landscape</label>
                 </div>
