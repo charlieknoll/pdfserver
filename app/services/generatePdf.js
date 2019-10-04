@@ -44,7 +44,7 @@ const generatePdf = async (opt) => {
       const response = await page.goto(opt.value, { waitUntil: 'load' })
       if (response._status !== 200) {
         const msg = "Chrome could not navigate to page: " + response._status + " - " + response._statusText + opt.value
-        timeoutInfo.timeoutInfo.addConsoleMessage(msg)
+        timeoutInfo.addConsoleMessage(msg)
         throw new Error(msg)
       }
       timeoutInfo.addConsoleMessage("Page loaded")
@@ -77,28 +77,28 @@ const generatePdf = async (opt) => {
     await page.addScriptTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.js(opt.version) : rpContent.rpScriptContents })
     await page.addStyleTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
 
-    await page.evaluate(async (opt, consoleMessages) => {
-      consoleMessages.forEach(m => {
-        console.log(m)
-      });
+    await page.evaluate(async (opt, consoleLogs) => {
+      if (consoleLogs) {
+        rp.logs = rp.logs.concat(consoleLogs)
+      }
       await rp.preview(null, opt);
-    }, rpOptions, timeoutInfo.consoleMessages)
+    }, rpOptions, timeoutInfo.consoleLogs)
     if (timeoutInfo.error) return
 
     await waitForImages(timeoutInfo)
     if (timeoutInfo.error) return
 
     //TODO inject page messages to console
-    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: rpOptions.msRemaining() })
+    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: timeoutInfo.msRemaining() })
     if (timeoutInfo.error) return
 
-    // //This is one way to force images to load, wait for 2 seconds
-    // await page.evaluate(async (delay) => {
-    //   setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
-    // }, chromeOptions.imageDelay)
-    // await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: rpOptions.msRemaining() })
-
     await waitForImages(timeoutInfo)
+    //This is one way to force images to load, wait for 2 seconds
+    await page.evaluate(async (delay) => {
+      setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
+    }, chromeOptions.imageDelay)
+    await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: timeoutInfo.msRemaining() })
+
     if (timeoutInfo.error) return
 
     //TODO, this may not be necessary with new way of checking images

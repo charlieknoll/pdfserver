@@ -3,21 +3,28 @@ const router = express.Router()
 const { requiresApiKey } = require('../../../middlewares/authorization')
 const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../../services/generatePdf')
+const { replaceAll } = require('../../../util')
 
-const sendPdf = function (req, res, { filename, content }) {
-  res.set('Content-Type', 'application/pdf')
-  let fileName = req.body.fileName || result.pageTitle
-  fileName = replaceAll(fileName, ' ', '-')
-  fileName += ".pdf";
-  throw new Error('test')
-  res.set('Content-Disposition', 'inline; filename=' + fileName)
-  if (result.content) {
-    res.send(result.content)
-  }
-  else {
-    res.end()
-  }
 
+const sendPdf = function (req, res, { pageTitle, content, consoleLogs }) {
+  try {
+    res.set('Content-Type', 'application/pdf')
+    let fileName = req.body.fileName || pageTitle
+    fileName = replaceAll(fileName, ' ', '-')
+    fileName += ".pdf";
+    res.set('Content-Disposition', 'inline; filename=' + fileName)
+    if (content) {
+      res.send(content)
+    }
+    else {
+      res.end()
+    }
+  }
+  catch (e) {
+    const error = new Error(e.message)
+    error.consoleLogs = consoleLogs
+    throw error
+  }
 }
 const get = async function (req, res, next) {
   sendPdf(req, res, await generatePdf(req.query))
@@ -32,6 +39,7 @@ const errorHandler = function (err, req, res, next) {
     consoleLogs: err.consoleLogs
   }
   JSON.stringify(data)
+  res.status(500)
   res.set('Content-Type', 'application/problem+json')
   res.send(JSON.stringify(data))
 }

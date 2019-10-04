@@ -37,7 +37,7 @@ const checkBoolean = function (value) {
 }
 const getTimeStamp = function (d) {
     if (!d) d = new Date
-    return d.toISOString().substring(11)
+    return d.toISOString().substring(11, 23)
 }
 const cache = {}
 
@@ -69,10 +69,10 @@ const runWithTimeout = (fn, ms, msg) => {
             reject: reject,
             startTime: new Date,
             timeout: ms,
-            addConsoleMessage = function (msg) {
-                this.consoleLogs.push(getTimeStamp(this.startTime) + ": " + msg)
+            addConsoleMessage: function (msg) {
+                this.consoleLogs.push(getTimeStamp(new Date) + " : " + msg)
             },
-            msRemaining = function () {
+            msRemaining: function () {
                 const remaining = this.timeout - (new Date - this.startTime)
                 if (remaining < 0) throw new Error(this.timeout + "ms timeout exceeded")
                 return remaining

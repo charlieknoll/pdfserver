@@ -6,6 +6,7 @@ module.exports = function (opt) {
 
   const chromeOptions = {}
   chromeOptions.emulateMedia = util.checkBoolean(opt.printMedia) ? "print" : "screen"
+  chromeOptions.imageDelay = 200
 
   const pdfOptions = {}
   pdfOptions.scale = 1

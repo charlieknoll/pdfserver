@@ -3,11 +3,11 @@ const util = require('../util')
 
 module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
   page.on('pageerror', msg => {
-    timeoutInfo.consoleLogs.push(msg);
+    timeoutInfo.addConsoleMessage(msg._text);
   });
 
   page.on('console', msg => {
-    timeoutInfo.consoleLogs.push(msg);
+    timeoutInfo.addConsoleMessage(msg._text);
   })
   page.on('request', async request => {
     const url = request.url();
@@ -17,27 +17,28 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
       return;
     }
     else {
-      // if (request._resourceType === 'image' && rpOptions.readyToRender && requestCache[url] && requestCache[url].complete) {
-      //   //TODO load from requestCache
-      //   requestCache[url].fromCache = true
-      //   await request.respond(requestCache[url].response);
-      //   return
-      // }
-      timeoutInfo.addConsoleMessage("Requesting " + url)
-      if (requestCache[url] && !requestCache[url].complete) {
-        timeoutInfo.addConsoleMessage("Waiting " + url)
-        await util.waitFor((url) => { return (requestCache[url] && requestCache[url].complete) }, url, timeoutInfo.msRemaining(), 10)
-        timeoutInfo.addConsoleMessage("Waiting complete" + url)
-      }
       if (!requestCache[url]) {
         requestCache[url] = {
           complete: false,
-          fromCache: false
+          //fromCache: false
         };
       }
       else {
         requestCache[url].complete = false
       }
+      if (request._resourceType === 'image' && requestCache[url] && requestCache[url].response) {
+        requestCache[url].fromMemCache = true
+        //timeoutInfo.addConsoleMessage("Responding from Mem Cache " + url)
+        await request.respond(requestCache[url].response);
+        return
+      }
+      //timeoutInfo.addConsoleMessage("Requesting " + url)
+
+      // if (requestCache[url] && !requestCache[url].complete) {
+      //   timeoutInfo.addConsoleMessage("Waiting " + url)
+      //   await util.waitFor((url) => { return (requestCache[url] && requestCache[url].complete) }, url, timeoutInfo.msRemaining(), 10)
+      //   timeoutInfo.addConsoleMessage("Waiting complete" + url)
+      // }
 
       if (!(redis.status == 'ready')) {
         request.continue()
@@ -46,7 +47,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
 
       if (!opt.disableCache) {
         try {
-          const cachedRequest = await redis.get(opt.apikey + ":" + url) || await redis.get(url)
+          const cachedRequest = await redis.get(url) || await redis.get(opt.apikey + ":" + url)
           //const cachedRequest = cache[url]
           if (cachedRequest) {
             requestCache[url].fromCache = true
@@ -72,9 +73,10 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
       return
     }
     const url = response.url();
-    if (requestCache[url] && requestCache[url].fromCache) {
-      requestCache[url].complete = true
-      timeoutInfo.addConsoleMessage("From Cache " + url)
+    requestCache[url].complete = true
+    if (requestCache[url] && (requestCache[url].fromCache || requestCache[url].fromMemCache)) {
+      //timeoutInfo.addConsoleMessage("From" + (requestCache[url].fromMemCache ? " Mem" : "") + " Cache " + url)
+      if (requestCache[url].fromCache) timeoutInfo.addConsoleMessage("From Cache " + url)
       return;
     }
     const headers = response.headers();
@@ -102,8 +104,9 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
             headers: response.headers(),
             body: buffer
           };
+          //timeoutInfo.addConsoleMessage("MEM CACHE inserted: " + url)
         }
-
+        if (!maxAge || !opt.disableCache || !redis.status == 'ready') return
         const cacheKey = cacheControl.includes('public') ? url : opt.apikey + ':' + url
         try {
           await redis.setex(cacheKey, maxAge, JSON.stringify(
@@ -121,7 +124,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
         }
       }
     }
-    if (requestCache[url]) requestCache[url].complete = true
+    //if (requestCache[url]) requestCache[url].complete = true
   });
 
 

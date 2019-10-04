@@ -24,42 +24,42 @@ module.exports = async function generatePdfStream(timeoutInfo, page, pdfOptions,
   }
 
   if (timeoutInfo.error) return
+  //throw error here to test logs
+  //throw new Error('test')
   if (paperSizes.length === 1) {
-    return { content: pdfStreams[paperSizes[0]], pageTitle }
+    return { content: pdfStreams[paperSizes[0]], pageTitle, consoleLogs: timeoutInfo.consoleLogs }
   }
-  try {
-    const writeStream = new PDFWStreamForBuffer()
-    const pdfWriter = hummus.createWriter(writeStream)
-    let cPaperSize = paperSizesByPage[0]
-    let pagesToWrite = 1
-    for (var i = 0; i < paperSizesByPage.length - 1; i++) {
 
-      if (paperSizesByPage[i + 1] !== cPaperSize) {
-        //write out previous index through previ
-        const bufferStream = new hummus.PDFRStreamForBuffer(pdfStreams[cPaperSize])
-        pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage ? pdfStreams[cPaperSize].nextPage : 0
-        pdfWriter.appendPDFPagesFromPDF(bufferStream,
-          { type: hummus.eRangeTypeSpecific, specificRanges: [[pdfStreams[cPaperSize].nextPage, pdfStreams[cPaperSize].nextPage + pagesToWrite - 1]] })
-        pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage + pagesToWrite
-        pagesToWrite = 1
-        cPaperSize = paperSizesByPage[i + 1]
-      }
-      else {
-        pagesToWrite++
-      }
+  const writeStream = new PDFWStreamForBuffer()
+  const pdfWriter = hummus.createWriter(writeStream)
+  let cPaperSize = paperSizesByPage[0]
+  let pagesToWrite = 1
+  for (var i = 0; i < paperSizesByPage.length - 1; i++) {
+
+    if (paperSizesByPage[i + 1] !== cPaperSize) {
+      //write out previous index through previ
+      const bufferStream = new hummus.PDFRStreamForBuffer(pdfStreams[cPaperSize])
+      pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage ? pdfStreams[cPaperSize].nextPage : 0
+      pdfWriter.appendPDFPagesFromPDF(bufferStream,
+        { type: hummus.eRangeTypeSpecific, specificRanges: [[pdfStreams[cPaperSize].nextPage, pdfStreams[cPaperSize].nextPage + pagesToWrite - 1]] })
+      pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage + pagesToWrite
+      pagesToWrite = 1
+      cPaperSize = paperSizesByPage[i + 1]
     }
-    //Write out last page
-    const bufferStream = new hummus.PDFRStreamForBuffer(pdfStreams[cPaperSize])
-    pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage ? pdfStreams[cPaperSize].nextPage : 0
-    pdfWriter.appendPDFPagesFromPDF(bufferStream,
-      { type: hummus.eRangeTypeSpecific, specificRanges: [[pdfStreams[cPaperSize].nextPage, pdfStreams[cPaperSize].nextPage + pagesToWrite - 1]] })
-
-    pdfWriter.end()
-    if (timeoutInfo.error) return
-    return { content: writeStream.buffer, pageTitle }
-  } catch (error) {
-    console.log(error)
+    else {
+      pagesToWrite++
+    }
   }
+  //Write out last page
+  const bufferStream = new hummus.PDFRStreamForBuffer(pdfStreams[cPaperSize])
+  pdfStreams[cPaperSize].nextPage = pdfStreams[cPaperSize].nextPage ? pdfStreams[cPaperSize].nextPage : 0
+  pdfWriter.appendPDFPagesFromPDF(bufferStream,
+    { type: hummus.eRangeTypeSpecific, specificRanges: [[pdfStreams[cPaperSize].nextPage, pdfStreams[cPaperSize].nextPage + pagesToWrite - 1]] })
+
+  pdfWriter.end()
+  if (timeoutInfo.error) return
+  return { content: writeStream.buffer, pageTitle, consoleLogs: timeoutInfo.consoleLogs }
+
 
 
 
