@@ -7,6 +7,7 @@ const pgSession = require('connect-pg-simple')(session)
 const cookieParser = require('cookie-parser')
 const config = require('./')
 const { logger } = require('../services')
+const handlebars = require('handlebars')
 
 module.exports = (app, passport, pool) => {
 
@@ -16,7 +17,8 @@ module.exports = (app, passport, pool) => {
     app.engine('hbs', hbs.express4({
         defaultLayout: path.join(config.root, '/views/layouts/home.hbs'),
         partialsDir: path.join(config.root, '/views/partials'),
-        layoutsDir: path.join(config.root, '/views/layouts')
+        layoutsDir: path.join(config.root, '/views/layouts'),
+        handlebars: handlebars
     }));
     app.use('/', express.static(config.public))
     app.use(function (req, res, next) {

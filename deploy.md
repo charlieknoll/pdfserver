@@ -1,5 +1,11 @@
 ### Deployment
 
+Check for npm updates
+
+- ncu, then ncu -u
+- npm install
+- npm audit
+
 - Run tests
 - Run build scripts on reportsjs (gulp scripts, gulp less)
 - Copy css and js to app/resources (copy.bat)
