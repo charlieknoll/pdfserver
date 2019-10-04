@@ -1,11 +1,13 @@
 const { redis } = require('.')
 const util = require('../util')
 
-module.exports = function wirePageEvents(page, rpOptions, requestCache, opt, timeoutInfo) {
+module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
+  page.on('pageerror', msg => {
+    timeoutInfo.consoleLogs.push(msg);
+  });
 
   page.on('console', msg => {
-    timeoutInfo.pageErrors.push(msg);
-    rpOptions.consoleMessages.push(msg._text)
+    timeoutInfo.consoleLogs.push(msg);
   })
   page.on('request', async request => {
     const url = request.url();
@@ -21,11 +23,11 @@ module.exports = function wirePageEvents(page, rpOptions, requestCache, opt, tim
       //   await request.respond(requestCache[url].response);
       //   return
       // }
-      rpOptions.consoleMessages.push(util.getTimeStamp() + ": Requesting " + url)
+      timeoutInfo.addConsoleMessage("Requesting " + url)
       if (requestCache[url] && !requestCache[url].complete) {
-        rpOptions.consoleMessages.push(util.getTimeStamp() + ": Waiting " + url)
-        await util.waitFor((url) => { return (requestCache[url] && requestCache[url].complete) }, url, rpOptions.msRemaining(), 10)
-        rpOptions.consoleMessages.push(util.getTimeStamp() + ": Waiting complete" + url)
+        timeoutInfo.addConsoleMessage("Waiting " + url)
+        await util.waitFor((url) => { return (requestCache[url] && requestCache[url].complete) }, url, timeoutInfo.msRemaining(), 10)
+        timeoutInfo.addConsoleMessage("Waiting complete" + url)
       }
       if (!requestCache[url]) {
         requestCache[url] = {
@@ -72,23 +74,21 @@ module.exports = function wirePageEvents(page, rpOptions, requestCache, opt, tim
     const url = response.url();
     if (requestCache[url] && requestCache[url].fromCache) {
       requestCache[url].complete = true
-      rpOptions.consoleMessages.push(util.getTimeStamp() + ": From Cache " + url)
+      timeoutInfo.addConsoleMessage("From Cache " + url)
       return;
     }
     const headers = response.headers();
     const cacheControl = headers['cache-control'] || '';
     const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
     const maxAge = maxAgeMatch && maxAgeMatch.length > 1 ? parseInt(maxAgeMatch[1], 10) : 0;
-    rpOptions.consoleMessages.push(util.getTimeStamp() + ": Received " + url)
+    timeoutInfo.addConsoleMessage("Received " + url)
 
 
     //TODO use public to store in public cache?
     if (maxAge && !opt.disableCache && redis.status == 'ready' || (response._request._resourceType === "image")) {
-
       let buffer;
       try {
         buffer = await response.buffer();
-
       } catch (error) {
         // some responses do not contain buffer and do not need to be catched
         requestCache[url].complete = true

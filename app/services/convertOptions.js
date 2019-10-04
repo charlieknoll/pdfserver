@@ -1,10 +1,11 @@
 const util = require('../util')
 
 module.exports = function (opt) {
-  //TODO don't allow for too long a timeout
+
+  if (!opt.value) throw new Error('Missing value parameter, pass url or html as value parameter')
+
   const chromeOptions = {}
   chromeOptions.emulateMedia = util.checkBoolean(opt.printMedia) ? "print" : "screen"
-  //chromeOptions.imageDelay = opt.imageDelay ? opt.imageDelay : (opt.disableCache ? 1000 : 200)
 
   const pdfOptions = {}
   pdfOptions.scale = 1
@@ -23,15 +24,7 @@ module.exports = function (opt) {
   rpOptions.readyToRender = false
   rpOptions.consoleMessages = []
   //TODO validate that timeout is number and less than or equal to account's timeout
-  rpOptions.timeout = opt.timeout ? Math.round(opt.timeout) : 30000
-  rpOptions.addConsoleMessage = function (msg) {
-    this.consoleMessages.push(util.getTimeStamp(this.startTime) + ": " + msg)
-  }
-  rpOptions.msRemaining = function () {
-    const remaining = this.timeout - (new Date - this.startTime)
-    if (remaining < 0) throw new Error(rpOptions.timeout + "ms timeout exceeded")
-    return remaining
-  }
+
   return {
     chromeOptions,
     pdfOptions,

@@ -65,14 +65,24 @@ const runWithTimeout = (fn, ms, msg) => {
             // information to pass to fn to ensure it can cancel
             // things if it needs to
             error: null,
-            pageErrors: [],
-            reject: reject
+            consoleLogs: [],
+            reject: reject,
+            startTime: new Date,
+            timeout: ms,
+            addConsoleMessage = function (msg) {
+                this.consoleLogs.push(getTimeStamp(this.startTime) + ": " + msg)
+            },
+            msRemaining = function () {
+                const remaining = this.timeout - (new Date - this.startTime)
+                if (remaining < 0) throw new Error(this.timeout + "ms timeout exceeded")
+                return remaining
+            }
         }
 
         const timer = setTimeout(() => {
             const err = new Error(`Timeout Error: ${msg}`)
             info.error = err
-            err.pageErrors = info.pageErrors
+            err.consoleLogs = info.consoleLogs
             resolved = true
             reject(err)
         }, ms)
@@ -89,7 +99,7 @@ const runWithTimeout = (fn, ms, msg) => {
             if (resolved) {
                 return
             }
-            e.pageErrors = info.pageErrors
+            e.consoleLogs = info.consoleLogs
             reject(e)
         } finally {
             clearTimeout(timer)
