@@ -76,7 +76,7 @@ const generatePdf = async (opt) => {
 
     await page.addScriptTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.js(opt.version) : rpContent.rpScriptContents })
     await page.addStyleTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
-
+    const test = await page.content()
     await page.evaluate(async (opt, consoleLogs) => {
       if (consoleLogs) {
         rp.logs = rp.logs.concat(consoleLogs)

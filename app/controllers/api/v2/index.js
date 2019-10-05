@@ -39,7 +39,7 @@ const errorHandler = function (err, req, res, next) {
     consoleLogs: err.consoleLogs
   }
   JSON.stringify(data)
-  res.status(500)
+  res.status(err.consoleLogs && err.consoleLogs.length > 0 ? 500 : 400)
   res.set('Content-Type', 'application/problem+json')
   res.send(JSON.stringify(data))
 }
