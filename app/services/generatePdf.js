@@ -4,14 +4,18 @@ const convertOptions = require('./convertOptions')
 const wirePageEvents = require('./wirePageEvents')
 const generatePdfStream = require('./generatePdfStream')
 const { db, logger, poolProvider } = require('.')
-
+const minTimeout = 600
+const defaultTimeout = 5000
 
 const generatePdf = async (opt) => {
 
   const requestCache = {} //For handling mulitple requests to same URI
 
   //TODO, validate user max timeout
-  const timeout = opt.timeout ? Math.round(opt.timeout) : 30000
+  let timeout = opt.timeout ? Math.round(opt.timeout) : defaultTimeout
+  if (isNaN(timeout)) timeout = defaultTimeout
+  if (timeout < minTimeout) timeout = minTimeout
+
   await util.waitFor(() => { return poolProvider.pagePool !== null }, '', timeout, 100)
   const instance = await poolProvider.pagePool.acquire()
   const page = instance.page
@@ -25,9 +29,11 @@ const generatePdf = async (opt) => {
   }
 
   async function waitForImages(timeoutInfo) {
+    if (Object.keys(requestCache).length === 0) return
     await util.waitFor(() => {
-      return !Object.keys(requestCache).map(u => requestCache[u].complete ? 0 : 1)
-        .reduce((total, nc) => total + nc)
+
+      return Object.keys(requestCache).map(u => requestCache[u].complete ? 0 : 1)
+        .reduce((total, nc) => total + nc) === 0
     }, '', timeoutInfo.msRemaining(), 100)
   }
 
@@ -58,7 +64,7 @@ const generatePdf = async (opt) => {
     if (opt.waitForReadyToRender) {
       try {
         //If more than 2000ms remain to render then wait for remaining ms less 50% of the msRemaining over 2000 up to 500ms
-        const renderTimeout = msRemaining < 2000 ? msRemaining : msRemaining - Math.min(Math.round(((msRemaining - 2000) * .5)), 500)
+        const renderTimeout = msRemaining < 2000 ? msRemaining - 10 : msRemaining - Math.min(Math.round(((msRemaining - 2000) * .5)), 500)
         timeoutInfo.addConsoleMessage("WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER for " + renderTimeout + "ms")
         await page.waitForFunction('window.RESPONSIVE_PAPER_READY_TO_RENDER === true', { polling: 50, timeout: renderTimeout })
         timeoutInfo.addConsoleMessage("RESPONSIVE_PAPER_READY_TO_RENDER DETECTED, " + timeoutInfo.msRemaining() + "ms remaining of initial " + timeoutInfo.timeout + "ms timeout")
@@ -89,7 +95,15 @@ const generatePdf = async (opt) => {
     if (timeoutInfo.error) return
 
     //TODO inject page messages to console
-    await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: timeoutInfo.msRemaining() })
+    try {
+      await page.waitForFunction('window.RESPONSIVE_PAPER_FINISHED === true', { polling: 'raf', timeout: timeoutInfo.msRemaining() - 10 })
+    }
+    catch (e) {
+      if (e.name == 'TimeoutError') {
+        throw new Error('window.RESPONSIVE_PAPER_FINISHED not detected')
+      }
+      else throw e
+    }
     if (timeoutInfo.error) return
 
     await waitForImages(timeoutInfo)
@@ -97,7 +111,7 @@ const generatePdf = async (opt) => {
     await page.evaluate(async (delay) => {
       setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
     }, chromeOptions.imageDelay)
-    await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: timeoutInfo.msRemaining() })
+    await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: timeoutInfo.msRemaining() - 10 })
 
     if (timeoutInfo.error) return
 
