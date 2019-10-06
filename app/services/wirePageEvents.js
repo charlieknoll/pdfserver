@@ -20,6 +20,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
       if (!requestCache[url]) {
         requestCache[url] = {
           complete: false,
+          resourceType: request._resourceType
           //fromCache: false
         };
       }

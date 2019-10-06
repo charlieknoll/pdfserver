@@ -5,7 +5,8 @@ const wirePageEvents = require('./wirePageEvents')
 const generatePdfStream = require('./generatePdfStream')
 const { db, logger, poolProvider } = require('.')
 const minTimeout = 600
-const defaultTimeout = 5000
+const defaultTimeout = 10000
+
 
 const generatePdf = async (opt) => {
 
@@ -15,6 +16,11 @@ const generatePdf = async (opt) => {
   let timeout = opt.timeout ? Math.round(opt.timeout) : defaultTimeout
   if (isNaN(timeout)) timeout = defaultTimeout
   if (timeout < minTimeout) timeout = minTimeout
+
+  let imageTimeout = opt.imageTimeout ? Math.round(opt.imageTimeout) : timeout
+  if (isNaN(imageTimeout)) imageTimeout = timeout
+  if (imageTimeout < 0) imageTimeout = 0
+
 
   await util.waitFor(() => { return poolProvider.pagePool !== null }, '', timeout, 100)
   const instance = await poolProvider.pagePool.acquire()
@@ -30,11 +36,14 @@ const generatePdf = async (opt) => {
 
   async function waitForImages(timeoutInfo) {
     if (Object.keys(requestCache).length === 0) return
-    await util.waitFor(() => {
 
-      return Object.keys(requestCache).map(u => requestCache[u].complete ? 0 : 1)
+    // const msRemaining = timeoutInfo.msRemaining()
+    // const imageTimeout = Math.round(msRemaining * 0.5)
+
+    return await util.waitFor(() => {
+      return Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
         .reduce((total, nc) => total + nc) === 0
-    }, '', timeoutInfo.msRemaining(), 100)
+    }, '', imageTimeout, 100)
   }
 
   async function run(timeoutInfo) {
@@ -91,8 +100,8 @@ const generatePdf = async (opt) => {
     }, rpOptions, timeoutInfo.consoleLogs)
     if (timeoutInfo.error) return
 
-    await waitForImages(timeoutInfo)
-    if (timeoutInfo.error) return
+    // if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
+    // if (timeoutInfo.error) return
 
     //TODO inject page messages to console
     try {
@@ -106,7 +115,7 @@ const generatePdf = async (opt) => {
     }
     if (timeoutInfo.error) return
 
-    await waitForImages(timeoutInfo)
+    if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
     //This is one way to force images to load, wait for 2 seconds
     await page.evaluate(async (delay) => {
       setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
