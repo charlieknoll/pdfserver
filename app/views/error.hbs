@@ -1,4 +1,12 @@
 <h1>{{message}}</h1>
-<h2>{{error.status}}</h2>
-<pre>{{error.pageErrors}}</pre>
-<pre>{{error.stack}}</pre>
+<h2>Status code: {{error.status}}</h2>
+{{#if error.pageErrors}}<h3>Errors:</h3>
+<pre>{{error.pageErrors}}</pre>{{/if}}
+{{#if error.consoleLogs}}
+<h3>Console Logs:</h3>
+<ul>
+  {{#each error.consoleLogs}}
+  <li>{{this}}</li>
+  {{/each}}
+</ul>
+{{/if}}

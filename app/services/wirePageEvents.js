@@ -70,7 +70,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
 
   });
   page.on('response', async (response) => {
-    if (response._status === 204) {
+    if (response._status !== 200) {
       return
     }
     const url = response.url();

@@ -73,7 +73,10 @@ var rpDesigner = {
 
     this.referenceCss(this.options.serverUrl + this.designerPath)
     this.addHiddenForm()
-    if (!opt.tunnelHostUrl) console.log("Responsive Paper error: tunnelHostUrl not set on options. Please see getting started guide for help")
+    if (!opt.tunnelHostUrl) {
+      console.log("Responsive Paper error: tunnelHostUrl not set on options. Please see getting started guide for help")
+      return
+    }
     if (!opt.apiKey) console.log("Responsive Paper error: apiKey not set on options. Please see getting started guide for help")
     if (opt.applyResponsivePaperCss) this.toggleCss()
     if (opt.autoPreview) {
