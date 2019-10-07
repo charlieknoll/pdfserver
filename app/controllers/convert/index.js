@@ -45,6 +45,16 @@ const post = async function (req, res, next) {
     res.set('Content-Type', 'application/pdf')
     let fileName = req.body.fileName || result.pageTitle
     fileName = replaceAll(fileName, ' ', '-')
+    if (fileName == '') {
+      if (req.body.value && req.body.value.substring(0, 4).toLowerCase() === 'http') {
+        var matches = req.body.value.match(/:\/\/(?:www\.)?(.[^/]+)(.*)/);
+        fileName = matches[matches.length - 1]
+        fileName = replaceAll(fileName, '/', '')
+      }
+      if (fileName == '') {
+        fileName = 'converted'
+      }
+    }
     fileName += ".pdf";
     res.set('Content-Disposition', 'inline; filename=' + fileName)
     if (result.content) {
