@@ -1,4 +1,8 @@
 <h1>{{message}}</h1>
+{{#ifinc message "tunnel"}}
+<p class='badge-danger'>Tunnel may be down</p>
+{{/ifinc}}
+
 <h2>Status code: {{error.status}}</h2>
 {{#if error.pageErrors}}<h3>Errors:</h3>
 <pre>{{error.pageErrors}}</pre>{{/if}}

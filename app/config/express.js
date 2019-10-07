@@ -8,12 +8,13 @@ const cookieParser = require('cookie-parser')
 const config = require('./')
 const { logger } = require('../services')
 const handlebars = require('handlebars')
-
+const registerHelpers = require('./hbs-helpers')
 module.exports = (app, passport, pool) => {
 
     //view engine setup
     app.set('views', path.join(config.root, 'views'));
     app.set('view engine', 'hbs');
+    registerHelpers(handlebars)
     app.engine('hbs', hbs.express4({
         defaultLayout: path.join(config.root, '/views/layouts/home.hbs'),
         partialsDir: path.join(config.root, '/views/partials'),
