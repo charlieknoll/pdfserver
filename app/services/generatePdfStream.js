@@ -19,6 +19,8 @@ module.exports = async function generatePdfStream(timeoutInfo, page, pdfOptions,
       bottom: pdfOptions.marginBottom,
       left: pdfOptions.marginLeft
     }
+    //pdfOptions.preferCSSPageSize = true
+    pdfOptions.dpi = 96
     pdfStreams[paperSizes[i]] = await page.pdf(pdfOptions)
     if (timeoutInfo.error) return
   }

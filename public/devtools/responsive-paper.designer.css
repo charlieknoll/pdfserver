@@ -30,10 +30,25 @@
 .rp-hidden {
   display: none;
 }
-/*Emulation styles*/
-body > *:not(.rp-page) {
-  display: none;
+.rp-visible {
+  display: inherit !important;
 }
+.rp-parent {
+  /*this is needed to get accurate calculations on outer height*/
+  padding: 0 !important;
+  margin: 0 !important;
+  padding-top: 1px !important;
+  margin-top: -1px !important;
+  padding-bottom: 1px !important;
+  margin-bottom: -1px !important;
+  border-width: 0px !important;
+}
+.rp-outside-parent {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-width: 0px !important;
+}
+/*Emulation styles*/
 body {
   background-color: grey;
   margin: 0;
@@ -52,9 +67,6 @@ body {
   margin-right: auto;
   margin-left: auto;
   min-height: 11in;
-  /*  box-shadow: 0 5px 10px 0 rgba(0,0,0,.3);*/
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNcvXpBPQAGdgJ3KfanbgAAAABJRU5ErkJggg==);
-  background-repeat: repeat-x;
 }
 @media screen {
   .rp-page {

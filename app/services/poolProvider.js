@@ -28,6 +28,10 @@ const pageFactory = {
       // Create a new page in a pristine context.
       const page = await context.newPage();
       await page.goto('data:text/html,hi');
+      await page.setViewport({
+        width: 1920,
+        height: 1080,
+      });
       return { page: page, context: context };
     } catch (e) {
       //TODO return null and test in consumer?

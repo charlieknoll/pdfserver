@@ -11,7 +11,7 @@ var rpDesigner = {
     includeConsole: true,
     waitForReadyToRender: true,
     waitForReadyToRenderTimeout: 20000,
-    applyResponsivePaperCss: true,
+    applyResponsivePaperCss: false,
     autoPreview: true
   },
   designerPath: "/devtools/responsive-paper.designer.css",
@@ -78,14 +78,42 @@ var rpDesigner = {
       return
     }
     if (!opt.apiKey) console.log("Responsive Paper error: apiKey not set on options. Please see getting started guide for help")
-    if (opt.applyResponsivePaperCss) this.toggleCss()
+    if (opt.applyResponsivePaperCss) this.toggleAll()
     if (opt.autoPreview) {
       this.waitTime = 0
       this.preview()
     }
   },
+  toggleAll: function () {
+    this.toggleParents(!this.cssEl.disabled)
+    this.cssEl.disabled = !this.cssEl.disabled
+  },
   toggleCss: function () {
     this.cssEl.disabled = !this.cssEl.disabled
+  },
+
+  toggleParents: function (show) {
+
+    function toggleChildren(parent, child) {
+      Array.prototype.map.call(parent.children, function (parentChild) {
+        if (child === parentChild) {
+          show ? parent.classList.remove('rp-outside-parent') : parent.classList.add('rp-outside-parent')
+        }
+        else {
+          parentChild.style.display = show ? 'inherit' : 'none'
+        }
+      });
+      if (parent.parentNode && parent.nodeName !== 'BODY') toggleChildren(parent.parentNode, parent)
+    }
+    const pageEls = document.getElementsByClassName('rp-page')
+    if (pageEls.length !== 1) {
+      console.log("ERROR: rp-page element not found")
+      return
+    }
+    toggleChildren(pageEls[0].parentNode, pageEls[0])
+    pageEls[0].classList.add('rp-render')
+    pageEls[0].parentNode.classList.add('rp-pdf')
+
   },
   preview: function () {
 
