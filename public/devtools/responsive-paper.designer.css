@@ -31,7 +31,7 @@
   display: none;
 }
 .rp-visible {
-  display: inherit !important;
+  display: initial !important;
 }
 .rp-parent {
   /*this is needed to get accurate calculations on outer height*/
