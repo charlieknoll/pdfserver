@@ -58,7 +58,7 @@ const generatePdf = async (opt) => {
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value, { waitUntil: 'load' })
       if (response._status !== 200) {
-        const msg = "Chrome could not navigate to page: " + response._status + " - " + response._statusText + opt.value
+        const msg = "Chrome could not navigate to page: " + response._status + " - " + response._statusText + " " + opt.value
         timeoutInfo.addConsoleMessage(msg)
         throw new Error(msg)
       }
