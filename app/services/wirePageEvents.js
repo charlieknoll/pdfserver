@@ -1,7 +1,9 @@
 const { redis } = require('.')
 const util = require('../util')
+const fixMedia = require('./chromeScreenMediaFix')
 
 module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
+  opt.fixedCss = ""
   page.on('pageerror', msg => {
     timeoutInfo.addConsoleMessage(msg._text);
   });
@@ -54,6 +56,9 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
             requestCache[url].fromCache = true
             const parsed = JSON.parse(cachedRequest)
             parsed.body = Buffer.from(parsed.body, 'hex')
+            if (request._resourceType === "stylesheet") {
+              opt.fixedCss += fixMedia(parsed.body.toString())
+            }
             await request.respond(parsed);
             return;
           }
@@ -88,7 +93,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
 
 
     //TODO use public to store in public cache?
-    if (maxAge && !opt.disableCache && redis.status == 'ready' || (response._request._resourceType === "image")) {
+    if (maxAge && !opt.disableCache && redis.status == 'ready' || (response._request._resourceType === "image") || (response._request._resourceType === "stylesheet")) {
       let buffer;
       try {
         buffer = await response.buffer();
@@ -106,6 +111,9 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
             body: buffer
           };
           //timeoutInfo.addConsoleMessage("MEM CACHE inserted: " + url)
+        }
+        if (response._request._resourceType === "stylesheet") {
+          opt.fixedCss += fixMedia(buffer.toString())
         }
         if (!maxAge || !opt.disableCache || !redis.status == 'ready') return
         const cacheKey = cacheControl.includes('public') ? url : opt.apikey + ':' + url

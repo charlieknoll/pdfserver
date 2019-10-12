@@ -10,7 +10,8 @@ const defaultTimeout = 10000
 
 const generatePdf = async (opt) => {
 
-  const requestCache = {} //For handling mulitple requests to same URI
+  //For handling mulitple requests to same URI
+  const requestCache = {}
 
   //TODO, validate user max timeout
   let timeout = opt.timeout ? Math.round(opt.timeout) : defaultTimeout
@@ -126,6 +127,11 @@ const generatePdf = async (opt) => {
 
     //TODO, this may not be necessary with new way of checking images
     //await page.screenshot({ fullPage: true });
+
+    if (chromeOptions.emulateMedia == 'screen' && opt.fixedCss != '') {
+      await page.addStyleTag({ content: opt.fixedCss })
+    }
+
     return generatePdfStream(timeoutInfo, page, pdfOptions, pageTitle)
   }
 }

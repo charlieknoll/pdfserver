@@ -27,6 +27,11 @@ var rpDesigner = {
 
 
   },
+  referenceScript: function (url) {
+    var script = document.createElement('script')
+    script.setAttribute('src', url)
+    document.body.appendChild(script)
+  },
   addHiddenForm: function () {
     //TODO add debug/include logs
 
@@ -66,15 +71,23 @@ var rpDesigner = {
     this.form.appendChild(el);
 
     document.body.appendChild(this.form);
-
   },
-  init: function (opt) {
+  getTunnel: async function () {
+    // const init = { mode: 'no-cors' }
+    // let response = await fetch("http://127.0.0.1:4040/api/tunnels", init);
+    // response.tunnels.forEach((t) => { console.log(t) })
+    return false
+  },
+  init: async function (opt) {
     Object.assign(this.options, opt)
-
+    //this.referenceScript("http://localhost:4040/api/tunnels")
     this.referenceCss(this.options.serverUrl + this.designerPath)
     this.addHiddenForm()
     if (opt.applyResponsivePaperCss) this.toggleAll()
-    if (!opt.tunnelHostUrl) {
+    if (!opt.tunnelHostUrl && ! await this.getTunnel()) {
+
+      //try to load from ngrok api
+
       console.log("Responsive Paper error: tunnelHostUrl not set on options. Please see getting started guide for help")
 
     }
@@ -129,8 +142,12 @@ var rpDesigner = {
       return
     }
     var el = document.getElementById("rp-value")
-
-    el.value = window.location.href.replace(window.location.origin, this.options.tunnelHostUrl)
+    if (this.options.tunnelHostUrl) {
+      el.value = window.location.href.replace(window.location.origin, this.options.tunnelHostUrl)
+    }
+    else {
+      window.location.href
+    }
 
     el = document.getElementById("rp-apikey")
     el.value = this.options.apiKey
