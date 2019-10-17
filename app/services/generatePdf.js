@@ -18,7 +18,7 @@ const generatePdf = async (opt) => {
   if (isNaN(timeout)) timeout = defaultTimeout
   if (timeout < minTimeout) timeout = minTimeout
 
-  let imageTimeout = opt.imageTimeout ? Math.round(opt.imageTimeout) : timeout
+  let imageTimeout = opt.imageTimeout || opt.imageTimeout === 0 ? Math.round(opt.imageTimeout) : timeout
   if (isNaN(imageTimeout)) imageTimeout = timeout
   if (imageTimeout < 0) imageTimeout = 0
 
@@ -37,13 +37,22 @@ const generatePdf = async (opt) => {
 
   async function waitForImages(timeoutInfo) {
     if (Object.keys(requestCache).length === 0) return
+    if (imageTimeout === 0) return
+    let imageTimeoutCtr = 0
 
     // const msRemaining = timeoutInfo.msRemaining()
     // const imageTimeout = Math.round(msRemaining * 0.5)
-
+    if (timeoutInfo.error) return
     return await util.waitFor(() => {
-      return Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
-        .reduce((total, nc) => total + nc) === 0
+      if (timeoutInfo.error) return true
+      imageTimeoutCtr += 100
+      if (imageTimeoutCtr > imageTimeoutCtr) return false
+      // return Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
+      //   .reduce((total, nc) => total + nc) === 0
+      var inCompleteImages = Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
+      var count = inCompleteImages.reduce((total, nc) => total + nc)
+      return count === 0
+      //   .reduce((total, nc) => total + nc) === 0
     }, '', imageTimeout, 100)
   }
 

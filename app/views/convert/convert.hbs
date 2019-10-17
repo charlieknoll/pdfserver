@@ -13,10 +13,10 @@
         <div class="tabs-container">
             <ul class="nav nav-tabs" role="tablist">
                 <li>
-                    <a class="nav-link active show" data-toggle="tab" href="#tab-1"> URL Conversion</a>
+                    <a id="urlTab" class="nav-link active show" data-toggle="tab" href="#tab-1"> URL Conversion</a>
                 </li>
                 <li>
-                    <a class="nav-link" data-toggle="tab" href="#tab-2">HTML Conversion</a>
+                    <a id="htmlTab" class="nav-link" data-toggle="tab" href="#tab-2">HTML Conversion</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -26,33 +26,15 @@
                         <label for="">Url to convert</label>
                         <input type="text" id="url" class="form-control" placeholder="" aria-describedby="helpId"
                             required value="{{url}}">
-                        <small id="helpId" class="text-muted">We will never store your url request history.</small>
                     </div>
                 </div>
                 <div role="tabpanel" id="tab-2" class="tab-pane">
                     <div class="row">
-                        <div class="col-lg-9">
+                        <div class="col-lg-12">
                             <div class="panel-body">
                                 <div id="editor" style="width: 100%; height: 400px;"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <a href="#" id="demo1">Simple basic report</a> <a target="responsive-paper-docs"
-                                href="/docs/responsive-paper-css.html#page">?</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="wrapRpTheme"
-                                        name="wrapRpTheme">
-                                    <label class="custom-control-label" for="wrapRpTheme">Wrap with Responsive Paper
-                                        Theme</label>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -183,12 +165,23 @@
         editor.setOptions({
             fontSize: "16px"
         })
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if (e.target.id == "urlTab") {
+                document.querySelector('#url').setAttribute('required', 'required')
+            } else {
+                document.querySelector('#url').removeAttribute('required')
+            }
+        })
         document.getElementById("converterForm").onsubmit = function () {
             valueEl = document.querySelector('#value')
             var el = document.querySelector('.tab-pane.active.show')
             if (el.id === 'tab-2') {
                 //copy editor to value element
                 valueEl.value = editor.getValue()
+                if (!valueEl.value) {
+                    alert("Please enter html in the editor.")
+                    return false
+                }
             }
             else {
                 //copy url to value element

@@ -48,7 +48,7 @@ const errorHandler = function (err, req, res, next) {
 router.use(asyncHandler(requiresApiKey))
 
 router.get('/', asyncHandler(get), errorHandler)
-router.post('/', asyncHandler(post))
+router.post('/', asyncHandler(post), errorHandler)
 
 router.use(errorHandler)
 
