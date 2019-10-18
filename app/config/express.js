@@ -21,7 +21,7 @@ module.exports = (app, passport, pool) => {
         layoutsDir: path.join(config.root, '/views/layouts'),
         handlebars: handlebars
     }));
-    app.use('/', express.static(config.public))
+    app.use('/', express.static(config.public, { extensions: ['html'] }))
     app.use(function (req, res, next) {
         logger.debug('handling request for: ' + req.url)
         next()

@@ -7,6 +7,7 @@ const configUserRoutes = require('../controllers/users')
 const configConvertRoutes = require('../controllers/convert')
 const { logger } = require('../services')
 const apiV2 = require('../controllers/api/v2')
+const docs = require('../controllers/docs')
 
 module.exports = (app) => {
 
@@ -16,6 +17,7 @@ module.exports = (app) => {
     configUserRoutes(app)
     configConvertRoutes(app)
     app.use('/api/html2pdf/v2', apiV2)
+    //app.use('/docs', docs)
 
 
     // catch 404 and forward to error handler
@@ -29,7 +31,7 @@ module.exports = (app) => {
         // set locals, only providing error in development
         if (err.status != 404) logger.error(err.message)
         res.locals.message = err.message;
-        res.locals.error = req.app.get('env') === 'development' ? err : {};
+        res.locals.error = req.app.get('env') === 'development' ? err : { status: err.status };
 
         // render the error page
         err.status = err.status || 500;

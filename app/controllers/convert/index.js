@@ -55,7 +55,9 @@ const post = async function (req, res, next) {
         fileName = 'converted'
       }
     }
+    fileName = replaceAll(fileName, ',', ' ')
     fileName += ".pdf";
+
     res.set('Content-Disposition', 'inline; filename=' + fileName)
     if (result.content) {
       res.send(result.content)
