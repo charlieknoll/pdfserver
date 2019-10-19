@@ -17,7 +17,7 @@ module.exports = function (opt) {
   const rpOptions = {}
   //this sets landscape to undefined if not explicitly set as false, if undefined the engine will use report default
   //The array is called if this is sent via a form post request
-  rpOptions.landscape = Array.isArray(opt.landscape) ? true : util.checkBoolean(opt.landscape)
+  rpOptions.landscape = util.checkBooleanOrUndefined(opt.landscape)
   //TODO check format and add console message
   rpOptions.format = opt.format == '' ? undefined : opt.format;
   rpOptions.debug = util.checkBoolean(opt.includeConsole)

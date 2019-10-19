@@ -30,7 +30,24 @@ const lookup = function (obj, field) {
 }
 const checkBoolean = function (value) {
     if (typeof value === 'string' || value instanceof String) {
-        return !value.toLowerCase().includes('false', 'no', '0', 'off')
+        if (value.trim() === '') return false
+        if (value.toLowerCase().includes('false')) return false
+        if (value.toLowerCase().includes('0')) return false
+        if (value.toLowerCase().includes('no')) return false
+        if (value.toLowerCase().includes('off')) return false
+        return true
+    }
+    else return value
+
+}
+const checkBooleanOrUndefined = function (value) {
+    if (typeof value === 'string' || value instanceof String) {
+        if (value.trim() === '') return undefined
+        if (value.toLowerCase().includes('false')) return false
+        if (value.toLowerCase().includes('0')) return false
+        if (value.toLowerCase().includes('no')) return false
+        if (value.toLowerCase().includes('off')) return false
+        return true
     }
     else return value
 
@@ -115,6 +132,7 @@ module.exports = {
     replaceAll,
     lookup,
     checkBoolean,
+    checkBooleanOrUndefined,
     getTimeStamp,
     boolOrUndefined,
     runWithTimeout,
