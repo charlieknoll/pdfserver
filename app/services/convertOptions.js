@@ -19,7 +19,7 @@ module.exports = function (opt) {
   //The array is called if this is sent via a form post request
   rpOptions.landscape = Array.isArray(opt.landscape) ? true : util.checkBoolean(opt.landscape)
   //TODO check format and add console message
-  rpOptions.format = opt.format;
+  rpOptions.format = opt.format == '' ? undefined : opt.format;
   rpOptions.debug = util.checkBoolean(opt.includeConsole)
   rpOptions.startTime = new Date
   rpOptions.readyToRender = false
