@@ -45,7 +45,7 @@ const handleValidEmail = async function (email) {
         email: email,
         uuid: uuidv4()
     }
-    const sql = "Update users set resettoken=${uuid},tokenexpire= CURRENT_TIMESTAMP + (15 * interval '1 minute') WHERE email=${email}"
+    const sql = "Update users set reset_token=${uuid},token_expire= CURRENT_TIMESTAMP + (15 * interval '1 minute') WHERE email=${email}"
     await db.none(sql, sqlParams)
 
     //send email

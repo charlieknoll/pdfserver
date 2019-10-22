@@ -4,10 +4,13 @@
     <input id="value" type="hidden" name="value" />
     <div class="form-group">
         <label for="">API Key</label>
-        <input type="text" name="apikey" id="" class="form-control" placeholder="" required value="{{apikey}}">
-        <small id="helpId" class="text-muted">Need an
-            <a href="">API Key?</a>
-        </small>
+        <select class="form-control" name="apikey" id="">
+
+            {{#each apikeys}}
+            <option {{#if this.selected}} selected {{/if}} {{#if this.label}} label="{{this.label}}{{/if}}">
+                {{this.value}}</option>
+            {{/each}}
+        </select>
     </div>
     <div class="form-group">
         <div class="tabs-container">

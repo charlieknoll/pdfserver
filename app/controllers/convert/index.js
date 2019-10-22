@@ -5,11 +5,11 @@ const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../services/generatePdf')
 const { replaceAll } = require('../../util')
 const rpContent = require('../../services/rpContent')
-
+const { db } = require('../../services')
 const url = '/convert'
 const viewPath = url.substring(1) + '/convert'
 
-const actionVm = function (req, errors) {
+const actionVm = async function (req, errors) {
   var errMsgs = [].map(e => e.msg)
 
   const vals = qs.parse(req.query)
@@ -18,7 +18,7 @@ const actionVm = function (req, errors) {
     title: 'Pdf Converter',
     formats: rpContent.formats,
     versions: rpContent.versions,
-    apikey: req.user.apikey
+
   }
   if (vals) {
     Object.assign(formData, vals)
@@ -27,16 +27,22 @@ const actionVm = function (req, errors) {
   formData.versions = arrayToSelectList(formData.versions, vals['version'] || '', true)
   formData.errors = (errors || []).map(e => e.msg)
   //TODO look up user's developer apiKey
-
+  const apikeys = await db.any(`
+SELECT        apikey.value, apikey.descr, apikey.revoked, apikey.subscription_id
+FROM            apikey INNER JOIN
+                         subscription ON apikey.subscription_id = subscription.id
+WHERE subscription.user_id = $1
+    `, req.user.id)
+  formData.apikeys = arrayToSelectList(apikeys.map(a => { return { value: a.value, label: a.descr ? a.descr + " : " + a.value : a.value } }), vals['apikey'] || apikeys[0].value, false)
   return formData
 }
-const get = function (req, res, next) {
+const get = async function (req, res, next) {
   const errors = []
   if (req.session.errorMessage) {
     errors.push({ msg: req.session.errorMessage })
     delete req.session.errorMessage;
   }
-  res.render(viewPath, actionVm(req, errors));
+  res.render(viewPath, await actionVm(req, errors));
 }
 const post = async function (req, res, next) {
 
@@ -74,6 +80,6 @@ const post = async function (req, res, next) {
 }
 
 module.exports = function (app) {
-  app.get(url, auth.requiresUser, get)
+  app.get(url, auth.requiresUser, asyncHandler(get))
   app.post(url, asyncHandler(auth.requiresApiKey), asyncHandler(post))
 }

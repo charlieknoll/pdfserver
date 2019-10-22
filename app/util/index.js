@@ -1,6 +1,16 @@
+const crypto = require('crypto')
+
 const arrayToSelectList = function (strArray, value, addBlank) {
 
     const selectList = strArray.map(v => {
+        if (v.value && v.label) {
+            return {
+                value: v.value,
+                label: v.label,
+                selected: v.value.toLowerCase() === value.toLowerCase()
+
+            }
+        }
         return {
             value: v,
             selected: v.toLowerCase() === value.toLowerCase()
@@ -126,7 +136,11 @@ const runWithTimeout = (fn, ms, msg) => {
 const boolOrUndefined = function (par) {
     return (par === true || par === 'true') ? true : undefined
 }
-
+const combinePassword = function (email, password) {
+    if (email.length + password.length <= 72) return email + password
+    var result = crypto.createHash('sha1').update(JSON.stringify(email + password)).digest('hex')
+    return result
+}
 module.exports = {
     arrayToSelectList,
     replaceAll,
@@ -137,5 +151,6 @@ module.exports = {
     boolOrUndefined,
     runWithTimeout,
     waitFor,
+    combinePassword,
 
 }

@@ -142,3 +142,4 @@ FROM
     subscription
     ON apikey.subscription_id = subscription.id;
 
+DROP TABLE apikey_data;

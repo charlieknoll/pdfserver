@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 const url = '/user/change-password'
 const viewPath = url.substring(1)
+const { combinePassword } = require('../../util')
 
 const actionVm = function (req, errors, email, displayname) {
     var errMsgs = [].map(e => e.msg)
@@ -22,14 +23,14 @@ const get = async function (req, res, next) {
 
     try {
         const resetToken = req.query.token
-        const result = await db.any('Select email, displayname, tokenexpire < CURRENT_TIMESTAMP expired from users where resettoken = ${resetToken}', { resetToken })
+        const result = await db.any('Select email, display_name, token_expire < CURRENT_TIMESTAMP expired from users where reset_token = ${resetToken}', { resetToken })
 
         if (result.length === 0 || result[0].expired) {
             req.session.errorMessage = 'The reset token is either invalid or expired, please try again.'
             res.redirect('/user/reset-password')
             return
         }
-        res.render(viewPath, actionVm(req, null, result[0].email, result[0].displayname))
+        res.render(viewPath, actionVm(req, null, result[0].email, result[0].display_name))
     }
     catch (err) {
         logger.error(err.message)
@@ -64,11 +65,11 @@ const post = async function (req, res, next) {
 
     try {
         sqlParams = {
-            passwordHash: await bcrypt.hash(req.body.password, 10),
+            passwordHash: await bcrypt.hash(combinePassword(req.body.username, req.body.password), 10),
             resetToken: req.query.token,
             email: req.body.username
         }
-        const result = await db.result("UPDATE users SET passwordhash = ${passwordHash}, resettoken = null, tokenexpire = null where resettoken = ${resetToken} and email = ${email} and tokenexpire > CURRENT_TIMESTAMP", sqlParams)
+        const result = await db.result("UPDATE users SET password_hash = ${passwordHash}, reset_token = null, token_expire = null where reset_token = ${resetToken} and email = ${email} and token_expire > CURRENT_TIMESTAMP", sqlParams)
         if (result.rowCount !== 1) throw new Error("The reset token is either invalid or expired, please try again")
 
         //TODO send email confirming password change

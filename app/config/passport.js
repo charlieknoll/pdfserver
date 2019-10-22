@@ -1,16 +1,16 @@
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 const { db, logger } = require('../services')
-
+const { combinePassword } = require('../util')
 module.exports = (passport) => {
     passport.use(new LocalStrategy(async (email, password, cb) => {
         try {
-            const result = await db.any('SELECT id, displayname, passwordhash, usertype FROM users WHERE email=$1 and resettoken IS NULL', [email])
+            const result = await db.any('SELECT id, display_name, email, password_hash, user_type FROM users WHERE email=$1', [email])
             if (result.length > 0) {
                 const first = result[0]
-                bcrypt.compare(password, first.passwordhash, function (err, res) {
+                bcrypt.compare(combinePassword(email, password), first.password_hash, function (err, res) {
                     if (res) {
-                        cb(null, { id: first.id, username: first.displayname, type: first.usertype })
+                        cb(null, { id: first.id, userName: first.display_name, type: first.user_type })
                     } else {
                         cb(null, false)
                     }
@@ -35,7 +35,15 @@ module.exports = (passport) => {
 
     passport.deserializeUser(async (id, cb) => {
         try {
-            const results = await db.query('SELECT users.id, email, displayname, usertype, apikey.value as apikey FROM users inner join apikey on users.id = apikey.userid WHERE users.id = $1', [parseInt(id, 10)])
+            const results = await db.query('SELECT id, email, display_name, user_type FROM users WHERE users.id = $1', [parseInt(id, 10)])
+            if (results.length == 0) cb(null, null)
+            const apikeys = await db.query(`
+SELECT apikey.value, apikey.descr
+FROM subscription INNER JOIN
+apikey ON subscription.id = apikey.subscription_id
+WHERE subscription.user_id = $1 and apikey.revoked = false
+            `, [parseInt(id, 10)])
+            results[0].apikeys = apikeys
             cb(null, results[0])
         }
         catch (err) {

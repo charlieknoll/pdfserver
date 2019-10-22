@@ -4,6 +4,8 @@ const { sanitizeBody } = require('express-validator');
 const { db, sendEmail, logger } = require('../../services')
 const bcrypt = require('bcrypt')
 const speakeasy = require('speakeasy')
+const { combinePassword } = require('../../util')
+const passport = require('passport')
 
 //constants
 const url = '/user/signup'
@@ -16,7 +18,7 @@ const actionVm = function (req, errors) {
         title: 'Sign up',
         errors: (errors || []).map(e => e.msg),
         name: req.body.name,
-        email: req.body.email
+        username: req.body.username
     }
 }
 
@@ -29,11 +31,11 @@ const get = function (req, res, next) {
 const validate = [
     //validate form
     sanitizeBody('name').trim().escape(),
-    sanitizeBody('email').trim().escape(),
+    sanitizeBody('username').trim().escape(),
     body('name', 'Name is required').isLength({ min: 1 }),
     body('password', 'Password must be at least 8 characters').isLength({ min: 8 }),
-    body('email', 'Valid email is required').isEmail(),
-    body('email').custom(async (email) => {
+    body('username', 'Valid email is required').isEmail(),
+    body('username').custom(async (email) => {
         const results = await db.query('SELECT id FROM users WHERE email = $1', email)
         if (results.length !== 0) throw new Error('Email in use');
     }),
@@ -59,7 +61,7 @@ async function post(req, res, next) {
 
     //generate token
     const sqlParams = {
-        email: req.body.email,
+        email: req.body.username,
         displayname: req.body.name,
         //        uuid: uuidv4()
     }
@@ -68,15 +70,25 @@ async function post(req, res, next) {
     try {
         //generate passwordHash
         const saltRounds = 10 //the higher the better - the longer it takes to generate & compare
-        sqlParams.passwordHash = await bcrypt.hash(req.body.password, saltRounds)        //TODO convert to QueryFile
+        sqlParams.passwordHash = await bcrypt.hash(combinePassword(req.body.username, req.body.password), saltRounds)
+        //TODO convert to QueryFile
 
-        //save to db
-        //        const sql = "INSERT INTO users(email,displayname,passwordhash,usertype,resettoken,tokenexpire) VALUES (${email}, ${displayname},${passwordHash},'user',${uuid}, CURRENT_TIMESTAMP + (15 * interval '1 minute'))"
-        const sql = "INSERT INTO users(email,displayname,passwordhash,usertype) VALUES (${email}, ${displayname},${passwordHash},'user') RETURNING id"
+        const sql = "INSERT INTO users(email,display_name,password_hash,user_type) VALUES (${email}, ${displayname},${passwordHash},'user') RETURNING id"
         const result = await db.one(sql, sqlParams)
-        const apiSql = "INSERT INTO apikey(userid,value,descr,usedcredits) VALUES (${userid},${apikey},'Developer',0)"
+        //TODO DO THIS IN TX?
+        const subSql = `
+        INSERT INTO subscription(user_id, pricing_plan_id, start_date, used_credits, credits, rate_limit, concurrent_limit)
+        SELECT ${result.id},pricing_plan.id, CURRENT_DATE, 0, pricing_plan.credits,pricing_plan.rate_limit, pricing_plan.concurrent_limit
+        FROM pricing_plan
+        WHERE pricing_plan.name = 'Free' RETURNING id`
+        const subResult = await db.one(subSql)
+
         const apikey = speakeasy.generateSecretASCII()
-        await db.none(apiSql, { userid: result.id, apikey })
+        const apiSql = `
+        INSERT INTO apikey (subscription_id, value, revoked) VALUES (${subResult.id},'${apikey}', false)
+        `
+        await db.none(apiSql)
+
         //send email
         // const url = 'https://www.responsivepaper.com/user/confirm-registration?token=' + sqlParams.uuid
         // const message = {
@@ -88,6 +100,26 @@ async function post(req, res, next) {
         // };
 
         // await sendEmail(message)
+
+        //redirect to emailsent
+        passport.authenticate('local', function (err, user, info) {
+            if (err) { return next(err); }
+            if (!user) {
+                const errs = [{ msg: "Invalid email or password" }]
+                res.render(url.substring(1), actionVm(req, errs))
+                return
+
+            }
+            req.logIn(user, function (err) {
+                if (err) { return next(err); }
+                var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/user/dashboard';
+                delete req.session.redirectTo;
+                if (redirectTo === '/user/dashboard') req.session.successMessage = "Thank you for signing up with responsive paper"
+                res.redirect(redirectTo);
+            });
+
+        })(req, res, next)
+
     }
     catch (err) {
         logger.error(err)
@@ -96,8 +128,6 @@ async function post(req, res, next) {
         res.render(viewPath, vm)
     }
 
-    //redirect to emailsent
-    res.redirect("/user/dashboard")
 }
 
 //setup routes

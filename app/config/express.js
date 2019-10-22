@@ -41,6 +41,12 @@ module.exports = (app, passport, pool) => {
     }))
 
     app.use(passport.initialize())
-    app.use(passport.session())
+    app.use(function (req, res, next) {
+        if (req.url.match('user') || req.url.match('convert'))
+            passport.session()(req, res, next)
+        else
+            next(); // do not invoke passport
+        // same as doing == app.use(passport.session())
+    });
 }
 
