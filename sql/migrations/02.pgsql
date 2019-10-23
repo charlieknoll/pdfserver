@@ -115,11 +115,11 @@ CREATE TABLE "charge" (
   "tx_date" date NOT NULL,
   "tx_id" varchar(255) not null,
   "method" varchar(255) not null
-)
+);
 
 --TODO create indexes
 DROP INDEX IF EXISTS fk_user_subscription;
-CREATE INDEX IF NOT EXISTS fk_user_subscription ON subscription (user_id)
+CREATE INDEX IF NOT EXISTS fk_user_subscription ON subscription (user_id);
 DROP INDEX IF EXISTS apikey_value;
 CREATE UNIQUE INDEX apikey_value ON apikey (value) INCLUDE (id, revoked);
 --VACUUM ANALYZE apikey;
@@ -143,3 +143,9 @@ FROM
     ON apikey.subscription_id = subscription.id;
 
 DROP TABLE apikey_data;
+
+GRANT USAGE ON SCHEMA public TO rp_user;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO rp_user;
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO rp_user;
