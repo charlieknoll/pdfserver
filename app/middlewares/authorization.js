@@ -29,12 +29,14 @@ module.exports = {
 		}
 		const result = await db.any(`
 			SELECT
-			 value as apikey,
+			 apikey_id,
+			 apikey,
+			 subscription_id,
 			 rate_limit,
 			 concurrent_limit,
 			 overdrawn
 			FROM apikey_validation
-			WHERE value = $1 and cancelled = false and revoked = false
+			WHERE apikey = $1
 			`, apikey)
 		if (result.length != 1) {
 			res.setHeader('Content-Type', 'application/json');
