@@ -15,6 +15,17 @@ function concurrentHandler(req, res) {
   res.status(this.statusCode).send(msg);
 }
 
+
+const signInLimiter = new RateLimit({
+  max: 5,
+  message: 'Too many sign in attempts, please wait at least 30 minutes and try again.',
+  store: new RedisStore({
+    client: redis,
+    prefix: 'rls',
+    expiry: 60 * 30,
+  }),
+
+})
 const rateLimiter = new RateLimit({
   max: (req) => req.rp.rate_limit,
   keyGenerator: (req) => req.rp.apikey,
@@ -40,6 +51,7 @@ const concurrentLimiter = new RateLimit({
 
 module.exports = {
   rateLimiter,
-  concurrentLimiter
+  concurrentLimiter,
+  signInLimiter
 }
 

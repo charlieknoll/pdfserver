@@ -1,6 +1,8 @@
 
 const passport = require('passport')
 const url = '/user/signin'
+const { signInLimiter } = require('../../services/rateLimiter')
+
 
 const signinVm = function (req, errors) {
     var errMsgs = [].map(e => e.msg)
@@ -19,6 +21,7 @@ const post = function (req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             const errs = [{ msg: "Invalid email or password" }]
+            res.status(403)
             res.render(url.substring(1), signinVm(req, errs))
             return
 
@@ -37,7 +40,7 @@ const post = function (req, res, next) {
 
 module.exports = function (app) {
     app.get(url, get)
-    app.post(url, post)
+    app.post(url, signInLimiter, post)
     app.get('/user/login', function (req, res) {
         res.redirect(url)
     })
