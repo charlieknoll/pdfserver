@@ -3,6 +3,7 @@ const router = express.Router()
 const { requiresApiKey } = require('../../../middlewares/authorization')
 const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../../services/generatePdf')
+const { rateLimiter, concurrentLimiter } = require('../../../services/rateLimiter')
 const { replaceAll } = require('../../../util')
 
 
@@ -47,8 +48,8 @@ const errorHandler = function (err, req, res, next) {
 
 router.use(asyncHandler(requiresApiKey))
 
-router.get('/', asyncHandler(get), errorHandler)
-router.post('/', asyncHandler(post), errorHandler)
+router.get('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(get), errorHandler)
+router.post('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(post), errorHandler)
 
 router.use(errorHandler)
 

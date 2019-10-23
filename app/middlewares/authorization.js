@@ -27,13 +27,28 @@ module.exports = {
 			res.status(401).send({ "error": res.statusMessage })
 			return
 		}
-		const result = await db.any('SELECT id FROM apikey WHERE value=$1', [apikey])
+		const result = await db.any(`
+			SELECT
+			 value as apikey,
+			 rate_limit,
+			 concurrent_limit,
+			 overdrawn
+			FROM apikey_validation
+			WHERE value = $1 and cancelled = false and revoked = false
+			`, apikey)
 		if (result.length != 1) {
 			res.setHeader('Content-Type', 'application/json');
 			res.statusMessage = "Invalid API Key"
 			res.status(403).send({ "error": res.statusMessage })
 			return
 		}
+		if (result[0].overdrawn) {
+			res.setHeader('Content-Type', 'application/json');
+			res.statusMessage = "Insufficient credit balance"
+			res.status(402).send({ "error": res.statusMessage })
+			return
+		}
+		req.rp = result[0]
 		return next()
 	}
 }
