@@ -3,6 +3,7 @@ const { arrayToSelectList } = require('../../util')
 const qs = require('qs')
 const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../services/generatePdf')
+const { rateLimiter, concurrentLimiter } = require('../../services/rateLimiter')
 const { replaceAll } = require('../../util')
 const rpContent = require('../../services/rpContent')
 const { db } = require('../../services')
@@ -81,5 +82,5 @@ const post = async function (req, res, next) {
 
 module.exports = function (app) {
   app.get(url, auth.requiresUser, asyncHandler(get))
-  app.post(url, asyncHandler(auth.requiresApiKey), asyncHandler(post))
+  app.post(url, asyncHandler(auth.requiresApiKey), asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(post))
 }
