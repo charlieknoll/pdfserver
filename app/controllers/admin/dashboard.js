@@ -6,8 +6,6 @@ const logger = require('../../services/logger')
 module.exports = function (router) {
 
   const get = async function (req, res, next) {
-    const xs = sf(config.logFile)
-    let logs
     var options = {
       from: new Date - 24 * 60 * 60 * 1000,
       until: new Date,
@@ -20,7 +18,7 @@ module.exports = function (router) {
       if (err) {
         throw err;
       }
-
+      let logs
       if (result.file) logs = result.file.filter(l => l.level !== 'info')
       res.render(req.baseUrl.substring(1) + '/dashboard', { title: 'Admin Dashboard', logs })
 
