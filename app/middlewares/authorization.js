@@ -10,7 +10,12 @@ module.exports = {
 	},
 
 	requiresAdmin: (req, res, next) => {
-		if (req.user && req.user.type === 'admin') return next()
+		if (req.user && req.user.user_type === 'admin') return next()
+		if (!req.user) {
+			req.session.redirectTo = req.originalUrl
+			res.redirect('/user/signin');
+			return
+		}
 
 		res.sendStatus(401)
 	},

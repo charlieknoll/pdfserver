@@ -1,0 +1,12 @@
+<h1>Logs</h1>
+
+{{!-- <pre>
+  {{{logs}}}
+</pre> --}}
+<ul class="log-list">
+  {{#each logs}}
+
+
+  <li>{{this.timestamp}} {{this.message}}</li>
+  {{/each}}
+</ul>

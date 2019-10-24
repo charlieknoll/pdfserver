@@ -141,6 +141,15 @@ const combinePassword = function (email, password) {
     var result = crypto.createHash('sha1').update(JSON.stringify(email + password)).digest('hex')
     return result
 }
+const streamToString = function (stream) {
+    const chunks = []
+    return new Promise((resolve, reject) => {
+        stream.on('data', chunk => chunks.push(chunk))
+        stream.on('error', reject)
+        stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+    })
+}
+
 module.exports = {
     arrayToSelectList,
     replaceAll,
@@ -152,5 +161,5 @@ module.exports = {
     runWithTimeout,
     waitFor,
     combinePassword,
-
+    streamToString
 }

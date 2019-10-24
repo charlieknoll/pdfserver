@@ -17,7 +17,7 @@ function concurrentHandler(req, res) {
 
 
 const signInLimiter = new RateLimit({
-  max: 5,
+  max: 20,
   message: 'Too many sign in attempts, please wait at least 30 minutes and try again.',
   store: new RedisStore({
     client: redis,
