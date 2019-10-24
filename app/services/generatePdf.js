@@ -64,7 +64,7 @@ const generatePdf = async (opt) => {
     await page.setRequestInterception(true);
     wirePageEvents(page, requestCache, opt, timeoutInfo)
 
-    await page.emulateMedia(chromeOptions.emulateMedia)
+    await page.emulateMediaType(chromeOptions.emulateMedia)
     if (opt.value.substring(0, 4).toLowerCase() === 'http') {
       const response = await page.goto(opt.value, { waitUntil: 'load' })
       if (response._status !== 200) {
