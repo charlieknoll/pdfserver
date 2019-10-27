@@ -33,20 +33,14 @@ const generatePdf = async (opt) => {
     if (imageTimeout === 0) return
     let imageTimeoutCtr = 0
 
-    // const msRemaining = timeoutInfo.msRemaining()
-    // const imageTimeout = Math.round(msRemaining * 0.5)
     if (timeoutInfo.error) return
     return await util.waitFor(() => {
       if (timeoutInfo.error) return true
       imageTimeoutCtr += 100
       timeoutInfo.requestLog.delay += 100
       if (imageTimeoutCtr > imageTimeoutCtr) return false
-      // return Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
-      //   .reduce((total, nc) => total + nc) === 0
-      var inCompleteImages = Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
-      var count = inCompleteImages.reduce((total, nc) => total + nc)
-      return count === 0
-      //   .reduce((total, nc) => total + nc) === 0
+      var images = Object.keys(requestCache).filter(u => requestCache[u].resourceType == 'image' && !requestCache[u].complete)
+      return images.length === 0
     }, '', imageTimeout, 100)
   }
 
@@ -107,7 +101,9 @@ const generatePdf = async (opt) => {
 
     await page.addScriptTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.js(opt.version) : rpContent.rpScriptContents })
     await page.addStyleTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
-    const test = await page.content()
+
+    if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
+    if (timeoutInfo.error) return
     await page.evaluate(async (opt, consoleLogs) => {
       if (consoleLogs) {
         rp.logs = rp.logs.concat(consoleLogs)
@@ -116,8 +112,7 @@ const generatePdf = async (opt) => {
     }, rpOptions, timeoutInfo.consoleLogs)
     if (timeoutInfo.error) return
 
-    // if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
-    // if (timeoutInfo.error) return
+
 
     //TODO inject page messages to console
     try {
@@ -141,7 +136,7 @@ const generatePdf = async (opt) => {
     if (timeoutInfo.error) return
 
     //TODO, this may not be necessary with new way of checking images
-    await page.screenshot({ fullPage: true });
+    //await page.screenshot({ fullPage: true });
 
     if (chromeOptions.emulateMedia == 'screen' && opt.fixedCss != '') {
       await page.addStyleTag({ content: opt.fixedCss })

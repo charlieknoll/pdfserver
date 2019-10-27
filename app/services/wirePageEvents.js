@@ -12,7 +12,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
     timeoutInfo.addConsoleMessage(msg._text);
   })
   page.on('request', async request => {
-    const url = request.url();
+    const url = await request.url();
     if (url.includes('responsive-paper.designer') ||
       url.includes('responsive-paper.settings')) {
       await request.respond({ status: 204 });
@@ -44,7 +44,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
       // }
 
       if (!(redis.status == 'ready')) {
-        request.continue()
+        await request.continue()
         return
       }
 
@@ -76,22 +76,23 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
         }
       }
 
-      request.continue();
+      await request.continue();
     }
 
   });
+
   page.on('response', async (response) => {
     if (response._status !== 200) {
       return
     }
-    const url = response.url();
+    const url = await response.url();
     requestCache[url].complete = true
     if (requestCache[url] && (requestCache[url].fromCache || requestCache[url].fromMemCache)) {
       //timeoutInfo.addConsoleMessage("From" + (requestCache[url].fromMemCache ? " Mem" : "") + " Cache " + url)
       if (requestCache[url].fromCache) timeoutInfo.addConsoleMessage("From Cache " + url)
       return;
     }
-    const headers = response.headers();
+    const headers = await response.headers();
     const cacheControl = headers['cache-control'] || '';
     const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
     const maxAge = maxAgeMatch && maxAgeMatch.length > 1 ? parseInt(maxAgeMatch[1], 10) : 0;
@@ -112,11 +113,10 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
       if (buffer.byteLength > 0) {
         if (response._request._resourceType === "image") {
           requestCache[url].response = {
-            status: response.status(),
-            headers: response.headers(),
+            status: await response.status(),
+            headers: await response.headers(),
             body: buffer
           };
-          //timeoutInfo.addConsoleMessage("MEM CACHE inserted: " + url)
         }
         if (response._request._resourceType === "stylesheet") {
           opt.fixedCss += fixMedia(buffer.toString())
