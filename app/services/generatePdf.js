@@ -128,15 +128,15 @@ const generatePdf = async (opt) => {
 
     if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
     //This is one way to force images to load, wait for 2 seconds
-    await page.evaluate(async (delay) => {
-      setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
-    }, chromeOptions.imageDelay)
-    await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: timeoutInfo.msRemaining() - 10 })
+    // await page.evaluate(async (delay) => {
+    //   setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)
+    // }, chromeOptions.imageDelay)
+    // await page.waitForFunction('window.RESPONSIVE_PAPER_DELAY === true', { polling: 50, timeout: timeoutInfo.msRemaining() - 10 })
 
     if (timeoutInfo.error) return
 
     //TODO, this may not be necessary with new way of checking images
-    //await page.screenshot({ fullPage: true });
+    await page.screenshot({ fullPage: true });
 
     if (chromeOptions.emulateMedia == 'screen' && opt.fixedCss != '') {
       await page.addStyleTag({ content: opt.fixedCss })
