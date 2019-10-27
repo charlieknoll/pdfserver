@@ -8,7 +8,8 @@ SELECT
   subscription.user_id,
   subscription.used_credits >= subscription.credits overdrawn,
   subscription.rate_limit,
-  subscription.concurrent_limit
+  subscription.concurrent_limit,
+  subscription.pricing_plan_id = 1 as include_console
 FROM
   apikey
   INNER JOIN

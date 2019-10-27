@@ -31,6 +31,8 @@ const sendPdf = function (req, res, { pageTitle, content, consoleLogs }) {
 const get = async function (req, res, next) {
   let logsSaved = false
   try {
+    if (req.rp.include_console) req.query.includeConsole = true
+
     const result = await generatePdf(req.query)
     if (!result) throw new Error('Error creating pdf')
     await logs.save(result, req)

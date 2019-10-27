@@ -49,6 +49,7 @@ const get = async function (req, res, next) {
 const post = async function (req, res, next) {
   let logsSaved = false
   try {
+    if (req.rp.include_console) req.body.includeConsole = true
     const result = await generatePdf(req.body);
 
     if (!result) throw new Error('Error creating pdf')

@@ -39,7 +39,8 @@ module.exports = {
 			 subscription_id,
 			 rate_limit,
 			 concurrent_limit,
-			 overdrawn
+			 overdrawn,
+			 include_console
 			FROM apikey_validation
 			WHERE apikey = $1
 			`, apikey)
