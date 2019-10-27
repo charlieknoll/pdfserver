@@ -37,11 +37,12 @@ module.exports = (app) => {
 
         // render the error page
         err.status = err.status || 500;
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         if (err.status == 404) {
-            logger.warn(`404 - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+            logger.warn(`404 - ${err.message} - ${req.originalUrl} - ${req.method} - ${ip}`);
 
         } else {
-            logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+            logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${ip}`);
 
         }
         res.status(err.status);
