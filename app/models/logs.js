@@ -8,14 +8,14 @@ async function save(o, req) {
     let value = req.method == 'GET' ? req.query.value : req.body.value
     value = (value.substring(0, 4).toLowerCase() === 'http') ? value.split('?')[0] : 'html'
     const status = (o.message && o.message.includes('timeout')) ? 500 : 200
-
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
 
     return t.one(`
     INSERT INTO request_log(apikey_id, value, ip_address, delay, duration, status, request_time, network_data, cached_data,from_cache_data, file_size)
     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id
     `, [req.rp.apikey_id, value,
-    req.ip, o.requestLog.delay, o.requestLog.duration(), status, o.requestLog.request_time,
+      ip, o.requestLog.delay, o.requestLog.duration(), status, o.requestLog.request_time,
     o.requestLog.network_data, o.requestLog.cached_data,
     o.requestLog.from_cache_data, o.requestLog.file_size])
 
