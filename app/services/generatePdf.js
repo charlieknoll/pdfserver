@@ -141,7 +141,7 @@ const generatePdf = async (opt) => {
     if (timeoutInfo.error) return
 
     //TODO, this may not be necessary with new way of checking images
-    //await page.screenshot({ fullPage: true });
+    await page.screenshot({ fullPage: true });
 
     if (chromeOptions.emulateMedia == 'screen' && opt.fixedCss != '') {
       await page.addStyleTag({ content: opt.fixedCss })

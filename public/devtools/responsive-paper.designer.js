@@ -37,7 +37,8 @@ var rpDesigner = {
 
     this.form = document.createElement("form");
     this.form.setAttribute("method", "post");
-    this.form.setAttribute("action", this.options.serverUrl + "/convert");
+    this.form.setAttribute("action", this.options.serverUrl + "/api/html2pdf/v2");
+    this.form.setAttribute("method", "GET")
     this.form.setAttribute("target", "responsive-paper-preview");
     var el = document.createElement("input");
     el.setAttribute("name", "value");
