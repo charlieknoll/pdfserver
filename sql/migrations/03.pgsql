@@ -27,34 +27,33 @@ CREATE INDEX IF NOT EXISTS fk_subscription_user ON subscription (user_id);
 DROP INDEX IF EXISTS apikey_value;
 CREATE UNIQUE INDEX apikey_value ON apikey (value) INCLUDE (revoked);
 
+DROP TABLE IF EXISTS cache_log;
 DROP TABLE IF EXISTS request_log;
 
 CREATE TABLE "request_log" (
 	"id" bigserial PRIMARY KEY,
 	"apikey_id" int NOT NULL REFERENCES apikey(id),
-  "response_type" varchar(5) NOT NULL,
-  "url" varchar(255) NOT NULL,
-  "ipaddress" varchar(15) NOT NULL,
+  "value" varchar(255) NULL,
+  "ip_address" varchar(15) NOT NULL,
 	"delay" int NOT NULL,
 	"duration" int NOT NULL,
   "status" int NOT NULL,
 	"request_time" timestamp NOT NULL,
   "network_data" int NOT NULL,
-  "stored_data" int NOT NULL,
   "cached_data" int NOT NULL,
-  "filesize" int NOT NULL
+  "from_cache_data" int NOT NULL,
+  "file_size" int NOT NULL
 );
 
-DROP TABLE IF EXISTS cache_log;
+
 
 CREATE TABLE "cache_log" (
 	"id" bigserial PRIMARY KEY,
-	"request_log_id" int NOT NULL REFERENCES request_log(id),
+	"request_log_id" bigint NOT NULL REFERENCES request_log(id),
   "request_type" varchar(20) NOT NULL,
-  "request_time" timestamp nOT NULL,
   "cache_key" varchar(300) NOT NULL,
-  "expires" int NOT NULL,
-  "size" int NOT NULL
+  "expires" bigint NOT NULL,
+  "size" bigint NOT NULL
 );
 
 

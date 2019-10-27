@@ -48,13 +48,17 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
         return
       }
 
+      const redisKey = url.substring(0, 300)
+      const redisApiKey = (opt.apikey + ":" + url).substring(0, 300)
       if (!opt.disableCache) {
         try {
-          const cachedRequest = await redis.get(url) || await redis.get(opt.apikey + ":" + url)
+          let cachedRequest = await redis.get(redisKey)
+          if (!cachedRequest) cachedRequest = await redis.get(redisApiKey)
           //const cachedRequest = cache[url]
           if (cachedRequest) {
             requestCache[url].fromCache = true
             const parsed = JSON.parse(cachedRequest)
+            timeoutInfo.requestLog.from_cache_data += parsed.body.length
             parsed.body = Buffer.from(parsed.body, 'hex')
             if (request._resourceType === "stylesheet") {
               opt.fixedCss += fixMedia(parsed.body.toString())
@@ -66,8 +70,10 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
       }
       else {
         try {
-          await redis.delAsync(opt.apikey + ":" + url)
-        } catch (error) { }
+          await redis.del(redisApiKey)
+        } catch (error) {
+          console.log(error)
+        }
       }
 
       request.continue();
@@ -90,7 +96,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
     const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
     const maxAge = maxAgeMatch && maxAgeMatch.length > 1 ? parseInt(maxAgeMatch[1], 10) : 0;
     timeoutInfo.addConsoleMessage("Received " + url)
-
+    timeoutInfo.requestLog.network_data += util.checkInt(response._headers['content-length'], 0, 0)
 
     //TODO use public to store in public cache?
     if (maxAge && !opt.disableCache && redis.status == 'ready' || (response._request._resourceType === "image") || (response._request._resourceType === "stylesheet")) {
@@ -115,16 +121,27 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
         if (response._request._resourceType === "stylesheet") {
           opt.fixedCss += fixMedia(buffer.toString())
         }
-        if (!maxAge || !opt.disableCache || !redis.status == 'ready') return
-        const cacheKey = cacheControl.includes('public') ? url : opt.apikey + ':' + url
+        if (!maxAge || opt.disableCache || !redis.status == 'ready') return
+        const cacheKey = (cacheControl.includes('public') ? url : opt.apikey + ':' + url).substring(0, 300)
         try {
+          const bufStr = buffer.toString('hex')
           await redis.setex(cacheKey, maxAge, JSON.stringify(
             {
               status: response.status(),
               headers: response.headers(),
-              body: buffer.toString('hex'),
+              body: bufStr,
               expires: Date.now() + (maxAge * 1000)
             }))
+          timeoutInfo.requestLog.cached_data += bufStr.length
+          timeoutInfo.cacheLogs.push(
+            {
+              request_type: response._request._resourceType,
+              cache_key: cacheKey,
+              expires: Date.now() + (maxAge * 1000),
+              size: bufStr.length
+            }
+          )
+
         }
         catch (error) {
           //Kill error just in case cache write fails, no big deal

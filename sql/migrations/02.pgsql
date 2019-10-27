@@ -70,7 +70,7 @@ FROM            users AS u INNER JOIN
                          apikey_data AS a ON u.id = a.userid;
 
 CREATE TABLE apikey (
-	"id" bigserial PRIMARY KEY,
+	"id" serial PRIMARY KEY,
 	"subscription_id" int NOT NULL REFERENCES subscription(id),
 	"value" varchar(255) NOT NULL,
 	"descr" varchar(255),
@@ -109,7 +109,7 @@ CREATE TABLE "cache_log" (
 );
 
 CREATE TABLE "charge" (
-  "id" bigserial PRIMARY KEY,
+  "id" serial PRIMARY KEY,
 	"subscription" int NOT NULL REFERENCES subscription(id),
   "amount" money NOT NULL,
   "tx_date" date NOT NULL,

@@ -7,6 +7,7 @@ const { rateLimiter, concurrentLimiter } = require('../../services/rateLimiter')
 const { replaceAll } = require('../../util')
 const rpContent = require('../../services/rpContent')
 const { db } = require('../../services')
+const logs = require('../../models/logs')
 const url = '/convert'
 const viewPath = url.substring(1) + '/convert'
 
@@ -46,9 +47,13 @@ const get = async function (req, res, next) {
   res.render(viewPath, await actionVm(req, errors));
 }
 const post = async function (req, res, next) {
-
+  let logsSaved = false
   try {
     const result = await generatePdf(req.body);
+
+    if (!result) throw new Error('Error creating pdf')
+    await logs.save(result, req)
+    logsSaved = true
     res.set('Content-Type', 'application/pdf')
     let fileName = req.body.fileName || result.pageTitle
     fileName = replaceAll(fileName, ' ', '-')
@@ -74,6 +79,7 @@ const post = async function (req, res, next) {
     }
   }
   catch (e) {
+    if (!logsSaved && e.requestLog) logs.save(e, req)
     next(e)
 
   }

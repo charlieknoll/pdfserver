@@ -47,7 +47,8 @@ const checkBoolean = function (value) {
         if (value.toLowerCase().includes('off')) return false
         return true
     }
-    else return value
+    if (value == undefined) return false
+    return value
 
 }
 const checkBooleanOrUndefined = function (value) {
@@ -61,6 +62,12 @@ const checkBooleanOrUndefined = function (value) {
     }
     else return value
 
+}
+const checkInt = function (value, defaultValue, minValue) {
+    value = (value || value == '0') ? Math.round(value) : defaultValue
+    if (isNaN(value)) value = defaultValue
+    if (value < minValue) value = minValue
+    return value
 }
 const getTimeStamp = function (d) {
     if (!d) d = new Date
@@ -104,12 +111,15 @@ const runWithTimeout = (fn, ms, msg) => {
                 if (remaining < 0) throw new Error(this.timeout + "ms timeout exceeded")
                 return remaining
             }
+
         }
 
         const timer = setTimeout(() => {
             const err = new Error(`Timeout Error: ${msg}`)
             info.error = err
             err.consoleLogs = info.consoleLogs
+            err.requestLog = info.requestLog
+            err.cacheLogs = info.cacheLogs
             resolved = true
             reject(err)
         }, ms)
@@ -127,6 +137,8 @@ const runWithTimeout = (fn, ms, msg) => {
                 return
             }
             e.consoleLogs = info.consoleLogs
+            e.requestLog = info.requestLog
+            e.cacheLogs = info.cacheLogs
             reject(e)
         } finally {
             clearTimeout(timer)
@@ -161,5 +173,6 @@ module.exports = {
     runWithTimeout,
     waitFor,
     combinePassword,
-    streamToString
+    streamToString,
+    checkInt
 }

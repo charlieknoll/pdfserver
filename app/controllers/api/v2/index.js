@@ -5,6 +5,7 @@ const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../../services/generatePdf')
 const { rateLimiter, concurrentLimiter } = require('../../../services/rateLimiter')
 const { replaceAll } = require('../../../util')
+const logs = require('../../../models/logs')
 
 
 const sendPdf = function (req, res, { pageTitle, content, consoleLogs }) {
@@ -28,7 +29,17 @@ const sendPdf = function (req, res, { pageTitle, content, consoleLogs }) {
   }
 }
 const get = async function (req, res, next) {
-  sendPdf(req, res, await generatePdf(req.query))
+  let logsSaved = false
+  try {
+    const result = await generatePdf(req.query)
+    if (!result) throw new Error('Error creating pdf')
+    await logs.save(result, req)
+    logsSaved = true
+    sendPdf(req, res, result)
+  } catch (e) {
+    if (!logsSaved && e.requestLog) logs.save(e, req)
+    next(e)
+  }
 }
 const post = async function (req, res, next) {
   sendPdf(req, res, await generatePdf(req.body))

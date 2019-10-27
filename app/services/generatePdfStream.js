@@ -3,7 +3,6 @@ const hummus = require('hummus');
 
 module.exports = async function generatePdfStream(timeoutInfo, page, pdfOptions, pageTitle) {
 
-
   const paperSizesByPage = await page.evaluate(() => rp.getPagePaperTypes())
 
   const paperSizes = paperSizesByPage.filter((ps, i, a) => a.indexOf(ps) === i)
@@ -22,6 +21,7 @@ module.exports = async function generatePdfStream(timeoutInfo, page, pdfOptions,
     //pdfOptions.preferCSSPageSize = true
     pdfOptions.dpi = 96
     pdfStreams[paperSizes[i]] = await page.pdf(pdfOptions)
+    timeoutInfo.requestLog.file_size += pdfStreams[paperSizes[i]].length
     if (timeoutInfo.error) return
   }
 

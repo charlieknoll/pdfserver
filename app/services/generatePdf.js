@@ -11,17 +11,10 @@ const defaultTimeout = 10000
 const generatePdf = async (opt) => {
 
   //For handling mulitple requests to same URI
+  //Move inside run?
   const requestCache = {}
-
-  //TODO, validate user max timeout
-  let timeout = opt.timeout ? Math.round(opt.timeout) : defaultTimeout
-  if (isNaN(timeout)) timeout = defaultTimeout
-  if (timeout < minTimeout) timeout = minTimeout
-
-  let imageTimeout = opt.imageTimeout || opt.imageTimeout === 0 ? Math.round(opt.imageTimeout) : timeout
-  if (isNaN(imageTimeout)) imageTimeout = timeout
-  if (imageTimeout < 0) imageTimeout = 0
-
+  const timeout = util.checkInt(opt.timeout, defaultTimeout, minTimeout)
+  const imageTimeout = util.checkInt(opt.imageTimeout, timeout - 500, 0)
 
   await util.waitFor(() => { return poolProvider.pagePool !== null }, '', timeout, 100)
   const instance = await poolProvider.pagePool.acquire()
@@ -46,6 +39,7 @@ const generatePdf = async (opt) => {
     return await util.waitFor(() => {
       if (timeoutInfo.error) return true
       imageTimeoutCtr += 100
+      timeoutInfo.requestLog.delay += 100
       if (imageTimeoutCtr > imageTimeoutCtr) return false
       // return Object.keys(requestCache).map(u => requestCache[u].resourceType != 'image' || requestCache[u].complete ? 0 : 1)
       //   .reduce((total, nc) => total + nc) === 0
@@ -57,6 +51,18 @@ const generatePdf = async (opt) => {
   }
 
   async function run(timeoutInfo) {
+    timeoutInfo.requestLog = {
+      request_time: timeoutInfo.startTime,
+      delay: 0,
+      network_data: 0,
+      cached_data: 0,
+      from_cache_data: 0,
+      file_size: 0,
+      duration: function () {
+        return (new Date - this.request_time)
+      }
+    }
+    timeoutInfo.cacheLogs = []
     const { chromeOptions, pdfOptions, rpOptions } = convertOptions(opt)
     timeoutInfo.addConsoleMessage("Processing started")
     await page.setDefaultNavigationTimeout(timeoutInfo.msRemaining())
@@ -140,8 +146,11 @@ const generatePdf = async (opt) => {
     if (chromeOptions.emulateMedia == 'screen' && opt.fixedCss != '') {
       await page.addStyleTag({ content: opt.fixedCss })
     }
+    const result = await generatePdfStream(timeoutInfo, page, pdfOptions, pageTitle)
+    result.cacheLogs = timeoutInfo.cacheLogs
+    result.requestLog = timeoutInfo.requestLog
 
-    return generatePdfStream(timeoutInfo, page, pdfOptions, pageTitle)
+    return result
   }
 }
 
