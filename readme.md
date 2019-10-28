@@ -153,6 +153,7 @@ run createdb.sql or execute through pgadmin (careful of drop statements and db n
 - touch .env
 - nano .env (enter all vars from sample.env) point rp-dev to use rp-test's db
 - set up db on rp-test
+- NOTE if updating pm2 dump file, first pm2 kill
 - env $(cat .env) node ./app/server.js to run node with env vars
 - env $(cat .env) pm2 start ./app/server.js
 - pm2 save (note that this saves the environment variables in /home/rp_user/.pm2/pm2.dump)

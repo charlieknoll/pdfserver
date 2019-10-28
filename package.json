@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "cross-env": "6.0.3",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4"
   },
@@ -25,7 +25,7 @@
     "express-session": "^1.17.0",
     "express-validator": "^6.2.0",
     "generic-pool": "~3.7.1",
-    "handlebars": "4.4.5",
+    "handlebars": "4.5.0",
     "hbs": "^4.0.6",
     "http-errors": "~1.7.3",
     "hummus": "^1.0.107",

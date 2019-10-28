@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const config = require('../../config')
 const logger = require('../../services/logger')
-
+const poolProvider = require('../../services/poolProvider')
 
 module.exports = function (router) {
 
@@ -20,7 +20,15 @@ module.exports = function (router) {
       }
       let logs
       if (result.file) logs = result.file.filter(l => l.level !== 'info')
-      res.render(req.baseUrl.substring(1) + '/dashboard', { title: 'Admin Dashboard', logs, config: JSON.stringify(config) })
+
+      //console.log(poolProvider)
+      res.render(req.baseUrl.substring(1) + '/dashboard', {
+        title: 'Admin Dashboard', logs, config: JSON.stringify(config),
+        pagePool: JSON.stringify({
+          pending: poolProvider.pagePool.pending,
+          available: poolProvider.pagePool.available
+        })
+      })
 
     })
   }
