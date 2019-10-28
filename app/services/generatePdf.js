@@ -96,7 +96,7 @@ const generatePdf = async (opt) => {
       timeoutInfo.addConsoleMessage("NOT WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER, " + timeoutInfo.msRemaining() + "ms remaining of initial " + timeoutInfo.timeout + "ms timeout")
     }
     rpOptions.readyToRender = true
-
+    await page.setViewport({ width: 1024, height: 768 })
     const pageTitle = await page.title();
 
     await page.addScriptTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.js(opt.version) : rpContent.rpScriptContents })
