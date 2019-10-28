@@ -14,7 +14,7 @@ const generatePdf = async (opt) => {
   //Move inside run?
   const requestCache = {}
   const timeout = util.checkInt(opt.timeout, defaultTimeout, minTimeout)
-  const imageTimeout = util.checkInt(opt.imageTimeout, timeout - 500, 0)
+  const imageTimeout = util.checkInt(opt.imageTimeout, timeout, 0)
 
   await util.waitFor(() => { return poolProvider.pagePool !== null }, '', timeout, 100)
   const instance = await poolProvider.pagePool.acquire()
@@ -29,19 +29,27 @@ const generatePdf = async (opt) => {
   }
 
   async function waitForImages(timeoutInfo) {
-    if (Object.keys(requestCache).length === 0) return
-    if (imageTimeout === 0) return
+    if (Object.keys(requestCache).length === 0) return true
     let imageTimeoutCtr = 0
 
     if (timeoutInfo.error) return
-    return await util.waitFor(() => {
+    let waitTimeout = timeoutInfo.msRemaining() - 500
+    if (waitTimeout > imageTimeout) waitTimeout = imageTimeout
+    timeoutInfo.addConsoleMessage("Waiting " + waitTimeout + "ms for images to finish loading.")
+    const imagesLoaded = await util.waitFor(() => {
       if (timeoutInfo.error) return true
       imageTimeoutCtr += 100
       timeoutInfo.requestLog.delay += 100
       if (imageTimeoutCtr > imageTimeoutCtr) return false
       var images = Object.keys(requestCache).filter(u => requestCache[u].resourceType == 'image' && !requestCache[u].complete)
       return images.length === 0
-    }, '', imageTimeout, 100)
+    }, '', waitTimeout, 100)
+    if (imagesLoaded)
+      timeoutInfo.addConsoleMessage('Images loaded.')
+    else
+      timeoutInfo.addConsoleMessage('WARNING: Images not loaded in ' + waitTimeout + 'ms.')
+    return imagesLoaded
+
   }
 
   async function run(timeoutInfo) {
@@ -78,6 +86,8 @@ const generatePdf = async (opt) => {
       const response = await page.setContent(opt.value, { waitUntil: 'load' })
     }
     if (timeoutInfo.error) return
+    //Do this ASAP after load for best rendering
+    await page.addStyleTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
 
     const msRemaining = timeoutInfo.msRemaining()
     if (opt.waitForReadyToRender) {
@@ -96,14 +106,19 @@ const generatePdf = async (opt) => {
       timeoutInfo.addConsoleMessage("NOT WAITING FOR RESPONSIVE_PAPER_READY_TO_RENDER, " + timeoutInfo.msRemaining() + "ms remaining of initial " + timeoutInfo.timeout + "ms timeout")
     }
     rpOptions.readyToRender = true
-    await page.setViewport({ width: 1024, height: 768 })
+    //await page.setViewport({ width: 1024, height: 768 })
     const pageTitle = await page.title();
 
     await page.addScriptTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.js(opt.version) : rpContent.rpScriptContents })
-    await page.addStyleTag({ content: opt.version && rpContent.versions[0] !== opt.version ? await rpContent.rpContentsProvider.css(opt.version) : rpContent.rpStyleContents })
 
-    if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
+    if (imageTimeout === 0) {
+      timeoutInfo.addConsoleMessage('WARNING: Not waiting for images, imageTimeout set to 0ms in parameters')
+    } else {
+      await waitForImages(timeoutInfo)
+
+    }
     if (timeoutInfo.error) return
+
     await page.evaluate(async (opt, consoleLogs) => {
       if (consoleLogs) {
         rp.logs = rp.logs.concat(consoleLogs)
@@ -125,8 +140,8 @@ const generatePdf = async (opt) => {
       else throw e
     }
     if (timeoutInfo.error) return
+    await waitForImages(timeoutInfo)
 
-    if (!await waitForImages(timeoutInfo)) timeoutInfo.addConsoleMessage('WARNING: Images not loaded, moving on')
     //This is one way to force images to load, wait for 2 seconds
     await page.evaluate(async (delay) => {
       setTimeout(function () { window.RESPONSIVE_PAPER_DELAY = true }, delay)

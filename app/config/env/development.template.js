@@ -20,5 +20,11 @@ module.exports = {
 		apikey: 'Test',
 		domain: 'Test'
 
+	},
+	browserPool: {
+		max: 2,
+		min: 2,
+		maxWaitingClients: 50,
+
 	}
 }

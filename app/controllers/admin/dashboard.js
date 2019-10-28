@@ -20,7 +20,7 @@ module.exports = function (router) {
       }
       let logs
       if (result.file) logs = result.file.filter(l => l.level !== 'info')
-      res.render(req.baseUrl.substring(1) + '/dashboard', { title: 'Admin Dashboard', logs })
+      res.render(req.baseUrl.substring(1) + '/dashboard', { title: 'Admin Dashboard', logs, config: JSON.stringify(config) })
 
     })
   }

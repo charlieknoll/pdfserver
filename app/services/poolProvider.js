@@ -1,7 +1,7 @@
 var debug = require('debug')('pdfserver:browserPagePool');
 const genericPool = require('generic-pool');
-
 const browserFactory = require('./browserFactory')
+const config = require('./../config')
 
 const poolProvider = {
   browser: null,
@@ -10,9 +10,9 @@ const poolProvider = {
     browserFactory.then(b => {
       this.browser = b
       this.pagePool = genericPool.createPool(pageFactory, {
-        max: 2,
-        min: 2,
-        maxWaitingClients: 50,
+        max: config.browserPool.max,
+        min: config.browserPool.min,
+        maxWaitingClients: config.browserPool.maxWaitingClients,
         autostart: true,
       })
     })

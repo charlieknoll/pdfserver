@@ -18,5 +18,11 @@ module.exports = {
 		apikey: process.env.MG_APIKEY,
 		domain: 'mg.responsivepaper.com'
 
+	},
+	browserPool: {
+		max: process.env.BROWSER_POOL_MAX,
+		min: process.env.BROWSER_POOL_MIN,
+		maxWaitingClients: process.env.BROWSER_POOL_MAX_WAITING,
+
 	}
 }
