@@ -28,12 +28,13 @@ const sendPdf = function (req, res, { pageTitle, content, consoleLogs }) {
     throw error
   }
 }
-const get = async function (req, res, next) {
+const handler = async function (req, res, next) {
   let logsSaved = false
   try {
-    if (req.rp.include_console) req.query.includeConsole = true
+    const params = Object.assign({}, req.body, req.query)
+    if (req.rp.include_console) params.includeConsole = true
 
-    const result = await generatePdf(req.query)
+    const result = await generatePdf(params)
     if (!result) throw new Error('Error creating pdf')
     await logs.save(result, req)
     logsSaved = true
@@ -43,9 +44,7 @@ const get = async function (req, res, next) {
     next(e)
   }
 }
-const post = async function (req, res, next) {
-  sendPdf(req, res, await generatePdf(req.body))
-}
+
 const errorHandler = function (err, req, res, next) {
   //TODO how to get error?
   data = {
@@ -61,8 +60,8 @@ const errorHandler = function (err, req, res, next) {
 
 router.use(asyncHandler(requiresApiKey))
 
-router.get('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(get), errorHandler)
-router.post('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(post), errorHandler)
+router.get('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(handler), errorHandler)
+router.post('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(handler), errorHandler)
 
 router.use(errorHandler)
 
