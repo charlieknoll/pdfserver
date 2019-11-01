@@ -35,15 +35,15 @@ CREATE TABLE "request_log" (
 	"id" bigserial PRIMARY KEY,
 	"apikey_id" int NOT NULL REFERENCES apikey(id),
   "value" varchar(255) NULL,
-  "ip_address" varchar(15) NOT NULL,
+  "ip_address" varchar(46) NOT NULL,
 	"delay" int NOT NULL,
 	"duration" int NOT NULL,
   "status" int NOT NULL,
 	"request_time" timestamp NOT NULL,
-  "network_data" int NOT NULL,
-  "cached_data" int NOT NULL,
-  "from_cache_data" int NOT NULL,
-  "file_size" int NOT NULL
+  "network_data" bigint NOT NULL,
+  "cached_data" bigint NOT NULL,
+  "from_cache_data" bigint NOT NULL,
+  "file_size" bigint NOT NULL
 );
 
 
