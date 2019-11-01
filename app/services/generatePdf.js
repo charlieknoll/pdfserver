@@ -18,6 +18,7 @@ const generatePdf = async (opt) => {
 
   await util.waitFor(() => { return poolProvider.pagePool !== null }, '', timeout, 100)
   const instance = await poolProvider.pagePool.acquire()
+  //throw new Error('could not acquire page')
   const page = instance.page
   try {
     return await util.runWithTimeout(run, timeout, `pdf generation not completed after ${timeout}ms`)

@@ -8,7 +8,7 @@ async function save(o, req) {
     let value = req.method == 'GET' ? req.query.value : req.body.value
     value = (value.substring(0, 4).toLowerCase() === 'http') ? value.split('?')[0] : 'html'
     value = value.substring(0, 255)
-    const status = (o.message && o.message.includes('timeout')) ? 500 : 200
+    const status = (req.status) ? req.status : (o.message) ? 500 : 200
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
 
