@@ -70,8 +70,8 @@ FROM            users AS u INNER JOIN
                          apikey_data AS a ON u.id = a.userid;
 
 CREATE TABLE apikey (
-	"id" serial PRIMARY KEY,
-	"subscription_id" int NOT NULL REFERENCES subscription(id),
+	"id" bigserial PRIMARY KEY,
+	"subscription_id" bigint NOT NULL REFERENCES subscription(id),
 	"value" varchar(255) NOT NULL,
 	"descr" varchar(255),
   "revoked" boolean NOT NULL

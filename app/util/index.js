@@ -63,10 +63,11 @@ const checkBooleanOrUndefined = function (value) {
     else return value
 
 }
-const checkInt = function (value, defaultValue, minValue) {
+const checkInt = function (value, defaultValue, minValue, maxValue) {
     value = (value || value == '0') ? Math.round(value) : defaultValue
     if (isNaN(value)) value = defaultValue
     if (value < minValue) value = minValue
+    if (maxValue && value > maxValue) value = maxValue
     return value
 }
 const getTimeStamp = function (d) {

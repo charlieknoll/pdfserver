@@ -3,17 +3,14 @@ const util = require('../util')
 const convertOptions = require('./convertOptions')
 const wirePageEvents = require('./wirePageEvents')
 const generatePdfStream = require('./generatePdfStream')
-const { db, logger, poolProvider } = require('.')
-const minTimeout = 600
-const defaultTimeout = 10000
-
+const { poolProvider } = require('.')
 
 const generatePdf = async (opt) => {
 
   //For handling mulitple requests to same URI
   //Move inside run?
   const requestCache = {}
-  const timeout = util.checkInt(opt.timeout, defaultTimeout, minTimeout)
+  const timeout = util.checkInt(opt.timeout, 40000, 600, 120000)
   const imageTimeout = util.checkInt(opt.imageTimeout, timeout, 0)
 
   await util.waitFor(() => { return poolProvider.pagePool !== null }, '', timeout, 100)

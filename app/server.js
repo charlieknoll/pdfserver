@@ -70,5 +70,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  logger.info('Listening on ' + bind);
+  logger.info('Listening on ' + bind + ', timeout = ' + server.timeout);
 }

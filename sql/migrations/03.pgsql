@@ -1,5 +1,62 @@
 --TODO create materialized view
 DROP VIEW IF EXISTS apikey_validation;
+
+SELECT * INTO apikey_data FROM apikey;
+
+DROP TABLE IF EXISTS cache_log;
+DROP TABLE IF EXISTS request_log;
+DROP TABLE IF EXISTS charge;
+DROP TABLE IF EXISTS apikey;
+DROP TABLE IF EXISTS subscription;
+
+
+CREATE TABLE "subscription" (
+  "id" bigserial PRIMARY KEY,
+	"user_id" bigint NOT NULL REFERENCES users(id),
+	"pricing_plan_id" bigint NOT NULL REFERENCES pricing_plan(id),
+  "discount_code" varchar(20),
+  "start_date" date NOT NULL,
+  "cancel_date" date NULL,
+  "next_charge_date" date NULL,
+	"used_credits" int NOT NULL,
+  "credits" int not null,
+  "rate_limit" int not null,
+  "concurrent_limit" int not null
+);
+
+
+INSERT INTO subscription (  user_id, pricing_plan_id, start_date, used_credits, credits, rate_limit, concurrent_limit)
+SELECT        u.id, pp.id AS ppid, '10-01-2019',0,pp.credits,pp.rate_limit,pp.concurrent_limit
+FROM            users AS u INNER JOIN
+                         pricing_plan AS pp ON pp.id = 1 order by u.id;
+
+CREATE TABLE apikey (
+	"id" bigserial PRIMARY KEY,
+	"subscription_id" bigint NOT NULL REFERENCES subscription(id),
+	"value" varchar(255) NOT NULL,
+	"descr" varchar(255),
+  "revoked" boolean NOT NULL
+);
+
+
+INSERT INTO apikey(subscription_id, value, revoked)
+SELECT 1, value, revoked FROM apikey_data ORDER BY subscription_id;
+
+UPDATE apikey set subscription_id = "id";
+
+DROP TABLE apikey_data;
+
+
+DROP INDEX IF EXISTS fk_apikey_subscription;
+CREATE INDEX IF NOT EXISTS fk_apikey_subscription ON apikey (subscription_id);
+--FIX naming convention
+DROP INDEX IF EXISTS fk_user_subscription;
+DROP INDEX IF EXISTS fk_subscription_user;
+CREATE INDEX IF NOT EXISTS fk_subscription_user ON subscription (user_id);
+--FIX remove id from covering index
+DROP INDEX IF EXISTS apikey_value;
+CREATE UNIQUE INDEX apikey_value ON apikey (value) INCLUDE (revoked);
+
 CREATE VIEW apikey_validation AS
 SELECT
   apikey.id as apikey_id,
@@ -18,22 +75,13 @@ FROM
 WHERE COALESCE(CURRENT_DATE > subscription.cancel_date, FALSE) = false AND
   apikey.revoked = false;
 
-DROP INDEX IF EXISTS fk_apikey_subscription;
-CREATE INDEX IF NOT EXISTS fk_apikey_subscription ON apikey (subscription_id);
---FIX naming convention
-DROP INDEX IF EXISTS fk_user_subscription;
-DROP INDEX IF EXISTS fk_subscription_user;
-CREATE INDEX IF NOT EXISTS fk_subscription_user ON subscription (user_id);
---FIX remove id from covering index
-DROP INDEX IF EXISTS apikey_value;
-CREATE UNIQUE INDEX apikey_value ON apikey (value) INCLUDE (revoked);
 
-DROP TABLE IF EXISTS cache_log;
-DROP TABLE IF EXISTS request_log;
+
+
 
 CREATE TABLE "request_log" (
 	"id" bigserial PRIMARY KEY,
-	"apikey_id" int NOT NULL REFERENCES apikey(id),
+	"apikey_id" bigint NOT NULL REFERENCES apikey(id),
   "value" varchar(255) NULL,
   "ip_address" varchar(46) NOT NULL,
 	"delay" int NOT NULL,
@@ -45,6 +93,8 @@ CREATE TABLE "request_log" (
   "from_cache_data" bigint NOT NULL,
   "file_size" bigint NOT NULL
 );
+DROP INDEX IF EXISTS fk_request_log_apikey;
+CREATE INDEX IF NOT EXISTS fk_request_log_apikey ON request_log (apikey_id);
 
 
 
@@ -56,6 +106,21 @@ CREATE TABLE "cache_log" (
   "expires" bigint NOT NULL,
   "size" bigint NOT NULL
 );
+DROP INDEX IF EXISTS fk_cache_log_request_log;
+CREATE INDEX IF NOT EXISTS fk_cache_log_request_log ON cache_log (request_log_id);
+
+
+CREATE TABLE "charge" (
+  "id" serial PRIMARY KEY,
+	"subscription_id" bigint NOT NULL REFERENCES subscription(id),
+  "amount" money NOT NULL,
+  "tx_date" date NOT NULL,
+  "tx_id" varchar(255) not null,
+  "method" varchar(255) not null
+);
+DROP INDEX IF EXISTS fk_charge_subscription;
+CREATE INDEX IF NOT EXISTS fk_charge_subscription ON charge (subscription_id);
+
 
 
 GRANT USAGE ON SCHEMA public TO rp_user;
