@@ -1,0 +1,89 @@
+.pricing-page .wrapper {
+    width: 100%;
+    max-width: 1000px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    zoom: 1;
+    /* margin-top: -400px; */
+}
+header.section {
+    font-size: 26px;
+    color: #31373a;
+    letter-spacing: 0;
+    font-weight: 500;
+    text-align: center;
+}
+header {
+    font-size: 18px;
+    color: #000;
+    line-height: 24px;
+    margin-bottom: 20px;
+}
+header.section small {
+    font-family: 'Encode Sans',sans-serif;
+    display: block;
+    text-align: center;
+    font-weight: 100;
+    font-size: 16px;
+    color: #5f5f5f;
+    line-height: 25px;
+    margin-top: 10px;
+}
+.pricing-page .plan-table {
+    margin: 50px 0;
+}
+
+.pricing-page .plan-table table {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border-collapse: collapse;
+    text-align: center;
+    -webkit-box-shadow: 0 3px 25px 0 rgba(0,0,0,0.11);
+    box-shadow: 0 3px 25px 0 rgba(0,0,0,0.11);
+    border-radius: 4px;
+    color: #585858;
+    border-style: hidden;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.pricing-page .plan-table th {
+    border: 1px solid #303449;
+    background: #363a52;
+    text-align: center;
+    width: 170px;
+    font-size: 19px;
+    font-weight: 300;
+    color: #fff;
+    line-height: 65px;
+}
+.pricing-page .plan-table th:first-child {
+    width: 280px;
+}
+.tlite-table td, .tlite-table th {
+    position: relative;
+}
+.tlite-table td, .tlite-table th {
+    position: relative;
+}
+
+.pricing-page .plan-table td {
+    border: 1px solid #e5e5e5;
+    padding: 19px 22px;
+    text-align: center;
+    font-size: 1.2em;
+}
+.pricing-page .plan-table td:first-child {
+    text-align: left;
+    padding-left: 22px;
+    color: #414141;
+    font-weight: 1000;
+}
+
+.pricing-page .plan-table tr.header {
+    background: #f8f9fb;
+}

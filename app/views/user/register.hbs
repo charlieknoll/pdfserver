@@ -8,7 +8,7 @@
         {{# if errors }} {{# each errors }}
         <p class="alert alert-danger">{{ this }}</p>
         {{/each}} {{/if}}
-        <form class="m-t" role="form" action="/user/signup" method="POST">
+        <form class="m-t" role="form" action="/user/register" method="POST">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Your Name" required="" name="name"
                     value="{{name}}">
@@ -20,9 +20,9 @@
             <div class="form-group ">
                 <input type="password" class="form-control " placeholder="Password " required=" " name="password">
             </div>
-            <button type="submit" class="btn btn-primary block full-width m-b">Sign up for Responsive Paper</button>
+            <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
             <p>
-                By clicking "Sign up for Responsive Paper" you agree to our
+                By clicking "Register" you agree to our
                 <a href="/terms-of-service">terms of service</a> and
                 <a href="/privacy-statement">privacy statement</a>. We'll occasionally send you account related emails.
             </p>

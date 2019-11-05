@@ -17,6 +17,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "braintree": "^2.21.0",
     "connect-pg-simple": "^6.0.1",
     "cookie-parser": "~1.4.4",
     "express": "~4.17.1",

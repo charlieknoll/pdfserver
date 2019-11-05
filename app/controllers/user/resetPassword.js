@@ -2,12 +2,11 @@ const { validationResult, body } = require('express-validator');
 const { sanitizeBody } = require('express-validator');
 const { db, sendEmail, logger } = require('../../services')
 const uuidv4 = require('uuid/v4')
-
-const url = '/user/reset-password'
-const viewPath = url.substring(1)
+const viewPath = require('../../middlewares/viewPath')
+const router = require('express').Router().use(viewPath)
+const asyncHandler = require('express-async-handler')
 
 const resetPasswordVm = function (req, errors) {
-    var errMsgs = [].map(e => e.msg)
     return {
         title: 'Reset Password',
         errors: (errors || []).map(e => e.msg)
@@ -19,11 +18,10 @@ const get = function (req, res, next) {
         errors.push({ msg: req.session.errorMessage })
         delete req.session.errorMessage;
     }
-    res.render(viewPath, resetPasswordVm(req, errors));
+    res.render(req.viewPath, resetPasswordVm(req, errors));
 }
 
 const validate = [
-    //validate form
     sanitizeBody('email').trim().escape(),
     body('email', 'Valid email is required').isEmail(),
 ]
@@ -32,7 +30,7 @@ const handleValidationErrors = function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const vm = resetPasswordVm(req, errors.array())
-        res.render(viewPath, vm)
+        res.render(req.viewPath, vm)
         return
     }
     next()
@@ -111,8 +109,7 @@ const post = async function (req, res, next) {
     res.redirect('/user/reset-pending')
 }
 
-module.exports = function (app) {
-    app.get(url, get)
-    app.get('/user/reset-pending', (req, res) => res.render('user/reset-pending', { title: 'Password Reset Pending' }))
-    app.post(url, validate, handleValidationErrors, post)
-}
+router.get('/', get)
+router.post('/', validate, handleValidationErrors, asyncHandler(post))
+
+module.exports = router

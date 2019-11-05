@@ -6,25 +6,22 @@ const bcrypt = require('bcrypt')
 const speakeasy = require('speakeasy')
 const { combinePassword } = require('../../util')
 const passport = require('passport')
+const viewPath = require('../../middlewares/viewPath')
+const router = require('express').Router().use(viewPath)
+const asyncHandler = require('express-async-handler')
 
-//constants
-const url = '/user/signup'
-const viewPath = url.substring(1)
 
-//viewModel
 const actionVm = function (req, errors) {
-    var errMsgs = [].map(e => e.msg)
     return {
-        title: 'Sign up',
+        title: 'Register',
         errors: (errors || []).map(e => e.msg),
         name: req.body.name,
         username: req.body.username
     }
 }
 
-//get
 const get = function (req, res, next) {
-    res.render(viewPath, actionVm(req));
+    res.render(req.viewPath, actionVm(req));
 }
 
 //validation
@@ -50,7 +47,7 @@ const handleValidationErrors = function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const vm = actionVm(req, errors.array())
-        res.render(viewPath, vm)
+        res.render(req.viewPath, vm)
         return
     }
     next()
@@ -85,7 +82,7 @@ async function post(req, res, next) {
 
         const apikey = speakeasy.generateSecretASCII()
         const apiSql = `
-        INSERT INTO apikey (subscription_id, value, revoked) VALUES (${subResult.id},'${apikey}', false)
+        INSERT INTO apikey (subscription_id, value, descr, revoked) VALUES (${subResult.id},'${apikey}', 'Free Testing API Key', false)
         `
         await db.none(apiSql)
 
@@ -125,13 +122,12 @@ async function post(req, res, next) {
         logger.error(err)
         error = { msg: err.message }
         const vm = actionVm(req, [error])
-        res.render(viewPath, vm)
+        res.render(req.viewPath, vm)
     }
 
 }
 
+router.get('/', get)
+router.post('/', validate, handleValidationErrors, asyncHandler(post))
 //setup routes
-module.exports = function (app) {
-    app.get(url, get)
-    app.post(url, validate, handleValidationErrors, post)
-}
+module.exports = router

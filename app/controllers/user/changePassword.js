@@ -4,12 +4,14 @@ const { db, logger } = require('../../services')
 const bcrypt = require('bcrypt')
 
 const passport = require('passport')
-const url = '/user/change-password'
-const viewPath = url.substring(1)
+const viewPath = require('../../middlewares/viewPath')
+const router = require('express').Router().use(viewPath)
+const asyncHandler = require('express-async-handler')
+
+
 const { combinePassword } = require('../../util')
 
 const actionVm = function (req, errors, email, displayname) {
-    var errMsgs = [].map(e => e.msg)
     return {
         title: 'Change password',
         errors: (errors || []).map(e => e.msg),
@@ -30,7 +32,7 @@ const get = async function (req, res, next) {
             res.redirect('/user/reset-password')
             return
         }
-        res.render(viewPath, actionVm(req, null, result[0].email, result[0].display_name))
+        res.render(req.viewPath, actionVm(req, null, result[0].email, result[0].display_name))
     }
     catch (err) {
         logger.error(err.message)
@@ -54,7 +56,7 @@ const handleValidationErrors = function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const vm = actionVm(req, errors.array(), req.body.username, req.body.displayname)
-        res.render(viewPath, vm)
+        res.render(req.viewPath, vm)
         return
     }
     next()
@@ -78,7 +80,7 @@ const post = async function (req, res, next) {
             if (err) { return next(err); }
             if (!user) {
                 const errs = [{ msg: "Invalid email or password" }]
-                res.render(url.substring(1), actionVm(req, errs))
+                res.render(req.viewPath, actionVm(req, errs))
                 return
 
             }
@@ -98,7 +100,7 @@ const post = async function (req, res, next) {
         res.redirect('/user/reset-password')
     }
 }
-module.exports = function (app) {
-    app.get(url, get)
-    app.post(url, validate, handleValidationErrors, post)
-}
+router.get('/', get)
+router.post('/', validate, handleValidationErrors, asyncHandler(post))
+
+module.exports = router

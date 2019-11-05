@@ -5,7 +5,14 @@
 {{#each subscriptions}}
 <hr>
 <h2>{{this.name}} Plan</h2>
-<p>You have used {{this.used_credits}} of {{this.credits}} monthly credits on this plan.</p>
+{{#ifeq this.pricing_plan_id 1 }}
+<p>Free plans expire once you've used up your credits. If you need further testing, please contact <a
+    href="mailto:support@responsivepaper.com?subject=Free Credit Request ({{this.apikeys.[0].value}})">support@responsivepaper.com</a>
+  for more free credits.</p>
+{{else}}
+<p>Your used credits will reset to 0 on {{this.nextChargeDate}}</p>
+{{/ifeq}}
+<p>You have used {{this.used_credits}} of {{this.credits}} credits on this plan.</p>
 <h3>API Keys</h3>
 <table>
   <thead>
@@ -19,7 +26,7 @@
   <tbody>
     {{#each this.apikeys}}
     <tr>
-      <td>{{#if this.name}}{{this.name}}{{else}}not set{{/if}}</td>
+      <td>{{#if this.descr}}{{this.descr}}{{else}}not set{{/if}}</td>
       <td>{{this.value}}</td>
       <td>{{#if this.revoked}}Yes{{else}}No{{/if}}</td>
       <td><a href="">Usage</a>&nbsp; &nbsp; <a href="">Edit/Revoke</a></td>
@@ -27,5 +34,11 @@
     {{/each}}
   </tbody>
 </table>
+{{#ifeq this.pricing_plan_id 1 }}
+<a class='btn btn-warning' href="/user/cancel-plan/{{this.id}}">Cancel plan</a>
+{{else}}
+<a class='btn btn-warning' href="/user/cancel-plan/{{this.id}}">Cancel plan</a>
+{{/ifeq}}
 <hr>
 {{/each}}
+<a class='btn btn-primary' href="/user/add-plan">Add a plan</a>

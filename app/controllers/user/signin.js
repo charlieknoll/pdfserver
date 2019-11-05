@@ -1,7 +1,7 @@
 
 const passport = require('passport')
-const url = '/user/signin'
-const { signInLimiter } = require('../../services/rateLimiter')
+const viewPath = require('../../middlewares/viewPath')
+const router = require('express').Router().use(viewPath)
 
 
 const signinVm = function (req, errors) {
@@ -13,8 +13,7 @@ const signinVm = function (req, errors) {
 }
 
 const get = function (req, res, next) {
-
-    res.render(url.substring(1), signinVm(req));
+    res.render(req.viewPath, signinVm(req));
 }
 const post = function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
@@ -22,7 +21,7 @@ const post = function (req, res, next) {
         if (!user) {
             const errs = [{ msg: "Invalid email or password" }]
             res.status(403)
-            res.render(url.substring(1), signinVm(req, errs))
+            res.render(req.viewPath, signinVm(req, errs))
             return
 
         }
@@ -38,11 +37,6 @@ const post = function (req, res, next) {
 
 }
 
-module.exports = function (app) {
-    app.get(url, get)
-    app.post(url, signInLimiter, post)
-    app.get('/user/login', function (req, res) {
-        res.redirect(url)
-    })
-
-}
+router.get('/', get)
+router.post('/', post)
+module.exports = router

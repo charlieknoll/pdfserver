@@ -28,6 +28,7 @@ module.exports = (app, passport, pool) => {
     //     logger.debug('handling request for: ' + req.url)
     //     next()
     // });
+
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(cookieParser())
@@ -43,6 +44,7 @@ module.exports = (app, passport, pool) => {
     }))
 
     app.use(passport.initialize())
+
     app.use(function (req, res, next) {
         if (req.url.match('user') || req.url.match('convert') || req.url.match('admin'))
             passport.session()(req, res, next)
