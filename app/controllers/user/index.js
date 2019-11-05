@@ -12,7 +12,9 @@ router.use('/change-password', signInLimiter, require('./changePassword'))
 router.use('/subscribe', auth.requiresUser, require('./subscribe'))
 router.use('/checkout', auth.requiresUser, require('./checkout'))
 router.use('/add-plan', auth.requiresUser, require('./add-plan'))
-router.use('/add-payment-method', auth.requiresUser, require('./add-payment-method'))
+router.use('/payment-method', auth.requiresUser, require('./payment-method'))
+router.use('/billing-info', auth.requiresUser, require('./billing-info'))
+router.use('/confirm-subscription', auth.requiresUser, require('./confirm-subscription'))
 
 module.exports = router
 

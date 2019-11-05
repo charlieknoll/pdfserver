@@ -87,3 +87,10 @@ header.section small {
 .pricing-page .plan-table tr.header {
     background: #f8f9fb;
 }
+
+#dropin-container {
+  min-height: 285px;
+}
+#pay-btn {
+    margin-top: 1em;
+}

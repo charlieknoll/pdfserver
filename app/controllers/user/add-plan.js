@@ -50,7 +50,7 @@ const post = async function (req, res, next) {
   //redirect to confirm-payment-method
   //else
   //redirect to add-payment-method
-  res.redirect('/user/add-payment-method')
+  res.redirect('/user/payment-method')
 
 
 }

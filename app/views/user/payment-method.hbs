@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="pricing-page">
+    <div class="wrapper">
+      <p><a href="/user/add-plan">Choose Plan</a> > <a href="#">Payment</a> > Confirm Subscription</p>
+      <p>You've selected the <strong>{{this.plan.name}} plan</strong> for <strong>{{this.plan.price}}</strong> per
+        month. You will not be charged until you complete the "Confirm Subscription" step.</p>
+      {{# if this.errorMessage }}
+      <p class="alert alert-danger">An unexpected error occurred, pleasy try again. <br />{{ this.errorMessage }}</p>
+      {{/if}}
+      <div style="display: none;" id="dropin-container"></div>
+      <input disabled id="pay-btn" class="btn btn-primary" type="submit" value="Loading...">
+    </div>
+  </div>
+</div>
+<form id="payloadForm" method="POST">
+  <input id="payload" name="payload" hidden />
+</form>
+<form>
+
+</form>
+{{#contentFor 'pageScripts'}}
+<script src="https://js.braintreegateway.com/web/dropin/1.20.4/js/dropin.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.54.2/js/data-collector.min.js"></script>
+<script>
+
+  var payBtn = document.querySelector('#pay-btn');
+  function enablePayNow() {
+    payBtn.removeAttribute('disabled')
+
+  }
+  function disablePayNow() {
+    payBtn.setAttribute('disabled', "true")
+  }
+  braintree.dropin.create({
+    authorization: '{{this.clientToken}}',
+    container: '#dropin-container',
+    paypal: {
+      flow: 'vault'
+    },
+    dataCollector: {
+      kount: true
+    },
+    threeDSecure: true
+
+  }, function (createErr, instance) {
+    document.querySelector('#dropin-container').style.display = 'initial'
+    payBtn.value = 'Select Payment Method';
+    if (instance.isPaymentMethodRequestable()) enablePayNow()
+
+    instance.on('paymentOptionSelected', function (paymentOption) {
+      if (paymentOption) { enablePayNow() } else { disablePayNow() }
+    })
+
+    instance.on('noPaymentMethodRequestable', function () {
+      disablePayNow()
+    })
+
+    //instance.on('changeActivePaymentMethod', enablePayNow)
+    //console test
+
+    payBtn.addEventListener('click', function (e) {
+      disablePayNow()
+      instance.requestPaymentMethod({
+        threeDSecure: {
+          amount: '100.00',
+          billingAddress: {
+            givenName: 'Charles',
+            surname: 'Knoll',
+            phoneNumber: '7204694880',
+            streetAddress: '1915 S Pennsylvania St',
+            extendedAddress: null,
+            locality: 'Denver',
+            region: 'CO',
+            postalCode: '80210',
+            countryCodeAlpha2: 'US'
+          }
+
+        }
+      }, function (err, payload) {
+        if (err) {
+          instance.clearSelectedPaymentMethod();
+          enablePayNow()
+
+          return;
+        }
+        document.getElementById('payload').value = JSON.stringify(payload)
+        document.getElementById('payloadForm').submit()
+        //console.log("payload:" + payload)
+        payBtn.value = 'Processing...'
+      });
+    });
+
+  });
+</script>
+
+{{/contentFor}}
