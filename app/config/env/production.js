@@ -1,3 +1,6 @@
+const braintree = require('braintree')
+
+
 module.exports = {
 	db: {
 		user: process.env.DB_USER,
