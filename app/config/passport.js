@@ -5,7 +5,7 @@ const { combinePassword } = require('../util')
 module.exports = (passport) => {
     passport.use(new LocalStrategy(async (email, password, cb) => {
         try {
-            const result = await db.any('SELECT id, display_name, email, password_hash, user_type, vault_id is not null as vaulted FROM users WHERE email=$1', [email])
+            const result = await db.any('SELECT id, display_name, email, password_hash, user_type FROM users WHERE email=$1', [email])
             if (result.length > 0) {
                 const first = result[0]
                 bcrypt.compare(combinePassword(email, password), first.password_hash, function (err, res) {
@@ -35,7 +35,7 @@ module.exports = (passport) => {
 
     passport.deserializeUser(async (id, cb) => {
         try {
-            const results = await db.query('SELECT id, email, display_name, user_type, vault_id is not null as vaulted FROM users WHERE users.id = $1', [parseInt(id, 10)])
+            const results = await db.query('SELECT id, email, display_name, user_type FROM users WHERE users.id = $1', [parseInt(id, 10)])
             if (results.length == 0) cb(null, null)
             const apikeys = await db.query(`
 SELECT apikey.value, apikey.descr
