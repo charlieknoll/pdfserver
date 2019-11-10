@@ -1,1 +1,25 @@
-<h2>Confirm Subscription</h2>
+<div class="container">
+  <div class="pricing-page">
+    <div class="wrapper">
+      <p><a href="/user/add-plan">Choose Plan</a> > <a href="/user/payment-method">Payment</a> > <a href="#">Confirm
+          Subscription</a></p>
+      <p>You've selected the <strong>{{this.plan.name}} plan</strong> for <strong>{{this.plan.price}}</strong> per
+        month.
+      </p>
+
+      <p>Your account will be billed on the <strong>{{this.recurDateDescr}} day of the month</strong>. You may cancel at
+        any time for a
+        prorated rebate based on credits used.</p>
+      <p>Please click "Confirm Subscription" button below to start your subscription using your
+        <strong>{{this.paymentMethodDescr}}</strong></p>
+      {{# if this.errorMessage }}
+      <p class="alert alert-danger">{{ this.errorMessage }}</p>
+      {{/if}}
+      <div style="display: none;" id="dropin-container"></div>
+      <form method="POST">
+        <button id="pay-btn" class="btn btn-primary" type="submit">Confirm Subscription</button>
+
+      </form>
+    </div>
+  </div>
+</div>

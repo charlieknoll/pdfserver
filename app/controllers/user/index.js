@@ -15,6 +15,7 @@ router.use('/add-plan', auth.requiresUser, require('./add-plan'))
 router.use('/payment-method', auth.requiresUser, require('./payment-method'))
 router.use('/billing-info', auth.requiresUser, require('./billing-info'))
 router.use('/confirm-subscription', auth.requiresUser, require('./confirm-subscription'))
+router.use('/payment-confirmed', auth.requiresUser, require('./payment-confirmed'))
 
 module.exports = router
 

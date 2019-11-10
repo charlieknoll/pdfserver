@@ -19,6 +19,7 @@
 
 </form>
 {{#contentFor 'pageScripts'}}
+<script src="https://js.braintreegateway.com/web/3.55.0/js/client.min.js"></script>
 <script src="https://js.braintreegateway.com/web/dropin/1.20.4/js/dropin.min.js"></script>
 <script src="https://js.braintreegateway.com/web/3.54.2/js/data-collector.min.js"></script>
 <script>
@@ -34,21 +35,36 @@
   braintree.dropin.create({
     authorization: '{{this.clientToken}}',
     container: '#dropin-container',
+    //amount: '{{this.plan.price}}',
+    //card: {
+    //  cardholderName: {
+    //    required: true
+    // to make cardholder name required
+    // required: true
+    //  }
+    //},
     paypal: {
       flow: 'vault'
     },
+    //threeDSecure: true,
     dataCollector: {
       kount: true
-    },
-    threeDSecure: true
+    }
 
   }, function (createErr, instance) {
+    if (createErr) {
+      console.log(createErr)
+      return
+    }
     document.querySelector('#dropin-container').style.display = 'initial'
     payBtn.value = 'Select Payment Method';
     if (instance.isPaymentMethodRequestable()) enablePayNow()
 
     instance.on('paymentOptionSelected', function (paymentOption) {
       if (paymentOption) { enablePayNow() } else { disablePayNow() }
+    })
+    instance.on('paymentMethodRequestable', function (paymentOption) {
+      enablePayNow()
     })
 
     instance.on('noPaymentMethodRequestable', function () {
@@ -61,21 +77,7 @@
     payBtn.addEventListener('click', function (e) {
       disablePayNow()
       instance.requestPaymentMethod({
-        threeDSecure: {
-          amount: '100.00',
-          billingAddress: {
-            givenName: 'Charles',
-            surname: 'Knoll',
-            phoneNumber: '7204694880',
-            streetAddress: '1915 S Pennsylvania St',
-            extendedAddress: null,
-            locality: 'Denver',
-            region: 'CO',
-            postalCode: '80210',
-            countryCodeAlpha2: 'US'
-          }
 
-        }
       }, function (err, payload) {
         if (err) {
           instance.clearSelectedPaymentMethod();

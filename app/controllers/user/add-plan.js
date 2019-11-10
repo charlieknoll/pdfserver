@@ -29,7 +29,7 @@ WHERE id <> 1 and Active = true
 const post = async function (req, res, next) {
   //verify plan id
   const plan = await db.oneOrNone(`
-  SELECT        id, name, price
+  SELECT        id, name, price, credits, rate_limit, concurrent_limit
   FROM            pricing_plan
   WHERE id <> 1 and Active = true and id = $1
 `, req.body.planId)

@@ -3,13 +3,12 @@ const { validationResult, body } = require('express-validator');
 const { sanitizeBody } = require('express-validator');
 const { db, sendEmail, logger } = require('../../services')
 const bcrypt = require('bcrypt')
-const speakeasy = require('speakeasy')
 const { combinePassword } = require('../../util')
 const passport = require('passport')
 const viewPath = require('../../middlewares/viewPath')
 const router = require('express').Router().use(viewPath)
 const asyncHandler = require('express-async-handler')
-
+const { createSubscription } = require('../../services/subscription')
 
 const actionVm = function (req, errors) {
     return {
@@ -73,18 +72,20 @@ async function post(req, res, next) {
         const sql = "INSERT INTO users(email,display_name,password_hash,user_type) VALUES (${email}, ${displayname},${passwordHash},'user') RETURNING id"
         const result = await db.one(sql, sqlParams)
         //TODO DO THIS IN TX?
-        const subSql = `
-        INSERT INTO subscription(user_id, pricing_plan_id, start_date, used_credits, credits, rate_limit, concurrent_limit)
-        SELECT ${result.id},pricing_plan.id, CURRENT_DATE, 0, pricing_plan.credits,pricing_plan.rate_limit, pricing_plan.concurrent_limit
-        FROM pricing_plan
-        WHERE pricing_plan.name = 'Free' RETURNING id`
-        const subResult = await db.one(subSql)
 
-        const apikey = speakeasy.generateSecretASCII()
-        const apiSql = `
-        INSERT INTO apikey (subscription_id, value, descr, revoked) VALUES (${subResult.id},'${apikey}', 'Free Testing API Key', false)
-        `
-        await db.none(apiSql)
+        createSubscription(result.id, 1, 'Free Testing API Key')
+        // const subSql = `
+        // INSERT INTO subscription(user_id, pricing_plan_id, start_date, used_credits, credits, rate_limit, concurrent_limit)
+        // SELECT ${result.id},pricing_plan.id, CURRENT_DATE, 0, pricing_plan.credits,pricing_plan.rate_limit, pricing_plan.concurrent_limit
+        // FROM pricing_plan
+        // WHERE pricing_plan.name = 'Free' RETURNING id`
+        // const subResult = await db.one(subSql)
+
+        // const apikey = speakeasy.generateSecretASCII()
+        // const apiSql = `
+        // INSERT INTO apikey (subscription_id, value, descr, revoked) VALUES (${subResult.id},'${apikey}', 'Free Testing API Key', false)
+        // `
+        // await db.none(apiSql)
 
         //send email
         // const url = 'https://www.responsivepaper.com/user/confirm-registration?token=' + sqlParams.uuid
