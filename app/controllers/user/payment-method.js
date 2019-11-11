@@ -27,16 +27,26 @@ const get = async function (req, res, next) {
   }
 
   const tokenOptions = findResult ? { customerId: req.user.id } : {}
-  tokenOptions.version = '3'
-  const result = await generateClientToken(tokenOptions)
-  if (!findResult) result.clientToken = 'sandbox_24dmtsx6_hpbdxsbzdtpk6hf6'
-  res.render(req.viewPath, {
-    name: req.user.display_name,
-    title: "Select Payment Method", errorMessage,
-    plan: req.session.selectedPlan,
-    //clientToken: 'sandbox_24dmtsx6_hpbdxsbzdtpk6hf6'
-    clientToken: result.clientToken
-  })
+  // const tokenOptions = {}
+  // const test = {}
+
+  //const result = await generateClientToken(tokenOptions)
+
+  gateway.clientToken.generate({
+    version: '3',
+    customerId: req.user.id
+  }, function (err, result) {
+    res.render(req.viewPath, {
+      name: req.user.display_name,
+      title: "Select Payment Method", errorMessage,
+      plan: req.session.selectedPlan,
+      //clientToken: 'sandbox_24dmtsx6_hpbdxsbzdtpk6hf6'
+      clientToken: result.clientToken
+    })
+  });
+
+  //if (!findResult) result.clientToken = 'sandbox_24dmtsx6_hpbdxsbzdtpk6hf6'
+
 }
 
 const post = async function (req, res, next) {

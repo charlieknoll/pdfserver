@@ -46,7 +46,7 @@
     paypal: {
       flow: 'vault'
     },
-    //threeDSecure: true,
+    threeDSecure: true,
     dataCollector: {
       kount: true
     }
@@ -77,7 +77,23 @@
     payBtn.addEventListener('click', function (e) {
       disablePayNow()
       instance.requestPaymentMethod({
+        threeDSecure: {
+          email: 'your.email@email.com',
+          mobilePhoneNumber: '1234567890',
+          amount: '49.99',
+          billingAddress: {
+            givenName: 'Charles',
+            surname: 'Knoll',
+            phoneNumber: '7204694880',
+            streetAddress: '1915 S Pennsylvania St',
+            extendedAddress: null,
+            locality: 'Denver',
+            region: 'CO',
+            postalCode: '12345',
+            countryCodeAlpha2: 'US'
+          }
 
+        }
       }, function (err, payload) {
         if (err) {
           instance.clearSelectedPaymentMethod();
@@ -85,6 +101,7 @@
 
           return;
         }
+        //return;
         document.getElementById('payload').value = JSON.stringify(payload)
         document.getElementById('payloadForm').submit()
         //console.log("payload:" + payload)
