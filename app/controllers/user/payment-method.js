@@ -14,77 +14,31 @@ const get = async function (req, res, next) {
   const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
   const generateClientToken = promisify(gateway.clientToken.generate).bind(gateway.clientToken)
 
-  //ensure customer id has been vaulted
-  //const customerResult = await createCustomer({ id: req.user.id })
-  //const customerResult = await createCustomer({ id: req.user.id })
-  //if user is gateway user pass customer id in options
-
   let findResult
   try {
     findResult = await findCustomer(req.user.id)
-  } catch (e) {
-    //console.log(e)
-  }
+  } catch (e) { }
 
   const tokenOptions = findResult ? { customerId: req.user.id } : {}
-  // const tokenOptions = {}
-  // const test = {}
 
-  //const result = await generateClientToken(tokenOptions)
+  const result = await generateClientToken(tokenOptions)
 
-  gateway.clientToken.generate({
-    version: '3',
-    customerId: req.user.id
-  }, function (err, result) {
-    res.render(req.viewPath, {
-      name: req.user.display_name,
-      title: "Select Payment Method", errorMessage,
-      plan: req.session.selectedPlan,
-      //clientToken: 'sandbox_24dmtsx6_hpbdxsbzdtpk6hf6'
-      clientToken: result.clientToken
-    })
-  });
-
-  //if (!findResult) result.clientToken = 'sandbox_24dmtsx6_hpbdxsbzdtpk6hf6'
-
+  res.render(req.viewPath, {
+    name: req.user.display_name,
+    email: req.user.email,
+    title: "Select Payment Method", errorMessage,
+    plan: req.session.selectedPlan,
+    clientToken: result.clientToken
+  })
 }
 
 const post = async function (req, res, next) {
-  const gateway = braintree.connect(config.braintree);
   const payload = JSON.parse(req.body.payload)
-  const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
-  const createCustomer = promisify(gateway.customer.create).bind(gateway.customer)
-  let findResult
-  let paymentMethodResult
-
-  try {
-    findResult = await findCustomer(req.user.id)
-
-    const createPaymentMethod = promisify(gateway.paymentMethod.create).bind(gateway.paymentMethod)
-
-    paymentMethodResult = await createPaymentMethod({
-      customerId: req.user.id,
-      paymentMethodNonce: payload.nonce,
-      deviceData: payload.deviceData
-    })
-    req.session.paymentMethodToken = paymentMethodResult.paymentMethod.token
-  } catch (e) {
-    const customerResult = await createCustomer({
-      id: req.user.id,
-      paymentMethodNonce: payload.nonce,
-      deviceData: payload.deviceData
-    })
-    req.session.paymentMethodToken = customerResult.customer.paymentMethods[0].token
-  }
-
-
-
-  //req.session.nonce = payload.nonce
-
+  req.session.nonce = payload.nonce
+  req.session.deviceData = payload.deviceData
   req.session.paymentType = payload.type
-  req.session.paymentMethodDescr = payload.type == 'CreditCard' ? payload.details.cardType + ' card ending with ' + payload.details.lastFour : 'PayPal account'
-  //TODO put payment description in the session
-
+  req.session.paymentMethodDescr = payload.type == 'CreditCard' ? payload.details.cardType + ' card ending with ' + payload.details.lastFour : payload.details.email + ' PayPal Account'
+  req.session.expiration = payload.type == 'CreditCard' ? payload.details.expirationMonth + '/' + payload.details.expirationYear.substring(2) : null
   res.redirect('/user/confirm-subscription')
 }
 

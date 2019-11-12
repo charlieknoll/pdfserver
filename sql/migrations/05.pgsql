@@ -4,9 +4,47 @@
 --TODO add payment_method table
 
 
-ALTER TABLE subscription
-ADD COLUMN IF NOT EXISTS gateway_id varchar(36);
+-- ALTER TABLE subscription
+-- ADD COLUMN IF NOT EXISTS gateway_id varchar(36);
 
+ALTER TABLE subscription
+ADD COLUMN IF NOT EXISTS payment_method_descr varchar(100);
+
+ALTER TABLE subscription
+ADD COLUMN IF NOT EXISTS expiration varchar(100);
+
+ALTER TABLE subscription
+ADD COLUMN IF NOT EXISTS status varchar(20); --cancelled, active, past due, expired
+
+CREATE TABLE "subscription_log" (
+	"id" bigserial PRIMARY KEY,
+	"subscription_id" bigint NOT NULL REFERENCES subscription(id),
+  "kind" varchar(255) NOT NULL,
+  "event_timestamp" timestamp NOT NULL
+);
+
+DROP INDEX IF EXISTS fk_subscription_log_subscription;
+CREATE INDEX IF NOT EXISTS fk_subscription_log_subscription ON subscription_log (subscription_id);
+
+DROP VIEW IF EXISTS apikey_validation;
+
+CREATE VIEW apikey_validation AS
+SELECT
+  apikey.id as apikey_id,
+  subscription.id as subscription_id,
+  apikey.value as apikey,
+  subscription.user_id,
+  subscription.used_credits >= subscription.credits overdrawn,
+  subscription.rate_limit,
+  subscription.concurrent_limit,
+  subscription.pricing_plan_id = 1 as include_console
+FROM
+  apikey
+  INNER JOIN
+    subscription
+    ON apikey.subscription_id = subscription.id
+WHERE subscription.cancel_date IS NULL AND
+  apikey.revoked = false;
 
 -- DROP TABLE IF EXISTS payment_method;
 

@@ -16,6 +16,7 @@ router.use('/payment-method', auth.requiresUser, require('./payment-method'))
 router.use('/billing-info', auth.requiresUser, require('./billing-info'))
 router.use('/confirm-subscription', auth.requiresUser, require('./confirm-subscription'))
 router.use('/payment-confirmed', auth.requiresUser, require('./payment-confirmed'))
-
+router.use('/update-payment', auth.requiresUser, require('./update-payment'))
+router.use('/cancel-subscription', auth.requiresUser, require('./cancel-subscription'))
 module.exports = router
 

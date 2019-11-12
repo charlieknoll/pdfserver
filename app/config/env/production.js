@@ -32,6 +32,7 @@ module.exports = {
 		environment: braintree.Environment.Sandbox,
 		merchantId: 'hpbdxsbzdtpk6hf6',
 		publicKey: 'v8mc6zsqpm7ftwdb',
-		privateKey: '02709d038c553c283f3a8086a1a73e54'
+		privateKey: '02709d038c553c283f3a8086a1a73e54',
+		webhookToken: 'BraintreeTesting'
 	}
 }

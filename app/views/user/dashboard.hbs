@@ -2,16 +2,35 @@
 <p class="alert alert-success">{{ successMessage }}</p>
 {{/if}}
 <h2>My Dashboard</h2>
-{{#each subscriptions}}
+<a class='btn btn-primary btn-sm' href="/user/add-plan">Add a plan</a>
 <hr>
-<h2>{{this.name}} Plan</h2>
+{{#each subscriptions}}
+
+<h2>{{this.name}} Plan - {{this.status}}
+  {{#ifeq this.status 'Active'}}
+  <a href='/user/cancel-subscription/{{this.id}}'><span style='vertical-align: middle;'
+      class="badge badge-light">Cancel</span></a>
+  {{/ifeq}}
+</h2>
+{{#ifeq this.status 'Past Due'}}
+<div class='alert alert-danger'>Your account is past due please <a href='/user/update-payment/{{this.id}}'>update your
+    payment
+    method</a> to
+  continue your service.</div>
+{{/ifeq}}
 {{#ifeq this.pricing_plan_id 1 }}
 <p>Free plans expire once you've used up your credits. If you need further testing, please contact <a
     href="mailto:support@responsivepaper.com?subject=Free Credit Request ({{this.apikeys.[0].value}})">support@responsivepaper.com</a>
   for more free credits.</p>
 {{else}}
-<p>Your used credits will reset to 0 on {{this.nextChargeDate}}</p>
-{{/ifeq}}
+{{#ifinc 'Active Past Due Expired' this.status }}
+<p>Your credits will reset to 0 and your <strong>{{this.payment_method_descr}}</strong> will be charged {{this.price}}
+  on
+  {{this.next_charge_date}} - <a href="/user/update-payment/{{this.id}}">update payment method</a>
+  {{/ifinc}}
+  {{/ifeq}}
+</p>
+
 <p>You have used {{this.used_credits}} of {{this.credits}} credits on this plan.</p>
 <h3>API Keys</h3>
 <table>
@@ -29,16 +48,10 @@
       <td>{{#if this.descr}}{{this.descr}}{{else}}not set{{/if}}</td>
       <td>{{this.value}}</td>
       <td>{{#if this.revoked}}Yes{{else}}No{{/if}}</td>
-      <td><a href="">Usage</a>&nbsp; &nbsp; <a href="">Edit/Revoke</a></td>
+      <td>{{#if this.revoked}}{{else}}<a href="">Edit/Revoke</a>{{/if}}</td>
     </tr>
     {{/each}}
   </tbody>
 </table>
-{{#ifeq this.pricing_plan_id 1 }}
-<a class='btn btn-warning' href="/user/cancel-plan/{{this.id}}">Cancel plan</a>
-{{else}}
-<a class='btn btn-warning' href="/user/cancel-plan/{{this.id}}">Cancel plan</a>
-{{/ifeq}}
 <hr>
 {{/each}}
-<a class='btn btn-primary' href="/user/add-plan">Add a plan</a>

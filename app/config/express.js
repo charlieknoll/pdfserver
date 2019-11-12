@@ -3,15 +3,33 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const hbs = require('express-hbs')
 const session = require('express-session')
-const pgSession = require('connect-pg-simple')(session)
+//const pgSession = require('connect-pg-simple')(session)
+const RedisStore = require('connect-redis')(session);
 const cookieParser = require('cookie-parser')
 const config = require('./')
-const { logger } = require('../services')
+const { logger, redis } = require('../services')
 var morgan = require('morgan');
 const handlebars = require('handlebars')
 const registerHelpers = require('./hbs-helpers')
 module.exports = (app, passport, pool) => {
-
+    // app.use(session({
+    //     store: new pgSession({
+    //         pool
+    //     }),
+    //     secret: config.session_secret,
+    //     resave: false,
+    //     cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
+    //     saveUninitialized: false
+    // }))
+    app.use(session({
+        store: new RedisStore({
+            client: redis
+        }),
+        secret: config.session_secret,
+        resave: false,
+        cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
+        saveUninitialized: false
+    }))
     //view engine setup
     app.set('views', path.join(config.root, 'views'));
     app.set('view engine', 'hbs');
@@ -33,15 +51,7 @@ module.exports = (app, passport, pool) => {
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(cookieParser())
 
-    app.use(session({
-        store: new pgSession({
-            pool
-        }),
-        secret: config.session_secret,
-        resave: false,
-        cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
-        saveUninitialized: false
-    }))
+
 
     app.use(passport.initialize())
 

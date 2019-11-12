@@ -3,7 +3,7 @@ const { arrayToSelectList } = require('../../util')
 const qs = require('qs')
 const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../services/generatePdf')
-const { rateLimiter, concurrentLimiter } = require('../../services/rateLimiter')
+const { rateLimiter, waitLimiter, concurrentLimiter } = require('../../services/rateLimiter')
 const { replaceAll } = require('../../util')
 const rpContent = require('../../services/rpContent')
 const { db } = require('../../services')
@@ -33,7 +33,7 @@ const actionVm = async function (req, errors) {
 SELECT        apikey.value, apikey.descr, apikey.revoked, apikey.subscription_id
 FROM            apikey INNER JOIN
                          subscription ON apikey.subscription_id = subscription.id
-WHERE subscription.user_id = $1
+WHERE subscription.user_id = $1 and subscription.cancel_date is null
     `, req.user.id)
   formData.apikeys = arrayToSelectList(apikeys.map(a => { return { value: a.value, label: a.descr ? a.descr + " : " + a.value : a.value } }), vals['apikey'] || apikeys[0].value, false)
   return formData
@@ -89,5 +89,5 @@ const post = async function (req, res, next) {
 
 module.exports = function (app) {
   app.get(url, auth.requiresUser, asyncHandler(get))
-  app.post(url, asyncHandler(auth.requiresApiKey), asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(post))
+  app.post(url, asyncHandler(auth.requiresApiKey), asyncHandler(waitLimiter), asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(post))
 }

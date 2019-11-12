@@ -5,6 +5,7 @@
 const { redis } = require('.')
 const RateLimit = require('express-rate-limit');
 const RedisStore = require('rate-limit-redis');
+const WaitLimit = require('./wait-limit')
 
 function rateHandler(req, res) {
   const msg = req.rateLimit.current + " requests in past hour exceeds the subscription's " + req.rateLimit.limit + ' hourly request limit.  Upgrade your plan at responsivepaper.com.'
@@ -48,10 +49,15 @@ const concurrentLimiter = new RateLimit({
     expiry: 60 * 60
   }),
 })
-
+const waitLimiter = new WaitLimit({
+  maxDelay: 30000, //30 seconds max to wait for an available
+  keyGenerator: (req) => 'rlc' + req.rp.apikey,
+  max: (req) => req.rp.concurrent_limit,
+})
 module.exports = {
   rateLimiter,
   concurrentLimiter,
-  signInLimiter
+  signInLimiter,
+  waitLimiter
 }
 

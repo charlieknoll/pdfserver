@@ -3,7 +3,7 @@ const router = express.Router()
 const { requiresApiKey } = require('../../../middlewares/authorization')
 const asyncHandler = require('express-async-handler')
 const generatePdf = require('../../../services/generatePdf')
-const { rateLimiter, concurrentLimiter } = require('../../../services/rateLimiter')
+const { rateLimiter, waitLimiter, concurrentLimiter } = require('../../../services/rateLimiter')
 const { replaceAll } = require('../../../util')
 const logs = require('../../../models/logs')
 const logger = require('../../../services/logger')
@@ -83,8 +83,8 @@ const errorHandler = async function (err, req, res, next) {
 
 router.use(asyncHandler(requiresApiKey))
 
-router.get('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(handler), asyncHandler(errorHandler))
-router.post('/', asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(handler), asyncHandler(errorHandler))
+router.get('/', asyncHandler(waitLimiter), asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(handler), asyncHandler(errorHandler))
+router.post('/', asyncHandler(waitLimiter), asyncHandler(concurrentLimiter), asyncHandler(rateLimiter), asyncHandler(handler), asyncHandler(errorHandler))
 
 router.use(errorHandler)
 

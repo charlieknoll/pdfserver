@@ -8,6 +8,7 @@ module.exports = (app) => {
         res.render('home/index', { title: 'Home', layout: 'landing.hbs' })
     })
     app.use('/user', require('../controllers/user'))
+    app.use('/webhooks', require('../controllers/webhooks'))
     configConvertRoutes(app)
     app.use('/api/html2pdf/v2', require('../controllers/api/v2'))
     app.use('/admin', require('../controllers/admin'))

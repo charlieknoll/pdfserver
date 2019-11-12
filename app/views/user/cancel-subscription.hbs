@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="pricing-page">
+    <div class="wrapper">
+      <h2>Cancel Subscription?</h2>
+      {{# if this.errorMessage }}
+      <p class="alert alert-danger">An unexpected error occurred, pleasy try again. <br />{{ this.errorMessage }}</p>
+      {{/if}}
+      <p>Are you sure you want to cancel your subscription to the <strong>{{this.plan.name}} plan</strong>?</p>
+      <form style="width: 200px;" method="POST">
+        <button type="submit " class="btn btn-primary block full-width m-b ">Yes, cancel my subscription</button>
+        <a class="btn btn-sm btn-white btn-block " href="/user/dashboard ">No, return to the dashboard</a>
+      </form>
+      <p class="text-muted">
+        <small>Your account will be refunded a prorated amount based on the credits used this billing period.</small>
+      </p>
+    </div>
+  </div>
+</div>

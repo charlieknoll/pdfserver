@@ -5,7 +5,7 @@ const router = require('express').Router().use(viewPath)
 const config = require('../../config')
 const braintree = require('braintree');
 const { promisify } = require('util')
-const { createSubscription } = require('../../services/subscription')
+const { createSubscription, deleteFailed } = require('../../models/subscription')
 
 
 function ordinal_suffix_of(i) {
@@ -23,10 +23,12 @@ function ordinal_suffix_of(i) {
   return i + "th";
 }
 const get = async function (req, res, next) {
-  //TODO get token, see if it has 3d info from braintree
+  if (!req.session.nonce) {
+    res.redirect('/user/dashboard')
+    return
+  }
   const errorMessage = req.session.errorMessage
   delete req.session.errorMessage
-
   res.render(req.viewPath, {
     name: req.user.display_name,
     title: "Confirm Subscription", errorMessage,
@@ -34,36 +36,82 @@ const get = async function (req, res, next) {
     paymentMethodDescr: req.session.paymentMethodDescr,
     recurDateDescr: ordinal_suffix_of(new Date().getDate())
   })
-
 }
 
+const checkResult = function (o) {
+  if (!o.success) throw new Error(o.message)
+  return o
+}
+
+
 const post = async function (req, res, next) {
+
   const gateway = braintree.connect(config.braintree);
-
+  const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
+  const createCustomer = promisify(gateway.customer.create).bind(gateway.customer)
   const createSubscriptionAsync = promisify(gateway.subscription.create).bind(gateway.subscription)
-  const params = {
-    paymentMethodToken: req.session.paymentMethodToken,
-    planId: req.session.selectedPlan.id,
-    name: req.user.name
-
+  let paymentMethodToken
+  let findResult
+  let subscriptionId
+  try {
+    findResult = await findCustomer(req.user.id)
+  } catch (e) {
   }
-  if (req.session.paymentType == 'PayPalAccount') {
-    params.options = {
-      paypal: {
-        description: 'Responsive Paper ' + req.session.selectedPlan.name + ' plan monthly subscription'
+  try {
+    if (findResult) {
+      const createPaymentMethod = promisify(gateway.paymentMethod.create).bind(gateway.paymentMethod)
+
+      const paymentMethodResult = checkResult(await createPaymentMethod({
+        customerId: req.user.id,
+        paymentMethodNonce: req.session.nonce,
+        deviceData: req.session.deviceData
+      }))
+      paymentMethodToken = paymentMethodResult.paymentMethod.token
+    } else {
+      const names = req.user.display_name.replace('  ', ' ').split(' ')
+      const firstName = names[0]
+      const lastName = names.length > 1 ? names[1] : null
+      const customerResult = checkResult(await createCustomer({
+        id: req.user.id,
+        firstName,
+        lastName,
+        paymentMethodNonce: req.session.nonce,
+        deviceData: req.session.deviceData
+      }))
+      paymentMethodToken = customerResult.customer.paymentMethods[0].token
+
+    }
+    req.session.nonce = null
+    const params = {
+      paymentMethodToken: paymentMethodToken,
+      planId: req.session.selectedPlan.id
+    }
+    if (req.session.paymentType == 'PayPalAccount') {
+      params.options = {
+        paypal: {
+          description: 'Responsive Paper ' + req.session.selectedPlan.name + ' plan monthly subscription'
+        }
       }
     }
-  }
-  const result = await createSubscriptionAsync(params)
+    subscriptionId = await createSubscription(
+      req.user.id,
+      req.session.selectedPlan.id,
+      req.session.selectedPlan.name + ' API Key',
+      req.session.paymentMethodDescr,
+      req.session.expiration)
 
-  if (!result.success) {
-    req.session.errorMessage = "An error occurred processing the transaction, please try again."
-    res.redirect(req.baseUrl)
+    params.id = subscriptionId
+    const result = checkResult(await createSubscriptionAsync(params))
+  } catch (e) {
+    if (subscriptionId) {
+      try {
+        deleteFailed(subscriptionId)
+      } catch { }
+    }
+    req.session.errorMessage = e.message
+    res.redirect('/user/payment-method')
     return
   }
-  await createSubscription(req.user.id, req.session.selectedPlan.id, null, result.subscription.id)
-  //TODO insert subscription and apikey
-
   res.redirect('/user/payment-confirmed')
 }
 

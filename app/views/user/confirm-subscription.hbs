@@ -16,10 +16,25 @@
       <p class="alert alert-danger">{{ this.errorMessage }}</p>
       {{/if}}
       <div style="display: none;" id="dropin-container"></div>
-      <form method="POST">
-        <button id="pay-btn" class="btn btn-primary" type="submit">Confirm Subscription</button>
+      <form id="confirmForm" method="POST">
+        <input id="confirm-btn" class="btn btn-primary" type="submit" value="Confirm Subscription">
 
       </form>
     </div>
   </div>
 </div>
+
+{{#contentFor 'pageScripts'}}
+<script>
+
+  var confirmBtn = document.querySelector('#confirm-btn');
+  confirmBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    confirmBtn.setAttribute('disabled', "true");
+    confirmBtn.value = 'Processing...';
+    document.getElementById('confirmForm').submit();
+  });
+
+</script>
+
+{{/contentFor}}

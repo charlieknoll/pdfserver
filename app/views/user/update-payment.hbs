@@ -1,9 +1,10 @@
 <div class="container">
   <div class="pricing-page">
     <div class="wrapper">
-      <p><a href="/user/add-plan">Choose Plan</a> > <a href="#">Payment</a> > Confirm Subscription</p>
-      <p>You've selected the <strong>{{this.plan.name}} plan</strong> for <strong>{{this.plan.price}}</strong> per
-        month. You will not be charged until you complete the "Confirm Subscription" step.</p>
+      <h2>Update Payment Method</h2>
+      <p>You're updating the payment info for the <strong>{{this.plan.name}} plan</strong> at
+        <strong>{{this.plan.price}}</strong> per
+        month. </p>
       {{# if this.errorMessage }}
       <p class="alert alert-danger">An unexpected error occurred, pleasy try again. <br />{{ this.errorMessage }}</p>
       {{/if}}
@@ -15,7 +16,9 @@
 <form id="payloadForm" method="POST">
   <input id="payload" name="payload" hidden />
 </form>
+<form>
 
+</form>
 {{#contentFor 'pageScripts'}}
 <script src="https://js.braintreegateway.com/web/dropin/1.20.4/js/dropin.min.js"></script>
 <script src="https://js.braintreegateway.com/web/3.54.2/js/data-collector.min.js"></script>

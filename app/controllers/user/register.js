@@ -8,7 +8,7 @@ const passport = require('passport')
 const viewPath = require('../../middlewares/viewPath')
 const router = require('express').Router().use(viewPath)
 const asyncHandler = require('express-async-handler')
-const { createSubscription } = require('../../services/subscription')
+const { createSubscription } = require('../../models/subscription')
 
 const actionVm = function (req, errors) {
     return {
