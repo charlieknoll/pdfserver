@@ -29,7 +29,7 @@ const create = async function (subscription_id, user_id, name) {
   await db.none(apiSql, [name])
 }
 const revoke = async function (user_id, id) {
-  checkSubscriptionOwner(user_id, id)
+  checkApiKeyOwner(user_id, id)
   const apiSql = `
         UPDATE apikey SET revoked = true where id = ${id}
         `
@@ -37,7 +37,7 @@ const revoke = async function (user_id, id) {
 
 }
 const rename = async function (id, user_id, name) {
-  checkSubscriptionOwner(user_id, id)
+  checkApiKeyOwner(user_id, id)
   const apiSql = `
         UPDATE apikey SET name = ${name} where id = ${id}
         `
