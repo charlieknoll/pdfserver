@@ -8,8 +8,11 @@
 
 <h2>{{this.name}} Plan - {{this.status}}
   {{#ifeq this.status 'Active'}}
+  {{#ifeq this.pricing_plan_id 1}}
+  {{else}}
   <a href='/user/cancel-subscription/{{this.id}}'><span style='vertical-align: middle;'
       class="badge badge-light">Cancel</span></a>
+  {{/ifeq}}
   {{/ifeq}}
 </h2>
 {{#ifeq this.status 'Past Due'}}
