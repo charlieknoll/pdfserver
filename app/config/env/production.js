@@ -1,6 +1,5 @@
 const braintree = require('braintree')
 
-
 module.exports = {
 	db: {
 		user: process.env.DB_USER,
@@ -30,9 +29,9 @@ module.exports = {
 	},
 	braintree: {
 		environment: braintree.Environment.Sandbox,
-		merchantId: 'hpbdxsbzdtpk6hf6',
-		publicKey: 'v8mc6zsqpm7ftwdb',
-		privateKey: '02709d038c553c283f3a8086a1a73e54',
-		webhookToken: 'BraintreeTesting'
+		merchantId: process.env.BRAINTREE_MERCHANT_ID,
+		publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+		privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+		webhookToken: process.env.BRAINTREE_WEBHOOK_TOKEN
 	}
 }
