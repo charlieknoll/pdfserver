@@ -1,0 +1,46 @@
+<h2>
+  {{#if id}}
+  Edit API Key - {{value}}
+  {{else}}
+  Create API Key
+  {{/if}}
+
+</h2>
+
+<form method="POST">
+  <input type="hidden" id="subscriptionId" name="subscriptionId" value="{{this.subscriptionId}}" />
+  <input type="hidden" name="id" value="{{this.id}}" />
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="form-group">
+        <label for="">Name</label>
+        <input required type="text" name="descr" id="" class="form-control" placeholder="" value="{{descr}}">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class='btn btn-primary btn-sm' type="submit">Save</button>
+    <a href="/user/dashboard" class='btn btn-default btn-sm'>Cancel</a>
+  </div>
+</form>
+{{#if id}}
+<div class="form-group">
+  <a class='btn btn-danger btn-sm' id="revoke-btn" href="/user/edit-apikey/revoke/{{id}}">Revoke</a>
+</div>
+{{/if}}
+
+{{#contentFor 'pageScripts'}}
+<script>
+
+  var revokeBtn = document.querySelector('#revoke-btn');
+  revokeBtn.addEventListener('click', function (e) {
+
+
+    if (!window.confirm('Revoke API Key?')) {
+      e.preventDefault();
+    }
+  })
+
+</script>
+{{/contentFor}}

@@ -28,7 +28,7 @@ WHERE subscription.user_id = ${req.user.id}
 ORDER BY subscription.cancel_date desc, subscription.start_date asc
                          `)
     const apikeys = await db.any(`
-SELECT        apikey.value, apikey.descr, case when subscription.cancel_date is not null then true else apikey.revoked end as revoked, apikey.subscription_id
+SELECT       apikey.id, apikey.value, apikey.descr, case when subscription.cancel_date is not null then true else apikey.revoked end as revoked, apikey.subscription_id
 FROM            apikey INNER JOIN
                          subscription ON apikey.subscription_id = subscription.id
 WHERE subscription.user_id = $1

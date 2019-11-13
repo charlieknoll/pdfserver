@@ -48,10 +48,14 @@
       <td>{{#if this.descr}}{{this.descr}}{{else}}not set{{/if}}</td>
       <td>{{this.value}}</td>
       <td>{{#if this.revoked}}Yes{{else}}No{{/if}}</td>
-      <td>{{#if this.revoked}}{{else}}<a href="">Edit/Revoke</a>{{/if}}</td>
+      <td>{{#if this.revoked}}{{else}}<a href="/user/edit-apikey/{{../id}}/{{id}}/">Edit/Revoke</a>{{/if}}</td>
     </tr>
     {{/each}}
   </tbody>
 </table>
+{{#ifeq this.status 'Active'}}
+<a href='/user/edit-apikey/{{this.id}}/-1'><span style='vertical-align: middle;'
+    class="badge badge-primary">New</span></a>
+{{/ifeq}}
 <hr>
 {{/each}}

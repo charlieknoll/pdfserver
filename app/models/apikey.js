@@ -39,8 +39,21 @@ const revoke = async function (user_id, id) {
 const rename = async function (id, user_id, name) {
   checkApiKeyOwner(user_id, id)
   const apiSql = `
-        UPDATE apikey SET name = ${name} where id = ${id}
+        UPDATE apikey SET descr = $1 where id = ${id}
         `
-  await db.none(apiSql)
+  try {
+    await db.none(apiSql, name)
+  } catch (e) {
+    console.log(e)
+  }
 
+}
+const find = async function (id) {
+  return await db.one(`select id, subscription_id, value, descr from apikey where id = ${id}`)
+}
+module.exports = {
+  create,
+  revoke,
+  rename,
+  find
 }
