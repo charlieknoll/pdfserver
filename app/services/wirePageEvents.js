@@ -124,6 +124,7 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
         if (!maxAge || opt.disableCache || !redis.status == 'ready') return
         const cacheKey = (cacheControl.includes('public') ? url : opt.apikey + ':' + url).substring(0, 300)
         try {
+          if (await redis.exists(cacheKey)) return
           const bufStr = buffer.toString('hex')
           await redis.setex(cacheKey, maxAge, JSON.stringify(
             {

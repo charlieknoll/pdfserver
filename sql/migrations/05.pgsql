@@ -46,6 +46,13 @@ FROM
 WHERE subscription.cancel_date IS NULL AND
   apikey.revoked = false;
 
+
+
+GRANT USAGE ON SCHEMA public TO rp_user;
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO rp_user;
+
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO rp_user;
 -- DROP TABLE IF EXISTS payment_method;
 
 -- --"https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=sandbox"

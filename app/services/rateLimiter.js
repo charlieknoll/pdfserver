@@ -29,7 +29,7 @@ const signInLimiter = new RateLimit({
 })
 const rateLimiter = new RateLimit({
   max: (req) => req.rp.rate_limit,
-  keyGenerator: (req) => req.rp.apikey,
+  keyGenerator: (req) => req.rp.subscription_id,
   handler: rateHandler,
   store: new RedisStore({
     client: redis,
@@ -39,7 +39,7 @@ const rateLimiter = new RateLimit({
 })
 const concurrentLimiter = new RateLimit({
   max: (req) => req.rp.concurrent_limit,
-  keyGenerator: (req) => req.rp.apikey,
+  keyGenerator: (req) => req.rp.subscription_id,
   handler: concurrentHandler,
   skipFailedRequests: true,
   skipSuccessfulRequests: true,
@@ -51,7 +51,7 @@ const concurrentLimiter = new RateLimit({
 })
 const waitLimiter = new WaitLimit({
   maxDelay: 30000, //30 seconds max to wait for an available
-  keyGenerator: (req) => 'rlc' + req.rp.apikey,
+  keyGenerator: (req) => 'rlc' + req.rp.subscription_id,
   max: (req) => req.rp.concurrent_limit,
 })
 module.exports = {
