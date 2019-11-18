@@ -1,0 +1,56 @@
+<main id="js-page-content" role="main" class="page-content rp-page">
+
+  <div class="subheader">
+    <h1 class="subheader-title">
+      <i class='subheader-icon fal fa-file-alt'></i>
+      Billing
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div id="panel-1" class="panel">
+        <div class="panel-container show">
+          <div class="panel-content">
+            <h5 class="frame-heading">Most Recent Transactions
+              <div class="float-right rp-hidden"><a target="_blank" href='/user/billing?pdf=true'
+                  title='Print to Pdf'><i class='fal fa-file-pdf fa-2x'></i></a></div>
+            </h5>
+            <div class="frame-wrap ">
+              <table class="table table-sm m-0 billing-table">
+                <thead class="bg-primary-500">
+                  <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Account</th>
+                    <th>Amount</th>
+                    <th class='rp-hidden'>Invoice</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each txs}}
+                  <tr>
+                    <td>{{date}}</td>
+                    <td>{{name}}</td>
+                    <td><img src='{{imageUrl}}'></td>
+                    <td>{{accountDescr}}</td>
+                    <td>{{amount}}</td>
+                    <td class='rp-hidden'><a target="_blank"
+                        href='/user/invoice/{{subscriptionId}}/{{txId}}?pdf=true'><i class='fal fa-file-pdf'></i></a>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{> _rp_footer}}
+</main>
+{{#contentFor 'pageScripts'}}
+{{/contentFor}}

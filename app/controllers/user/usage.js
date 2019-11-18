@@ -7,7 +7,7 @@ const asyncHandler = require('express-async-handler')
 const { db } = require('../../services')
 
 const get = async function (req, res, next) {
-  const result = await db.many(`
+  const result = await db.manyOrNone(`
   SELECT apikey.value as api_key_value, apikey.descr as api_key_descr,
   ((request_log.file_size/1000000)::int)+1 as credits, request_log.file_size,
   TO_CHAR(request_log.request_time, 'DD-MM-YY HH24:MI:SS') as request_time,
@@ -23,7 +23,8 @@ ORDER By request_log.id DESC LIMIT 100
 
   res.render(req.viewPath, {
     title: 'Usage',
-    requests: result
+    requests: result,
+    usage: 'active'
   })
 }
 

@@ -35,7 +35,7 @@ module.exports = async function (req, res, next) {
       format: "Letter",
       landscape: false,
       printMedia: false,
-      timeout: 5000
+      timeout: 10000
     },
     responseType: 'stream'
   };

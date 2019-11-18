@@ -25,6 +25,6 @@ router.use('/cancel-subscription', asyncHandler(auth.requiresUser), require('./c
 router.use('/edit-apikey', asyncHandler(auth.requiresUser), require('./edit-apikey'))
 router.use('/settings', asyncHandler(auth.requiresUser), require('./settings'))
 router.use('/usage', asyncHandler(auth.requiresUser), asyncHandler(pdfHandler), require('./usage'))
-// router.use('/billing', auth.requiresUser, require('./billing'))
+router.use('/billing', asyncHandler(auth.requiresUser), asyncHandler(pdfHandler), require('./billing'))
 module.exports = router
 

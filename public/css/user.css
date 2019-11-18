@@ -121,3 +121,7 @@
 	white-space: -hp-pre-wrap;  /* HP Printers */
 	word-wrap: break-word;      /* IE 5+ */
 }
+.billing-table td:last-child {
+    text-align: center;
+    font-weight: 500;
+}

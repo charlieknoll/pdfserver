@@ -7,7 +7,7 @@ const apikey = require('../../models/apikey')
 
 const get = async function (req, res, next) {
 
-  res.render(req.viewPath, { title: 'Settings' })
+  res.render(req.viewPath, { title: 'Settings', settings: 'active' })
 }
 router.get('/', asyncHandler(get))
 
