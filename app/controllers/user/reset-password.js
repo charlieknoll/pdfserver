@@ -9,7 +9,8 @@ const asyncHandler = require('express-async-handler')
 const resetPasswordVm = function (req, errors) {
     return {
         title: 'Reset Password',
-        errors: (errors || []).map(e => e.msg)
+        errors: (errors || []).map(e => e.msg),
+        layout: 'user-auth'
     }
 }
 const get = function (req, res, next) {

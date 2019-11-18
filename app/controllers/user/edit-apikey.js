@@ -9,13 +9,15 @@ const get = async function (req, res, next) {
   let model
   if (req.params.id > -1) {
     model = await apikey.find(req.params.id)
+    model.title = 'Edit API Key'
   }
   else {
     model = {
       subscriptionId: req.params.subscriptionId,
-
+      title: 'New API Key'
     }
   }
+
   res.render(req.viewPath, model)
 }
 const post = async function (req, res, next) {

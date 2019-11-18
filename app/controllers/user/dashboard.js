@@ -37,9 +37,9 @@ WHERE subscription.user_id = $1
 
 
     res.render(req.viewPath, {
-        name: req.user.display_name,
         subscriptions: subscriptions.map(s => { s.apikeys = apikeys.filter(a => a.subscription_id == s.id); return s; }),
-        title: "Dashboard", successMessage
+        title: "Dashboard", successMessage,
+        dashboard: "active"
     })
 }
 router.get('/', asyncHandler(get))

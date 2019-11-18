@@ -15,7 +15,8 @@ const actionVm = function (req, errors) {
         title: 'Register',
         errors: (errors || []).map(e => e.msg),
         name: req.body.name,
-        username: req.body.username
+        username: req.body.username,
+        layout: 'user-guest'
     }
 }
 

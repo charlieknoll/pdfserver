@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    {{title}} - Responsive Paper
+  </title>
+  <meta name="description" content="Page Title">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+  <!-- Call App Mode on ios devices -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Remove Tap Highlight on Windows Phone IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  <!-- base css -->
+  <link rel="stylesheet" media="screen, print" href="/css/vendors.bundle.css">
+  <link rel="stylesheet" media="screen, print" href="/css/app.bundle.css">
+  <!-- Place favicon.ico in the root directory -->
+  {{!-- <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5"> --}}
+  <link rel="stylesheet" media="screen, print" href="/css/user.css">
+  {{{block "pageStyles"}}}
+</head>
+
+<body class="mod-bg-1 ">
+  <!-- BEGIN Page Wrapper -->
+  <div class="page-wrapper">
+    <div class="page-inner">
+      <!-- BEGIN Left Aside -->
+      <aside class="page-sidebar">
+        <div class="page-logo">
+          <a href="/" class="page-logo-link press-scale-down d-flex align-items-center position-relative">
+            <img src="/images/logo.png" alt="Responsive Paper" aria-roledescription="logo">
+            <span class="page-logo-text mr-1">Responsive Paper</span>
+            <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2">nextgen HTML to
+              PDF</span>
+          </a>
+        </div>
+        <!-- BEGIN PRIMARY NAVIGATION -->
+        <nav id="js-primary-nav" class="primary-nav" role="navigation">
+          <ul id="js-nav-menu" class="nav-menu">
+            <li class="{{dashboard}}">
+              <a href="/user/dashboard" title="Dashboard">
+                <i class="fal fa-home"></i>
+                <span class="nav-link-text" data-i18n="nav.dashboard">Dashboard</span>
+              </a>
+            </li>
+            <li class="{{convert}}">
+              <a href="/convert" title="Convert UI">
+                <i class="fal fa-file-pdf"></i>
+                <span class="nav-link-text" data-i18n="nav.convert_ui">Convert UI</span>
+              </a>
+            </li>
+            <li class="{{convertApi}}">
+              <a href="/convert/api" title="Convert API">
+                <i class="fal fa-file-pdf"></i>
+                <span class="nav-link-text" data-i18n="nav.convert_api">Convert API</span>
+              </a>
+            </li>
+            <li class="{{usage}}">
+              <a href="/user/usage" title="Usage">
+                <i class="fal fa-chart-area"></i>
+                <span class="nav-link-text" data-i18n="nav.usage">Usage</span>
+              </a>
+            </li>
+            <li class="{{billing}}">
+              <a href="/user/billing" title="Billing">
+                <i class="fal fa-file-alt"></i>
+                <span class="nav-link-text" data-i18n="nav.billing">Billing</span>
+              </a>
+            </li>
+            <li class="{{settings}}">
+              <a href="/user/settings" title="Settings">
+                <i class="fal fa-cog"></i>
+                <span class="nav-link-text" data-i18n="nav.settings">Settings</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://docs.responsivepaper.com" target="_rp_docs" title="Documentation">
+                <i class="fal fa-file"></i>
+                <span class="nav-link-text" data-i18n="nav.docs">Documentation <i
+                    style="font-size: .9em; padding-left: 10px;" class="fal fa-2x fa-external-link-square"></i></span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- END PRIMARY NAVIGATION -->
+      </aside>
+      <!-- END Left Aside -->
+      <div class="page-content-wrapper">
+
+        <header class="page-header" role="banner">
+
+
+          <!-- DOC: mobile button appears during mobile width -->
+          <div class="hidden-lg-up">
+            <a href="#" class="header-btn btn press-scale-down waves-effect waves-themed" data-action="toggle"
+              data-class="mobile-nav-on">
+              <i class="ni ni-menu"></i>
+            </a>
+          </div>
+          <div class="ml-auto d-flex">
+
+            <!-- app user menu -->
+            <div>
+              <a href="/user/settings" title="{{user.email}}"
+                class="header-icon d-flex align-items-center justify-content-center ml-2">
+                <img src="https://www.gravatar.com/avatar/{{user.email_hash}}" class="profile-image rounded-circle"
+                  alt="{{display_name}}">
+
+                <span class="ml-1 mr-1 hidden-xs-down">{{user.email}}</span>
+
+              </a>
+            </div>
+
+          </div>
+        </header>
+
+
+
+
+        <!-- BEGIN Page Content -->
+        {{{body}}}
+        <!-- END Page Content -->
+        <!-- BEGIN Color profile -->
+        <!-- this area is hidden and will not be seen on screens or screen readers -->
+        <!-- we use this only for CSS color refernce for JS stuff -->
+        <p id="js-color-profile" class="d-none">
+          <span class="color-primary-50"></span>
+          <span class="color-primary-100"></span>
+          <span class="color-primary-200"></span>
+          <span class="color-primary-300"></span>
+          <span class="color-primary-400"></span>
+          <span class="color-primary-500"></span>
+          <span class="color-primary-600"></span>
+          <span class="color-primary-700"></span>
+          <span class="color-primary-800"></span>
+          <span class="color-primary-900"></span>
+          <span class="color-info-50"></span>
+          <span class="color-info-100"></span>
+          <span class="color-info-200"></span>
+          <span class="color-info-300"></span>
+          <span class="color-info-400"></span>
+          <span class="color-info-500"></span>
+          <span class="color-info-600"></span>
+          <span class="color-info-700"></span>
+          <span class="color-info-800"></span>
+          <span class="color-info-900"></span>
+          <span class="color-danger-50"></span>
+          <span class="color-danger-100"></span>
+          <span class="color-danger-200"></span>
+          <span class="color-danger-300"></span>
+          <span class="color-danger-400"></span>
+          <span class="color-danger-500"></span>
+          <span class="color-danger-600"></span>
+          <span class="color-danger-700"></span>
+          <span class="color-danger-800"></span>
+          <span class="color-danger-900"></span>
+          <span class="color-warning-50"></span>
+          <span class="color-warning-100"></span>
+          <span class="color-warning-200"></span>
+          <span class="color-warning-300"></span>
+          <span class="color-warning-400"></span>
+          <span class="color-warning-500"></span>
+          <span class="color-warning-600"></span>
+          <span class="color-warning-700"></span>
+          <span class="color-warning-800"></span>
+          <span class="color-warning-900"></span>
+          <span class="color-success-50"></span>
+          <span class="color-success-100"></span>
+          <span class="color-success-200"></span>
+          <span class="color-success-300"></span>
+          <span class="color-success-400"></span>
+          <span class="color-success-500"></span>
+          <span class="color-success-600"></span>
+          <span class="color-success-700"></span>
+          <span class="color-success-800"></span>
+          <span class="color-success-900"></span>
+          <span class="color-fusion-50"></span>
+          <span class="color-fusion-100"></span>
+          <span class="color-fusion-200"></span>
+          <span class="color-fusion-300"></span>
+          <span class="color-fusion-400"></span>
+          <span class="color-fusion-500"></span>
+          <span class="color-fusion-600"></span>
+          <span class="color-fusion-700"></span>
+          <span class="color-fusion-800"></span>
+          <span class="color-fusion-900"></span>
+        </p>
+        <!-- END Color profile -->
+      </div>
+    </div>
+  </div>
+  <!-- END Page Wrapper -->
+  <!-- base vendor bundle:
+		 DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations
+					+ pace.js (recommended)
+					+ jquery.js (core)
+					+ jquery-ui-cust.js (core)
+					+ popper.js (core)
+					+ bootstrap.js (core)
+					+ slimscroll.js (extension)
+					+ app.navigation.js (core)
+					+ ba-throttle-debounce.js (core)
+					+ waves.js (extension)
+					+ smartpanels.js (extension)
+					+ src/../jquery-snippets.js (core) -->
+  <script src="/js/vendors.bundle.js"></script>
+  <script src="/js/app.bundle.js"></script>
+  {{{block "pageScripts"}}}
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const auth = require('./../middlewares/authorization')
-const configConvertRoutes = require('../controllers/convert')
 const { logger } = require('../services')
 
 module.exports = (app) => {
@@ -9,7 +8,7 @@ module.exports = (app) => {
     })
     app.use('/user', require('../controllers/user'))
     app.use('/webhooks', require('../controllers/webhooks'))
-    configConvertRoutes(app)
+    app.use('/convert', require('../controllers/convert'))
     app.use('/api/html2pdf/v2', require('../controllers/api/v2'))
     app.use('/admin', require('../controllers/admin'))
 
@@ -36,6 +35,7 @@ module.exports = (app) => {
 
         }
         res.status(err.status);
-        res.render('error', { title: 'Error' });
+
+        res.render('error', { title: 'Error', layout: req.user ? 'user-admin' : 'error' });
     });
 }

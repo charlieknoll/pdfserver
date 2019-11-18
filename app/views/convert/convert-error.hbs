@@ -1,0 +1,104 @@
+<main id="js-page-content" role="main" class="page-content">
+
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='danger subheader-icon fal fa-exclamation-triangle'></i> Error In Conversion
+            <small>
+                Please review the logs below for clues on how to fix the problem
+            </small>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <h3>{{error.message}}</h3>
+                        {{#ifinc error.message "tunnel"}}
+                        <p class='badge-danger'>Tunnel may be down</p>
+                        {{/ifinc}}
+
+                        {{#if error.pageErrors}}<h3>Errors:</h3>
+                        <pre>{{error.pageErrors}}</pre>{{/if}}
+                        {{#if error.consoleLogs}}
+                        <h3>Console Logs:</h3>
+                        <ul>
+                            {{#each error.consoleLogs}}
+                            <li>{{this}}</li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{{#contentFor 'pageStyles'}}
+{{!-- <link href="/lib/codemirror/codemirror.css" rel="stylesheet"> --}}
+{{/contentFor}}
+{{#contentFor 'pageScripts'}}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+<script>
+    window.onload = function () {
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/twilight");
+        editor.session.setMode("ace/mode/html");
+        editor.setOptions({
+            fontSize: "16px"
+        })
+        editor.commands.addCommand({
+            name: 'myCommand',
+            bindKey: { win: 'Ctrl-Enter', mac: 'Command-Enter' },
+            exec: function (editor) {
+                if (document.getElementById("converterForm").onsubmit()) {
+                    document.getElementById("converterForm").submit()
+
+                }
+            }
+        });
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if (e.target.id == "urlTab") {
+                document.querySelector('#url').setAttribute('required', 'required')
+            } else {
+                document.querySelector('#url').removeAttribute('required')
+            }
+        })
+        document.getElementById("converterForm").onsubmit = function () {
+            valueEl = document.querySelector('#value')
+            var el = document.querySelector('.nav-link.active')
+            if (el.id === 'htmlTab') {
+                //copy editor to value element
+                valueEl.value = editor.getValue()
+                if (!valueEl.value) {
+                    alert("Please enter html in the editor.")
+                    return false
+                }
+            }
+            else {
+                //copy url to value element
+                valueEl.value = document.querySelector('#url').value
+            }
+            return true
+        }
+        async function getExampleContent(e) {
+            e.preventDefault();
+            var result = await fetch('https://examples.responsivepaper.com/html/' + e.target.dataset.src, { mode: 'cors' })
+            var body = await result.text()
+            editor.setValue(body)
+
+        }
+        var exampleUrls = document.getElementsByClassName('exampleUrl')
+        for (var i = 0; i < exampleUrls.length; i++) {
+            exampleUrls[i].onclick = getExampleContent;
+        };
+        document.getElementById('urlTab').click()
+
+    }
+
+</script>
+{{/contentFor}}

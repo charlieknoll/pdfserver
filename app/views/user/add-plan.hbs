@@ -1,76 +1,93 @@
-<div class="container">
-  <div class="pricing-page">
-    <div class="wrapper">
-      <p><a href="#">Choose Plan</a> > Payment > Confirm Subscription</p>
-      <header class="section">
-        <h1>SIMPLE PRICING - CANCEL ANYTIME</h1><small>Our pricing is designed to be simple and affordable no matter how
-          simple or complex your scheduling needs are.</small>
-      </header>
-      {{# if errors }} {{# each errors }}
-      <p class="alert alert-danger">{{ this }}</p>
-      {{/each}} {{/if}}
-      <div class="plan-table">
-        <table class="tlite-table">
-          <tbody>
-            <tr>
-              <th></th>
-              <th>Developer</th>
-              <th>Startup</th>
-              <th>Business</th>
-              <th>Enterprise</th>
-            </tr>
-            <tr>
-              <td>Monthly price</td>
-              <td>$29.95</td>
-              <td>$59.95</td>
-              <td>$149.95</td>
-              <td><a href="mailto:sales@responsivepaper.com?subject=Enterprise Plan Inquiry">Contact Us</a></td>
-            </tr>
-            <tr>
-              <td>Monthly credits <a href="#creditNote">*</a></td>
-              <td>1,000</td>
-              <td>10,000</td>
-              <td>50,000</td>
-              <td>Custom</td>
-            </tr>
-            <tr>
-              <td>Parallel conversions</td>
-              <td>1</td>
-              <td>4</td>
-              <td>12</td>
-              <td>Custom</td>
-            </tr>
-            <tr>
-              <td>Rate Limit</td>
-              <td>120/hr</td>
-              <td>360/hr</td>
-              <td>1080/hr</td>
-              <td>Custom</td>
-            </tr>
+<main id="js-page-content" role="main" class="page-content">
 
-            <tr class="">
-              <form method="POST">
-                <input hidden id="planId" name="planId" />
-                <td></td>
-                <td><button class='choose-plan btn btn-primary' data-id="2">Add plan</button>
-                </td>
-                <td><button class='choose-plan btn btn-primary' data-id="3">Add plan</button>
-                </td>
-                <td><button class='choose-plan btn btn-primary' data-id="4">Add plan</button>
-                </td>
-                <td><a class='' href="/enterprise ">Learn More</a></td>
-              </form>
-            </tr>
-          </tbody>
-        </table>
-        <p style="margin-top: 20px">* 1 credit per MB per converted file. For example, a 2.3MB file would cost 3
-          credits. See the <a href="/faq">FAQ's</a> and <a href="/terms">Terms of Service</a> for more information.</p>
-        {{!-- <p style="margin-top: 20px">Do you have a <a href="/user/promo">promo code</a>?</p> --}}
+  <div class="subheader">
+    <h1 class="subheader-title">
+      <i class='subheader-icon fal fa-'></i><a href="#">Choose Plan</a> > Payment > Confirm Subscription
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div id="panel-1" class="panel">
+        <div class="panel-container show">
+          <div class="panel-content centered-page">
+            <header class="section">
+              <h1>SIMPLE PRICING - CANCEL ANYTIME</h1>
+              <p>Our pricing is designed to be simple and affordable no
+                matter
+                how
+                simple or complex your scheduling needs are.</p>
+            </header>
+            {{# if errors }} {{# each errors }}
+            <p class="alert alert-danger">{{ this }}</p>
+            {{/each}} {{/if}}
+            <div class="plan-table">
+              <table class="tlite-table">
+                <tbody>
+                  <tr>
+                    <th></th>
+                    <th>Developer</th>
+                    <th>Startup</th>
+                    <th>Business</th>
+                    <th>Enterprise</th>
+                  </tr>
+                  <tr>
+                    <td>Monthly price</td>
+                    <td>$29.95</td>
+                    <td>$59.95</td>
+                    <td>$149.95</td>
+                    <td><a href="mailto:sales@responsivepaper.com?subject=Enterprise Plan Inquiry">Contact Us</a></td>
+                  </tr>
+                  <tr>
+                    <td>Monthly credits <a href="#creditNote">*</a></td>
+                    <td>1,000</td>
+                    <td>10,000</td>
+                    <td>50,000</td>
+                    <td>Custom</td>
+                  </tr>
+                  <tr>
+                    <td>Parallel conversions</td>
+                    <td>1</td>
+                    <td>4</td>
+                    <td>12</td>
+                    <td>Custom</td>
+                  </tr>
+                  <tr>
+                    <td>Rate Limit</td>
+                    <td>120/hr</td>
+                    <td>360/hr</td>
+                    <td>1080/hr</td>
+                    <td>Custom</td>
+                  </tr>
+
+                  <tr class="">
+                    <form method="POST">
+                      <input hidden id="planId" name="planId" />
+                      <td></td>
+                      <td><button class='choose-plan btn btn-primary' data-id="2">Add plan</button>
+                      </td>
+                      <td><button class='choose-plan btn btn-primary' data-id="3">Add plan</button>
+                      </td>
+                      <td><button class='choose-plan btn btn-primary' data-id="4">Add plan</button>
+                      </td>
+                      <td><a class='' href="/enterprise ">Learn More</a></td>
+                    </form>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 20px">* 1 credit per MB per converted file. For example, a 2.3MB file would cost 3
+                credits. See the <a href="/faq">FAQ's</a> and <a href="/terms">Terms of Service</a> for more
+                information.
+              </p>
+              {{!-- <p style="margin-top: 20px">Do you have a <a href="/user/promo">promo code</a>?</p> --}}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-
   </div>
-</div>
+</main>
 {{#contentFor 'pageScripts'}}
 <script>
   function submitForm(e) {

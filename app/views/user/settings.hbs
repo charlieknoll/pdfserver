@@ -1,0 +1,31 @@
+<main id="js-page-content" role="main" class="page-content">
+
+  <div class="subheader">
+    <h1 class="subheader-title">
+      <i class='subheader-icon fal fa-cog'></i> Settings
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div id="panel-1" class="panel">
+        <div class="panel-container show">
+          <div class="panel-content edit-form ">
+
+            <img src="https://www.gravatar.com/avatar/{{user.email_hash}}" class="profile-image rounded-circle"
+              alt="{{display_name}}">
+
+            <input type="text" readonly="" class="form-control-plaintext" value="{{user.email}}">
+
+
+            <a href="/user/signout" class='btn btn-primary btn-sm'>Sign Out</a>
+            <a href="/user/reset-password" class='btn btn-primary btn-sm'>Reset Password</a><br>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{{#contentFor 'pageScripts'}}
+{{/contentFor}}

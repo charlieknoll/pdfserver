@@ -1,11 +1,27 @@
-<div class="middle-box text-center loginscreen animated fadeInDown">
-    <div>
+<div class="blankpage-form-field">
+
+    <div
+        class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
+        <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
+            <img src="/images/logo.png" alt="Responsive Paper" aria-roledescription="logo">
+            <span class="page-logo-text mr-1">Responsive Paper</span>
+        </a>
+    </div>
+    <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
+
+
+        <div class="blankpage-header">
+            {{# if errors }} {{# each errors }}
+            <p class="alert alert-danger">{{ this }}</p>
+            {{/each}} {{/if}}
+
+        </div>
         <h2>Sign out?</h2>
-        <form class="m-t" role="form" action="/user/signout" method="POST">
+        <form action="/user/signout" method="POST">
             <button type="submit " class="btn btn-primary block full-width m-b ">Yes</button>
 
 
-            <a class="btn btn-sm btn-white btn-block " href="/user/dashboard ">Stay logged in</a>
+            <a class="btn btn-default block full-width m-b " href="/user/dashboard ">Stay logged in</a>
         </form>
 
     </div>

@@ -5,7 +5,7 @@ const router = require('express').Router().use(viewPath)
 
 
 const get = function (req, res, next) {
-    res.render(req.viewPath, { title: 'Sign out' })
+    res.render(req.viewPath, { title: 'Sign out', layout: 'user-auth' })
 }
 function post(req, res, next) {
     delete req.session.redirectTo;

@@ -1,33 +1,45 @@
-<div class="middle-box text-center loginscreen animated fadeInDown">
-    <div>
-        <p>
+<div class="blankpage-form-field">
 
-            <img width="200" src="/images/logo.png" style="margin: auto" />
+    <div
+        class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
+        <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
+            <img src="/images/logo.png" alt="Responsive Paper" aria-roledescription="logo">
+            <span class="page-logo-text mr-1">Responsive Paper</span>
+        </a>
+    </div>
+    <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
+        <div class="blankpage-header">
+            {{# if errors }} {{# each errors }}
+            <p class="alert alert-danger">{{ this }}</p>
+            {{/each}} {{/if}}
 
-        </p>
-        {{# if errors }} {{# each errors }}
-        <p class="alert alert-danger">{{ this }}</p>
-        {{/each}} {{/if}} {{# unless errors}}
-        <p>Welcome back! Please enter your email and password to continue.</p>
-        {{/unless}}
-        <form class="m-t" role="form" action="/user/signin" method="POST">
-            <div class="form-group ">
+        </div>
+        <form action="/user/signin" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="username">Email</label>
                 <input class="form-control " placeholder="email " required=" " name="username" type="email">
+                <span class="help-block">
+                    Email
+                </span>
             </div>
-            <div class="form-group ">
-                <input type="password" class="form-control " placeholder="Password " required=" " name="password">
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" class="form-control " placeholder="Password " required=" " name="password"> <span
+                    class="help-block">
+                    Your password
+                </span>
             </div>
-            <button type="submit " class="btn btn-primary block full-width m-b ">Login</button>
-
-            <a href="/user/reset-password">
-                <small>Forgot password?</small>
-            </a>
-            <p class="text-muted text-center ">
-                <small>Don't have an account?
-                    <a href="/user/register ">Sign up</a>
-                </small>
-            </p>
+            <div class="form-group text-left">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="rememberme" name="rememberme">
+                    <label class="custom-control-label" for="rememberme"> Remember me for the next 30 days</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default float-right">Secure login</button>
         </form>
-
+    </div>
+    <div class="blankpage-footer text-center">
+        <a href="/user/reset-password"><strong>Recover Password</strong></a> | <a href="/user/register"><strong>Create
+                Free Account</strong></a>
     </div>
 </div>

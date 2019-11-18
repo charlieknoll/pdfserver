@@ -17,7 +17,8 @@ const actionVm = function (req, errors, email, displayname) {
         errors: (errors || []).map(e => e.msg),
         email: email,
         displayname: displayname,
-        resetToken: req.query.token
+        resetToken: req.query.token,
+        layout: 'user-auth'
     }
 }
 

@@ -8,7 +8,8 @@ const signinVm = function (req, errors) {
     var errMsgs = [].map(e => e.msg)
     return {
         title: 'Sign In',
-        errors: (errors || []).map(e => e.msg)
+        errors: (errors || []).map(e => e.msg),
+        layout: 'user-auth'
     }
 }
 

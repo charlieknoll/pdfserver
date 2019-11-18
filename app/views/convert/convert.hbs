@@ -1,178 +1,226 @@
-<h1>{{title}}</h1>
+<main id="js-page-content" role="main" class="page-content">
 
-<form id="converterForm" method="POST" action="/convert" target="responsive-paper-preview">
-    <input id="value" type="hidden" name="value" />
-    <div class="form-group">
-        <label for="">API Key</label>
-        <select class="form-control" name="apikey" id="">
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-file-pdf'></i> {{title}}
+            <small>
+                {{#if convertApi}}
+                Update the parameters to generate an api url
+                {{else}}
 
-            {{#each apikeys}}
-            <option {{#if this.selected}} selected {{/if}} {{#if this.label}} label="{{this.label}}{{/if}}">
-                {{this.value}}</option>
-            {{/each}}
-        </select>
+                {{/if}}
+            </small>
+        </h1>
     </div>
-    <div class="form-group">
-        <div class="tabs-container">
-            <ul class="nav nav-tabs" role="tablist">
-                <li>
-                    <a id="urlTab" class="nav-link active show" data-toggle="tab" href="#tab-1"> URL Conversion</a>
-                </li>
-                <li>
-                    <a id="htmlTab" class="nav-link" data-toggle="tab" href="#tab-2">HTML Conversion</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" id="tab-1" class="tab-pane active show">
-                    <div class="panel-body">
 
-                        <label for="">Url to convert</label>
-                        <input type="text" id="url" class="form-control" placeholder="" aria-describedby="helpId"
-                            required value="{{url}}">
-                    </div>
-                </div>
-                <div role="tabpanel" id="tab-2" class="tab-pane">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel-body">
-                                <div id="editor" style="width: 100%; height: 400px;"></div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        {{#if convertApi}}
+                        <label for=""><span class='badge badge-primary'>GET</span> or <span
+                                class='badge badge-primary'>POST</span></label>
+                        <pre>
+<a id=apiUrl target="responsive-paper-preview" href="">https://www.responsivepaper.com/convert/api/v2</a>
+                        </pre>
+                        {{/if}}
+
+                        <form id="converterForm" method="POST" action="/convert" target="responsive-paper-preview">
+                            <input id="value" type="hidden" name="value" />
+                            <div class="form-group">
+                                <label for="">API Key</label>
+                                <select class="form-control" name="apikey" id="apikey">
+
+                                    {{#each apikeys}}
+                                    <option {{#if this.selected}} selected {{/if}} {{#if this.label}}
+                                        label="{{this.label}}{{/if}}">
+                                        {{this.value}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
-                        </div>
+                            <div class="form-group card">
+                                <div class="card-body tabs-container">
+                                    <ul class="nav nav-pills" role="tablist">
+                                        <li class="nav-item">
+                                            <a id="urlTab" class="nav-link active" data-toggle="tab" href="#tab-1">
+                                                URL Conversion</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="htmlTab" class="nav-link" data-toggle="tab" href="#tab-2">HTML
+                                                Conversion</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content py-3">
+                                        <div role="tabpanel" id="tab-1" class="tab-pane active show">
+                                            <div class="panel-body">
+
+                                                <label for="">Url to convert</label>
+                                                <input type="text" id="url" class="form-control" placeholder=""
+                                                    aria-describedby="helpId" required value="{{url}}">
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="tab-2" class="tab-pane">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="panel-body">
+                                                        <div><small>Examples:
+                                                                <a href="" class="exampleUrl" data-src='01.html'>Simple
+                                                                    multi-format</a> |
+                                                                <a href="" class="exampleUrl"
+                                                                    data-src='02.html'>TOC/Indexing</a> <br>
+                                                                (Press
+                                                                Ctrl+Enter while in the editor to create the pdf)
+                                                            </small>
+                                                        </div>
+                                                        <div id="editor_wrapper" class="app_editor_wrapper">
+                                                            <div id="editor" class="app_editor"></div>
+                                                            <div id="editor_dragbar" class="app_editor_dragbar">
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Format (leave blank to use report default):</label>
+                                        <select class="form-control" name="format" id="format">
+
+                                            {{#each formats}}
+                                            <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Landscape (leave blank to use report default):</label>
+                                        <select class="form-control" name="landscape" id="landscape">
+                                            <option {{#ifeq this.landscape undefined}} selected {{/ifeq}}></option>
+                                            <option {{#ifeq this.landscape 'true'}} selected {{/ifeq}}>Yes</option>
+                                            <option {{#ifeq this.landscape 'false'}} selected {{/ifeq}}>No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="waitForReadyToRender" name="waitForReadyToRender"
+                                                {{#if waitForReadyToRender}}checked="true" {{/if}}>
+                                            <label class="custom-control-label" for="waitForReadyToRender">Wait For
+                                                Ready To Render</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="disableCache"
+                                                name="disableCache" {{#if disableCache}}checked="true" {{/if}}>
+                                            <label class="custom-control-label" for="disableCache">Disable Cache</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="w-100"></div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="includeConsole"
+                                                name="includeConsole" {{#if includeConsole}}checked="true" {{/if}}>
+                                            <label class="custom-control-label" for="includeConsole">Include Console
+                                                Logs</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="printMedia"
+                                                name="printMedia">
+                                            <label class="custom-control-label" for="printMedia">Print Media</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="">Timeout(ms)</label>
+                                        <input type="text" name="timeout" id="timeout" class="form-control"
+                                            placeholder="" value="{{timeout}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="">Image Timeout(ms)</label>
+                                        <input type="text" name="imageTimeout" id="imageTimeout" class="form-control"
+                                            placeholder="" value="{{imageTimeout}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="">Version (leave blank for latest):</label>
+                                        <select class="form-control" name="version" id="version">
+
+                                            {{#each versions}}
+                                            <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {{#if convert}}
+                            <button type="submit " class="btn btn-primary ">Preview to new tab </button>
+                            {{/if}}
+                        </form>
                     </div>
                 </div>
             </div>
-
-
-        </div>
-
-
-
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label for="">Format (leave blank to use report default):</label>
-                <select class="form-control" name="format" id="">
-
-                    {{#each formats}}
-                    <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
-                    {{/each}}
-                </select>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label for="">Landscape (leave blank to use report default):</label>
-                <select class="form-control" name="landscape" id="">
-                    <option {{#ifeq this.landscape undefined}} selected {{/ifeq}}></option>
-                    <option {{#ifeq this.landscape 'true'}} selected {{/ifeq}}>Yes</option>
-                    <option {{#ifeq this.landscape 'false'}} selected {{/ifeq}}>No</option>
-                </select>
-            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="waitForReadyToRender"
-                        name="waitForReadyToRender" {{#if waitForReadyToRender}}checked="true" {{/if}}>
-                    <label class="custom-control-label" for="waitForReadyToRender">Wait For Ready To Render</label>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="disableCache" name="disableCache"
-                        {{#if disableCache}}checked="true" {{/if}}>
-                    <label class="custom-control-label" for="disableCache">Disable Cache</label>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="includeConsole" name="includeConsole"
-                        {{#if includeConsole}}checked="true" {{/if}}>
-                    <label class="custom-control-label" for="includeConsole">Include Console Logs</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-2">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="printMedia" name="printMedia">
-                    <label class="custom-control-label" for="printMedia">Print Media</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label for="">Timeout(ms)</label>
-                <input type="text" name="timeout" id="" class="form-control" placeholder="" value="{{timeout}}">
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label for="">Image Timeout(ms)</label>
-                <input type="text" name="imageTimeout" id="" class="form-control" placeholder=""
-                    value="{{imageTimeout}}">
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label for="">Version (leave blank for latest):</label>
-                <select class="form-control" name="version" id="version">
-
-                    {{#each versions}}
-                    <option {{#if this.selected}} selected {{/if}}>{{this.value}}</option>
-                    {{/each}}
-                </select>
-            </div>
-        </div>
-
-    </div>
-    {{!--
-    <div class="form-group">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="waitForJs" name="waitForJs">
-            <label class="custom-control-label" for="waitForJs">Wait For JS</label>
-        </div>
-        <small id="helpId" class="text-muted">Pdf will not begin until window.RESPONSIVE_PAPER_READY_TO_RENDER=true</small>
-    </div>
-    <div class="form-group">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="devMode" name="devMode">
-            <label class="custom-control-label" for="devMode">Dev Mode</label>
-        </div>
-        <small id="helpId" class="text-muted">Pdf will displayed as html with console messages</small>
-    </div>
-    <div class="form-group">
-        <label for="">Report element query selector:</label>
-        <input type="text" name="selector" id="" class="form-control" placeholder="" aria-describedby="selectorHelp">
-        <small id="selectorHelp" class="text-muted">By default the entire body content will be rendered. You can select a
-            subsection of the the html by entering a valid
-            <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors">query
-                selector
-            </a> .</small>
-    </div> --}}
-    <button type="submit " class="btn btn-primary ">Preview to new tab </button>
-</form>
+</main>
 
 
 {{#contentFor 'pageStyles'}}
 {{!-- <link href="/lib/codemirror/codemirror.css" rel="stylesheet"> --}}
+<style>
+    .app_editor {
+        height: 300px;
+        width: 100%;
+    }
+
+    .app_editor_wrapper {
+        background-color: #cccccc;
+        border-bottom: 1px solid #222222;
+        max-width: 1200px;
+    }
+
+    .app_editor_dragbar {
+        background-color: #222222;
+        width: 100%;
+        height: 2px;
+        cursor: row-resize;
+        opacity: 1;
+    }
+</style>
 {{/contentFor}}
 {{#contentFor 'pageScripts'}}
 
@@ -195,17 +243,77 @@
                 }
             }
         });
+
+        window.draggingAceEditor = {};
+
+        function makeAceEditorResizable(editor) {
+            var id_editor = editor.container.id;
+            var id_dragbar = '#' + id_editor + '_dragbar';
+            var id_wrapper = '#' + id_editor + '_wrapper';
+            var wpoffset = 0;
+            window.draggingAceEditor[id_editor] = false;
+
+            $(id_dragbar).mousedown(function (e) {
+                e.preventDefault();
+
+                window.draggingAceEditor[id_editor] = true;
+
+                var _editor = $('#' + id_editor);
+                var top_offset = _editor.offset().top - wpoffset;
+
+                // Set editor opacity to 0 to make transparent so our wrapper div shows
+                _editor.css('opacity', 0);
+
+                // handle mouse movement
+                $(document).mousemove(function (e) {
+                    var actualY = e.pageY - wpoffset;
+                    // editor height
+                    var eheight = actualY - top_offset;
+
+                    // Set wrapper height
+                    $(id_wrapper).css('height', eheight);
+
+                    // Set dragbar opacity while dragging (set to 0 to not show)
+                    $(id_dragbar).css('opacity', 0.15);
+                });
+            });
+
+            $(document).mouseup(function (e) {
+                if (window.draggingAceEditor[id_editor]) {
+                    var ctx_editor = $('#' + id_editor);
+
+                    var actualY = e.pageY - wpoffset;
+                    var top_offset = ctx_editor.offset().top - wpoffset;
+                    var eheight = actualY - top_offset;
+
+                    $(document).unbind('mousemove');
+
+                    // Set dragbar opacity back to 1
+                    $(id_dragbar).css('opacity', 1);
+
+                    // Set height on actual editor element, and opacity back to 1
+                    ctx_editor.css('height', eheight).css('opacity', 1);
+
+                    // Trigger ace editor resize()
+                    editor.resize();
+
+                    window.draggingAceEditor[id_editor] = false;
+                }
+            });
+        }
+        makeAceEditorResizable(editor);
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id == "urlTab") {
                 document.querySelector('#url').setAttribute('required', 'required')
             } else {
                 document.querySelector('#url').removeAttribute('required')
             }
+            updateUrl()
         })
         document.getElementById("converterForm").onsubmit = function () {
             valueEl = document.querySelector('#value')
-            var el = document.querySelector('.tab-pane.active.show')
-            if (el.id === 'tab-2') {
+            var el = document.querySelector('.nav-link.active')
+            if (el.id === 'htmlTab') {
                 //copy editor to value element
                 valueEl.value = editor.getValue()
                 if (!valueEl.value) {
@@ -217,8 +325,64 @@
                 //copy url to value element
                 valueEl.value = document.querySelector('#url').value
             }
+
             return true
         }
+        async function getExampleContent(e) {
+            e.preventDefault();
+            var result = await fetch('https://examples.responsivepaper.com/html/' + e.target.dataset.src, { mode: 'cors' })
+            var body = await result.text()
+            editor.setValue(body)
+            updateUrl()
+
+        }
+        var exampleUrls = document.getElementsByClassName('exampleUrl')
+        for (var i = 0; i < exampleUrls.length; i++) {
+            exampleUrls[i].onclick = getExampleContent;
+        };
+        document.getElementById('urlTab').click()
+        var apiUrlEl = document.getElementById('apiUrl')
+        var valueEl = document.getElementById('value')
+        var apikeyEl = document.getElementById('apikey')
+        var htmlTabEl = document.getElementById('htmlTab')
+        var urlTabEl = document.getElementById('urlTab')
+        var urlEl = document.getElementById('url')
+
+        var formatEl = document.getElementById('format')
+        var landscapeEl = document.getElementById('landscape')
+        var waitForReadyToRenderEl = document.getElementById('waitForReadyToRender')
+        var disableCacheEl = document.getElementById('disableCache')
+        var includeConsoleEl = document.getElementById('includeConsole')
+        var printMediaEl = document.getElementById('printMedia')
+        var timeoutEl = document.getElementById('timeout')
+        var imageTimeoutEl = document.getElementById('imageTimeout')
+        var versionEl = document.getElementById('version')
+        function htmlEncode(value) {
+            // Create a in-memory element, set its inner text (which is automatically encoded)
+            // Then grab the encoded contents back out. The element never exists on the DOM.
+            return $('<textarea/>').text(value).html();
+        }
+        const updateUrl = function () {
+            if ('{{convert}}' == 'active') return
+            var url = window.location.origin + '/api/html2pdf/v2?value='
+            url += htmlTabEl.classList.contains('active') ? encodeURIComponent(editor.getValue().replace(/\n/g, '')
+                .replace(/&/g, 'and').replace(/  +/g, ' ')) : urlEl.value
+            url += '&apikey=' + apikeyEl.value
+            url += formatEl && formatEl.value ? '&format=' + formatEl.value : ''
+            url += landscapeEl && landscapeEl.value ? '&landscape=' + landscapeEl.value : ''
+            url += waitForReadyToRenderEl && waitForReadyToRenderEl.checked ? '&waitForReadyToRender=' + waitForReadyToRenderEl.value : ''
+            url += disableCacheEl && disableCacheEl.checked ? '&disableCache=' + disableCacheEl.value : ''
+            url += includeConsoleEl && includeConsoleEl.checked ? '&includeConsole=' + includeConsoleEl.value : ''
+            url += printMediaEl && printMediaEl.checked ? '&printMedia=' + printMediaEl.value : ''
+            url += timeoutEl && timeoutEl.value ? '&timeout=' + timeoutEl.value : ''
+            url += imageTimeoutEl && imageTimeoutEl.value ? '&imageTimeout=' + imageTimeoutEl.value : ''
+            url += versionEl && versionEl.value ? '&version=' + version.value : ''
+            apiUrlEl.setAttribute('href', url)
+            apiUrlEl.innerText = url
+        }
+
+        $("form :input").on("change keyup paste", updateUrl)
+        updateUrl()
 
     }
 

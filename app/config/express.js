@@ -54,13 +54,23 @@ module.exports = (app, passport, pool) => {
 
 
     app.use(passport.initialize())
+    // { id: first.id, userName: first.display_name, type: first.user_type, email_hash: first.email_hash }
 
     app.use(function (req, res, next) {
-        if (req.url.match('user') || req.url.match('convert') || req.url.match('admin'))
+        if (req.url.match('user') || req.url.match('convert') || req.url.match('admin')) {
             passport.session()(req, res, next)
-        else
+            //assign req.user to locals
+            //req.locals.user = req.user
+        } else
             next(); // do not invoke passport
         // same as doing == app.use(passport.session())
+    });
+    app.use(function (req, res, next) {
+        if ((req.url.match('user') || req.url.match('convert') || req.url.match('admin')) && req.user && req.user.id) {
+            res.locals.user = { id: req.user.id, userName: req.user.display_name, type: req.user.user_type, email_hash: req.user.email_hash, email: req.user.email }
+
+        }
+        next();
     });
 }
 

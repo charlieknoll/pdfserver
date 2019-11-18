@@ -8,5 +8,17 @@ module.exports = function () {
     if (a.includes(b)) { return options.fn(this); }
     return options.inverse(this);
   });
+  hbs.registerHelper("debug", function (optionalValue) {
 
+    if (optionalValue) {
+      console.log("Value");
+      console.log("====================");
+      console.log(optionalValue);
+    } else {
+      console.log("Current Context");
+      console.log("====================");
+      console.log(this);
+
+    }
+  });
 }

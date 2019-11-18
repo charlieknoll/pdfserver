@@ -4,7 +4,7 @@ const { lookup } = require('../util')
 module.exports = {
 	requiresUser: (req, res, next) => {
 		if (req.user) return next()
-		req.session.redirectTo = req.url
+		req.session.redirectTo = req.originalUrl
 		res.redirect('/user/signin');
 
 	},

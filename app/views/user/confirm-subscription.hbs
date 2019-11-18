@@ -1,28 +1,43 @@
-<div class="container">
-  <div class="pricing-page">
-    <div class="wrapper">
-      <p><a href="/user/add-plan">Choose Plan</a> > <a href="/user/payment-method">Payment</a> > <a href="#">Confirm
-          Subscription</a></p>
-      <p>You've selected the <strong>{{this.plan.name}} plan</strong> for <strong>{{this.plan.price}}</strong> per
-        month.
-      </p>
+<main id="js-page-content" role="main" class="page-content">
 
-      <p>Your account will be billed on the <strong>{{this.recurDateDescr}} day of the month</strong>. You may cancel at
-        any time for a
-        prorated rebate based on credits used.</p>
-      <p>Please click "Confirm Subscription" button below to start your subscription using your
-        <strong>{{this.paymentMethodDescr}}</strong></p>
-      {{# if this.errorMessage }}
-      <p class="alert alert-danger">{{ this.errorMessage }}</p>
-      {{/if}}
-      <div style="display: none;" id="dropin-container"></div>
-      <form id="confirmForm" method="POST">
-        <input id="confirm-btn" class="btn btn-primary" type="submit" value="Confirm Subscription">
+  <div class="subheader">
+    <h1 class="subheader-title">
+      <i class='subheader-icon fal fa-'></i><a href="/user/add-plan">Choose Plan</a> > <a
+        href="/user/payment-method">Payment</a> > <a href="#">Confirm
+        Subscription</a>
+    </h1>
+  </div>
 
-      </form>
+  <div class="row">
+    <div class="col-xl-12">
+      <div id="panel-1" class="panel">
+        <div class="panel-container show">
+          <div class="panel-content centered-page">
+
+            <p>You've selected the <strong>{{this.plan.name}} plan</strong> for <strong>{{this.plan.price}}</strong> per
+              month.
+            </p>
+
+            <p>Your account will be billed on the <strong>{{this.recurDateDescr}} day of the month</strong>. You may
+              cancel at
+              any time for a
+              prorated rebate based on credits used.</p>
+            <p>Please click "Confirm Subscription" button below to start your subscription using your
+              <strong>{{this.paymentMethodDescr}}</strong></p>
+            {{# if this.errorMessage }}
+            <p class="alert alert-danger">{{ this.errorMessage }}</p>
+            {{/if}}
+            <div style="display: none;" id="dropin-container"></div>
+            <form id="confirmForm" method="POST">
+              <input id="confirm-btn" class="btn btn-primary" type="submit" value="Confirm Subscription">
+
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</main>
 
 {{#contentFor 'pageScripts'}}
 <script>

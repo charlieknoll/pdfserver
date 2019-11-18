@@ -1,0 +1,53 @@
+<main id="js-page-content" role="main" class="page-content">
+
+  <div class="subheader">
+    <h1 class="subheader-title">
+      <i class='subheader-icon fal fa-chart-area'></i> Usage
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div id="panel-1" class="panel">
+        <div class="panel-container show">
+          <div class="panel-content">
+            <h5 class="frame-heading">
+              Last 100 Requests
+            </h5>
+            <div class="frame-wrap rp-page">
+              <table class="table table-sm m-0 usage-table">
+                <thead class="bg-primary-500">
+                  <tr>
+                    <th>API Key</th>
+                    <th>Descr</th>
+                    <th>Value</th>
+                    <th>IP</th>
+                    <th>Time</th>
+                    <th>File Size</th>
+                    <th>Credits</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each requests}}
+                  <tr>
+                    <td>{{api_key_value}}</td>
+                    <td>{{api_key_descr}}</td>
+                    <td>{{value}}</td>
+                    <td>{{ip_address}}</td>
+                    <td>{{request_time}}</td>
+                    <td>{{file_size}}</td>
+                    <td>{{credits}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{{#contentFor 'pageScripts'}}
+{{/contentFor}}

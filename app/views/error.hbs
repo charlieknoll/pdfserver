@@ -1,16 +1,28 @@
-<h1>{{message}}</h1>
-{{#ifinc message "tunnel"}}
-<p class='badge-danger'>Tunnel may be down</p>
-{{/ifinc}}
+<div class="h-alt-hf d-flex flex-column align-items-center justify-content-center text-center">
+  <h1 class="page-error color-fusion-500">
+    Error <span class="text-gradient">{{error.status}}</span>
+    <small class="fw-500">
+      <h3>{{message}}</h3>
+      {{#ifinc message "tunnel"}}
+      <p class='badge-danger'>Tunnel may be down</p>
+      {{/ifinc}}
 
-<h2>Status code: {{error.status}}</h2>
-{{#if error.pageErrors}}<h3>Errors:</h3>
-<pre>{{error.pageErrors}}</pre>{{/if}}
-{{#if error.consoleLogs}}
-<h3>Console Logs:</h3>
-<ul>
-  {{#each error.consoleLogs}}
-  <li>{{this}}</li>
-  {{/each}}
-</ul>
-{{/if}}
+      {{#if error.pageErrors}}<h3>Errors:</h3>
+      <pre>{{error.pageErrors}}</pre>{{/if}}
+      {{#if error.consoleLogs}}
+      <h3>Console Logs:</h3>
+      <ul>
+        {{#each error.consoleLogs}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+      {{/if}}
+    </small>
+  </h1>
+  <h3 class="fw-500 mb-5">
+    You have experienced a technical error. We apologize.
+  </h3>
+  <h4>
+    We are working hard to correct this issue. Please wait a few moments and try your request again.
+  </h4>
+</div>

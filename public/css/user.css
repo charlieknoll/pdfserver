@@ -1,4 +1,4 @@
-.pricing-page .wrapper {
+.centered-page {
     width: 100%;
     max-width: 1000px;
     float: none;
@@ -10,20 +10,23 @@
     zoom: 1;
     /* margin-top: -400px; */
 }
-header.section {
-    font-size: 26px;
-    color: #31373a;
+.centered-page header.section {
+    /* font-size: 26px;
+    color: #31373a; */
     letter-spacing: 0;
-    font-weight: 500;
+    /* font-weight: 500; */
     text-align: center;
 }
-header {
-    font-size: 18px;
+.centered-page header {
+    /* font-size: 18px;
     color: #000;
     line-height: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
 }
-header.section small {
+.centered-page p {
+    font-size: 16px;
+}
+.centered-page header.section small {
     font-family: 'Encode Sans',sans-serif;
     display: block;
     text-align: center;
@@ -33,11 +36,11 @@ header.section small {
     line-height: 25px;
     margin-top: 10px;
 }
-.pricing-page .plan-table {
+.plan-table {
     margin: 50px 0;
 }
 
-.pricing-page .plan-table table {
+.plan-table table {
     position: relative;
     width: 100%;
     background: #fff;
@@ -51,7 +54,7 @@ header.section small {
     border-radius: 6px;
     overflow: hidden;
 }
-.pricing-page .plan-table th {
+.plan-table th {
     border: 1px solid #303449;
     background: #363a52;
     text-align: center;
@@ -61,7 +64,7 @@ header.section small {
     color: #fff;
     line-height: 65px;
 }
-.pricing-page .plan-table th:first-child {
+ .plan-table th:first-child {
     width: 280px;
 }
 .tlite-table td, .tlite-table th {
@@ -71,20 +74,20 @@ header.section small {
     position: relative;
 }
 
-.pricing-page .plan-table td {
+.plan-table td {
     border: 1px solid #e5e5e5;
     padding: 19px 22px;
     text-align: center;
     font-size: 1.2em;
 }
-.pricing-page .plan-table td:first-child {
+.plan-table td:first-child {
     text-align: left;
     padding-left: 22px;
     color: #414141;
-    font-weight: 1000;
+    font-weight: 500;
 }
 
-.pricing-page .plan-table tr.header {
+.plan-table tr.header {
     background: #f8f9fb;
 }
 
@@ -93,4 +96,28 @@ header.section small {
 }
 #pay-btn {
     margin-top: 1em;
+}
+.edit-form .btn {
+    margin-top: 0px !important;
+    margin-right: 0.375rem !important;
+    margin-bottom: 1rem !important;
+    margin-left: 0px !important;
+
+}
+.usage-table td:nth-child(1), .usage-table th:nth-child(1) {
+    max-width: 100px;
+    white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+.longUrl {
+    	white-space: pre;           /* CSS 2.0 */
+	white-space: pre-wrap;      /* CSS 2.1 */
+	white-space: pre-line;      /* CSS 3.0 */
+	white-space: -pre-wrap;     /* Opera 4-6 */
+	white-space: -o-pre-wrap;   /* Opera 7 */
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap;  /* HP Printers */
+	word-wrap: break-word;      /* IE 5+ */
 }
