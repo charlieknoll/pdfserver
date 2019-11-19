@@ -1,0 +1,22 @@
+<button id='printToPdfButton' type="button" class="btn" data-toggle="popover" data-placement="auto" title="Print to Pdf"
+  data-html="true"
+  data-content="
+							<div class=&quot;mb-2&quot;>
+								<div class=&quot;custom-control custom-checkbox&quot;>
+									<input type=&quot;checkbox&quot; class=&quot;custom-control-input&quot; id=&quot;optLandscape&quot;>
+									<label class=&quot;custom-control-label&quot; for=&quot;optLandscape&quot;>Landscape</label>
+								</div>
+							</div>
+							<div class=&quot;mb-2&quot;>
+								<div class=&quot;custom-control custom-checkbox&quot;>
+									<input type=&quot;checkbox&quot; class=&quot;custom-control-input&quot; id=&quot;optFormat&quot;>
+									<label class=&quot;custom-control-label&quot; for=&quot;optFormat&quot;>Legal</label>
+								</div>
+							</div>
+							<hr>
+							<div class=&quot;d-flex&quot;>
+								<a href=&quot;javascript:window.open('{{url}}' + (document.getElementById('optLandscape').checked ? '&landscape=true' : '') +
+                (document.getElementById('optFormat').checked ? '&format=Legal' : ''),'_blank'); $('#printToPdfButton').popover('hide');&quot; class=&quot;btn btn-primary text-white ml-auto&quot;>Generate</a>
+								<a id='optCancel' href=&quot;#&quot; onclick=&quot;$('#printToPdfButton').popover('hide'); return false;&quot; class=&quot;btn btn-warning ml-2 text-white&quot;>Cancel</a></div>"
+  data-original-title="<h4 class='fw-500 width-sm'><i class='fal fa-file-check mr-2'></i>Pdf Options</h4>"><i
+    class='fal fa-file-pdf fa-2x'></i></button>

@@ -49,7 +49,7 @@ ORDER BY subscription.cancel_date desc, subscription.start_date asc  `, req.user
       const sTxs = await subResult.transactions
 
       sTxs.forEach(t => {
-        if (t.status === 'settled') {
+        if (t.status === 'settled' || t.status === 'settling') {
           txs.push({
             subscriptionId: result[i].id,
             txId: t.id,

@@ -1,7 +1,8 @@
-const { redis } = require('../services')
+const { redis, logger } = require('../services')
 const config = require('../config')
 const axios = require('axios')
 const speakeasy = require('speakeasy')
+
 
 
 
@@ -35,7 +36,7 @@ module.exports = async function (req, res, next) {
       format: "Letter",
       landscape: false,
       printMedia: false,
-      timeout: 10000
+      timeout: 20000
     },
     responseType: 'stream'
   };
@@ -50,10 +51,12 @@ module.exports = async function (req, res, next) {
     const result = await axios(options)
     result.data.pipe(res)
   } catch (error) {
-    const body = await streamToString(error.response.data)
-    //TODO parse json
-    res.write(body)
-    res.end()
+    logger.error(error.string)
+    throw new Error("Pdf creation failed, please try again")
+    // const body = await streamToString(error.response.data)
+    // //TODO parse json
+    // res.write(body)
+    // res.end()
   }
 
 }

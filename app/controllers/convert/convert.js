@@ -19,7 +19,7 @@ const actionVm = async function (req, errors) {
     formats: rpContent.formats,
     versions: rpContent.versions
   }
-  if (req.originalUrl == '/convert') {
+  if (req.originalUrl.substring(0, 8) == '/convert') {
     formData.title = 'Convert UI',
       formData.convert = 'active'
   } else {
@@ -38,7 +38,7 @@ const actionVm = async function (req, errors) {
 SELECT        apikey.value, apikey.descr, apikey.revoked, apikey.subscription_id
 FROM            apikey INNER JOIN
                          subscription ON apikey.subscription_id = subscription.id
-WHERE subscription.user_id = $1 and subscription.cancel_date is null
+WHERE subscription.user_id = $1 and subscription.cancel_date is null and apikey.revoked = false
     `, req.user.id)
   formData.apikeys = arrayToSelectList(apikeys.map(a => { return { value: a.value, label: a.descr ? a.descr + " : " + a.value : a.value } }), vals['apikey'] || apikeys[0].value, false)
   return formData

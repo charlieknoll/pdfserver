@@ -15,8 +15,7 @@
             <h5 class="frame-heading">
               {{#if txs.length}}
               Most Recent Transactions
-              <div class="float-right rp-hidden"><a target="_blank" href='/user/billing?pdf=true'
-                  title='Print to Pdf'><i class='fal fa-file-pdf fa-2x'></i></a></div>
+              <div class="float-right rp-hidden">{{> _rp_print_button url='/user/billing?pdf=true'}}</div>
               {{else}}
               No charges have been made to your account
               {{/if}}

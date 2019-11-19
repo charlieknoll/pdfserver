@@ -12,8 +12,7 @@
         <div class="panel-container show">
           <div class="panel-content">
             <h5 class="frame-heading">Last 100 Requests
-              <div class="float-right rp-hidden"><a target="_blank" href='/user/usage?pdf=true' title='Print to Pdf'><i
-                    class='fal fa-file-pdf fa-2x'></i></a></div>
+              <div class="float-right rp-hidden">{{> _rp_print_button url='/user/usage?pdf=true'}}</div>
             </h5>
             <div class="frame-wrap ">
               <table class="table table-sm m-0 usage-table">

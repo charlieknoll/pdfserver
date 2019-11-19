@@ -32,6 +32,7 @@ SELECT       apikey.id, apikey.value, apikey.descr, case when subscription.cance
 FROM            apikey INNER JOIN
                          subscription ON apikey.subscription_id = subscription.id
 WHERE subscription.user_id = $1
+ORDER BY apikey.revoked ASC, apikey.id
     `, req.user.id)
 
 

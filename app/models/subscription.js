@@ -7,10 +7,10 @@ const createSubscription = async function (userId, planId, apiKeyDescr, paymentM
         INSERT INTO subscription(user_id, pricing_plan_id, start_date, next_charge_date, used_credits, credits, rate_limit,
           concurrent_limit,  payment_method_descr, expiration, status)
         SELECT ${userId},pricing_plan.id, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 month', 0, pricing_plan.credits,pricing_plan.rate_limit,
-          pricing_plan.concurrent_limit, '${paymentMethodDescr}', '${expiration}', 'Active'
+          pricing_plan.concurrent_limit, $1, $2, 'Active'
         FROM pricing_plan
         WHERE pricing_plan.id = ${planId} RETURNING id`
-  const subResult = await db.one(subSql)
+  const subResult = await db.one(subSql, [paymentMethodDescr, expiration])
 
   const apikey = speakeasy.generateSecretASCII()
 
