@@ -116,8 +116,8 @@
    overflow: hidden;
    text-overflow: ellipsis;
 }
-.usage-table td:nth-child(3), .usage-table th:nth-child(3) {
-    max-width: 200px;
+.rp-ps-letter .usage-table td:nth-child(3), .rp-ps-letter .usage-table th:nth-child(3) {
+    max-width: 100px;
     white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
