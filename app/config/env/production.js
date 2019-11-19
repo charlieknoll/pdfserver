@@ -33,5 +33,9 @@ module.exports = {
 		publicKey: process.env.BRAINTREE_PUBLIC_KEY,
 		privateKey: process.env.BRAINTREE_PRIVATE_KEY,
 		webhookToken: process.env.BRAINTREE_WEBHOOK_TOKEN
+	},
+	responsivepaper: {
+		apikey: process.env.RESPONSIVE_PAPER_API_KEY,
+		url: "https://www.responsivepaper.com/api/html2pdf/v2"
 	}
 }
