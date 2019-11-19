@@ -12,10 +12,16 @@
       <div id="panel-1" class="panel">
         <div class="panel-container show">
           <div class="panel-content">
-            <h5 class="frame-heading">Most Recent Transactions
+            <h5 class="frame-heading">
+              {{#if txs.length}}
+              Most Recent Transactions
               <div class="float-right rp-hidden"><a target="_blank" href='/user/billing?pdf=true'
                   title='Print to Pdf'><i class='fal fa-file-pdf fa-2x'></i></a></div>
+              {{else}}
+              No charges have been made to your account
+              {{/if}}
             </h5>
+            {{#if txs.length}}
             <div class="frame-wrap ">
               <table class="table table-sm m-0 billing-table">
                 <thead class="bg-primary-500">
@@ -44,7 +50,7 @@
                 </tbody>
               </table>
             </div>
-
+            {{/if}}
           </div>
         </div>
       </div>
