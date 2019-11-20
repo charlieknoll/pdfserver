@@ -39,8 +39,15 @@
                     <td>{{date}}</td>
                     <td>{{name}}</td>
                     <td><img src='{{imageUrl}}'></td>
-                    <td>{{accountDescr}}</td>
-                    <td>{{amount}}</td>
+                    <td>{{accountDescr}}
+                    </td>
+                    <td>
+                      {{#ifeq status 'voided'}}<span style='text-decoration: line-through;'>{{amount}}</span> <span
+                        class='small opacity-50'>voided</span>
+                      {{else}}
+                      {{amount}}
+                      {{/ifeq}}
+                    </td>
                     <td class='rp-hidden'><a target="_blank"
                         href='/user/invoice/{{subscriptionId}}/{{txId}}?pdf=true'><i class='fal fa-file-pdf'></i></a>
                     </td>

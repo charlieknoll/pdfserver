@@ -53,6 +53,7 @@ ORDER BY subscription.cancel_date desc, subscription.start_date asc  `, req.user
           txs.push({
             subscriptionId: result[i].id,
             txId: t.id,
+            status: t.status,
             name: result[i].name,
             date: t.createdAt.substring(0, 10),
             imageUrl: t.paymentInstrumentType == 'credit_card' ? t.creditCard.imageUrl : t.paypal.imageUrl,
