@@ -56,7 +56,7 @@
                                             <div class="panel-body">
 
                                                 <label for="">Url to convert</label>
-                                                <input type="text" id="url" class="form-control" placeholder=""
+                                                <input type="url" id="url" class="form-control" placeholder=""
                                                     aria-describedby="helpId" required value="{{url}}">
                                             </div>
                                         </div>
@@ -307,8 +307,10 @@
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id == "urlTab") {
                 document.querySelector('#url').setAttribute('required', 'required')
+                document.querySelector('#url').setAttribute('type', 'url')
             } else {
                 document.querySelector('#url').removeAttribute('required')
+                document.querySelector('#url').setAttribute('type', 'text')
             }
             updateUrl()
         })
@@ -320,6 +322,10 @@
                 valueEl.value = editor.getValue()
                 if (!valueEl.value) {
                     alert("Please enter html in the editor.")
+                    return false
+                }
+                if (!valueEl.value.includes('RESPONSIVE_PAPER_READY_TO_RENDER') && document.getElementById('waitForReadyToRender').checked) {
+                    alert("Please set window.RESPONSIVE_PAPER_READY_TO_RENDER = true in the html or uncheck the 'Wait For Ready To Render' checkbox.")
                     return false
                 }
             }
