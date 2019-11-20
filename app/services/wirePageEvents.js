@@ -82,10 +82,15 @@ module.exports = function wirePageEvents(page, requestCache, opt, timeoutInfo) {
   });
 
   page.on('response', async (response) => {
+    const url = await response.url();
     if (response._status !== 200) {
+      //set request complete
+      if (requestCache[url]) {
+        requestCache[url].complete = true
+      }
       return
     }
-    const url = await response.url();
+
     requestCache[url].complete = true
     if (requestCache[url] && (requestCache[url].fromCache || requestCache[url].fromMemCache)) {
       //timeoutInfo.addConsoleMessage("From" + (requestCache[url].fromMemCache ? " Mem" : "") + " Cache " + url)

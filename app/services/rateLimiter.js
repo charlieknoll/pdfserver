@@ -50,7 +50,7 @@ const concurrentLimiter = new RateLimit({
   }),
 })
 const waitLimiter = new WaitLimit({
-  maxDelay: 30000, //30 seconds max to wait for an available
+  maxDelay: 10000, //30 seconds max to wait for an available
   keyGenerator: (req) => 'rlc' + req.rp.subscription_id,
   max: (req) => req.rp.concurrent_limit,
 })

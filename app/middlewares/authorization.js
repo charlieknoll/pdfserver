@@ -16,6 +16,7 @@ WHERE subscription.user_id = $1 and apikey.revoked = false
             `, [parseInt(id, 10)])
 			results[0].apikeys = apikeys
 			req.user = results[0]
+			res.locals.user = { id: req.user.id, userName: req.user.display_name, type: req.user.user_type, email_hash: req.user.email_hash, email: req.user.email }
 			return next()
 		}
 		req.session.redirectTo = req.originalUrl
