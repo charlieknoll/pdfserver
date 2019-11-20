@@ -19,12 +19,12 @@ const actionVm = async function (req, errors) {
     formats: rpContent.formats,
     versions: rpContent.versions
   }
-  if (req.originalUrl.substring(0, 8) == '/convert') {
-    formData.title = 'Convert UI',
-      formData.convert = 'active'
-  } else {
+  if (req.originalUrl.substring(0, 12) == '/convert/api') {
     formData.title = 'Convert API',
       formData.convertApi = 'active'
+  } else {
+    formData.title = 'Convert UI',
+      formData.convert = 'active'
   }
 
   if (vals) {
