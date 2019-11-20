@@ -9,6 +9,10 @@ const viewPath = require('../../middlewares/viewPath')
 const router = require('express').Router().use(viewPath)
 const asyncHandler = require('express-async-handler')
 const { createSubscription } = require('../../models/subscription')
+const fs = require('fs')
+const config = require('../../config')
+const path = require('path')
+const axios = require('axios')
 
 const actionVm = function (req, errors) {
     return {
@@ -75,18 +79,7 @@ async function post(req, res, next) {
         //TODO DO THIS IN TX?
 
         createSubscription(result.id, 1, 'Free Testing API Key')
-        // const subSql = `
-        // INSERT INTO subscription(user_id, pricing_plan_id, start_date, used_credits, credits, rate_limit, concurrent_limit)
-        // SELECT ${result.id},pricing_plan.id, CURRENT_DATE, 0, pricing_plan.credits,pricing_plan.rate_limit, pricing_plan.concurrent_limit
-        // FROM pricing_plan
-        // WHERE pricing_plan.name = 'Free' RETURNING id`
-        // const subResult = await db.one(subSql)
 
-        // const apikey = speakeasy.generateSecretASCII()
-        // const apiSql = `
-        // INSERT INTO apikey (subscription_id, value, descr, revoked) VALUES (${subResult.id},'${apikey}', 'Free Testing API Key', false)
-        // `
-        // await db.none(apiSql)
 
         //send email
         // const url = 'https://www.responsivepaper.com/user/confirm-registration?token=' + sqlParams.uuid
@@ -99,6 +92,32 @@ async function post(req, res, next) {
         // };
 
         // await sendEmail(message)
+
+        //get hash
+
+
+        let dest
+        try {
+            const hashResult = await db.one('SELECT MD5(email) email_hash FROM users where id = $1', result.id)
+            var options = {
+                method: "GET",
+                url: "https://www.gravatar.com/avatar/" + hashResult.email_hash,
+                responseType: 'stream'
+            }
+
+            //fetch gravitar
+            //https://www.gravatar.com/avatar/{{user.email_hash}}
+
+            //save to file
+            const gResult = await axios(options)
+            dest = path.join(config.public, '/images/gravatars/') + hashResult.email_hash + '.jpg'
+            const stream = fs.createWriteStream(dest);
+            gResult.data.pipe(stream)
+        } catch (e) {
+            //just copy one
+            const src = path.join(config.public, '/images/gravatars/') + 'd2a770a284410fe2a535ab4600468666.jpg'
+            fs.createReadStream(src).pipe(fs.createWriteStream(dest));
+        }
 
         //redirect to emailsent
         passport.authenticate('local', function (err, user, info) {
