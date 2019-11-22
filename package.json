@@ -12,6 +12,7 @@
     "eslint": "^6.6.0",
     "jest": "^24.9.0",
     "loadtest": "*",
+    "node-sass": "^4.13.0",
     "nodemon": "^1.19.4"
   },
   "dependencies": {

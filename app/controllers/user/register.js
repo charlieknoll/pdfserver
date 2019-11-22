@@ -58,6 +58,26 @@ const handleValidationErrors = function (req, res, next) {
 }
 //post
 
+const redirectToPayment = async function (req, res) {
+    try {
+        const plan = await db.oneOrNone(`
+  SELECT        id, name, price, price::numeric as num_price, credits, rate_limit, concurrent_limit
+  FROM            pricing_plan
+  WHERE id <> 1 and Active = true and id = $1
+`, req.query.addPlan)
+
+        if (!plan) return false
+        //TODO set planId on session
+        req.session.selectedPlan = plan
+
+        res.redirect('/user/payment-method')
+        return true
+    } catch (e) {
+        console.log(e)
+        return false
+    }
+}
+
 async function post(req, res, next) {
 
     //generate token
@@ -128,10 +148,12 @@ async function post(req, res, next) {
                 return
 
             }
-            req.logIn(user, function (err) {
+            req.logIn(user, async function (err) {
                 if (err) { return next(err); }
                 var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/user/dashboard';
                 delete req.session.redirectTo;
+                const paymentRes = await redirectToPayment(req, res)
+                if (paymentRes) return
                 if (redirectTo === '/user/dashboard') req.session.successMessage = "Thank you for signing up with responsive paper"
                 res.redirect(redirectTo);
             });

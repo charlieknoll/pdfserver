@@ -22,7 +22,7 @@ module.exports = async function (req, res, next) {
   }
   //create speakEasy authtoken
   const authtoken = speakeasy.generateSecretASCII()
-  await redis.setex(authtoken, 60, req.user.id)
+  await redis.setex(authtoken, 60, req.user && req.user.id ? req.user.id : -1)
   var options = {
     method: "POST",
     url: "https://www.responsivepaper.com/api/html2pdf/v2",

@@ -1,0 +1,322 @@
+/*------------------
+* Feature Box
+--------------------*/
+.feature-box {
+    text-align: center;
+    padding: 18% 10%;
+    overflow: hidden;
+    z-index: 1;
+    @include transition(all ease-out 0.55s);
+    * {
+    	@include transition(all ease-out 0.55s);
+    }
+    &:after {
+	    content: "";
+	    position: absolute;
+	    top: -13px;
+	    left: 30%;
+	    width: 37px;
+	    background: $px-white;
+	    border-radius: 40px;
+	    height: 170px;
+	    transform: rotate(41deg);
+	    z-index: -1;
+	    opacity: 0.08;
+	    box-shadow: 66px -30px 0px 0 $px-white;
+    }
+    .icon {
+	    width: 80px;
+	    height: 80px;
+	    position: relative;
+	    text-align: center;
+	    line-height: 80px;
+	    font-size: 40px;
+	    background: $px-gray;
+	    color: $px-theme;
+	    border-radius: 50%;
+	    display: inline-block;
+	    vertical-align: top;
+	    margin-bottom: 20px;
+    }
+    .feature-content {
+    	h5 {
+		    color: $px-dark;
+		    font-weight: 600;
+		    font-size: 15px;
+		    margin: 0 0 10px;
+    	}
+    	p {
+    		margin: 0;
+    	}
+    }
+    &:hover {
+    	background: $px-theme;
+    	.feature-content {
+    		h5 {
+    			color: $px-white;
+    		}
+    		p {
+    			color: rgba($px-white, 0.8);
+    		}
+    	}	
+    }
+}
+
+/*------------------
+* Feature Box 01
+--------------------*/
+.feature-box-01 {
+	.f-icon {
+	    width: 100px;
+	    height: 100px;
+	    line-height: 100px;
+	    display: inline-block;
+	    vertical-align: top;
+	    position: relative;
+	    font-size: 35px;
+	    border-radius: 50%;
+	    overflow: hidden;
+	    margin-top: 40px;
+	    &:after {
+		    content: "";
+		    position: absolute;
+		    bottom: -30%;
+		    left: 10%;
+		    right: 53%;
+		    background: rgba(251, 251, 251, 0.12);
+		    top: 40%;
+		    @include rotate(-60);
+	    }
+	}
+	.feature-content {
+		padding: 25px 35px 35px;
+		border-bottom: 1px solid #eee;
+	}
+	.feature-action {
+		padding: 15px 10px;
+		a {
+			display: inline-block;
+			vertical-align: top;
+			text-decoration: none;
+			font-weight: 600;
+			color: $px-theme;
+		}
+	}
+}
+
+/*------------------
+* Feature Box 02
+--------------------*/
+.feature-box-02 {
+	min-height: 100%;
+	border: 1px solid $px-white;
+	padding: 20px 50px 20px 20px;
+	position: relative;
+	h5 {
+		margin: 0;
+	    padding: 0;
+	    color: $px-white;
+	    font-weight: 600;
+	    font-size: 16px;
+	}
+	.icon {
+        position: absolute;
+	    top: 0;
+	    bottom: 0;
+	    width: 32px;
+	    height: 12px;
+	    margin: auto;
+	    right: 30px;
+	    opacity: 0;
+	    @include transition(ease all 0.55s);
+	    &:before {
+    	    width: 32px;
+		    height: 2px;
+		    background: #fff;
+		    content: "";
+		    top: 0;
+		    bottom: 0;
+		    right: 0;
+		    margin: auto;
+		    position: absolute;
+	    }
+	    &:after {
+	    	content:"";
+	    	position: absolute;
+		    top: 0;
+		    bottom: 0;
+		    width: 12px;
+		    height: 12px;
+		    border-right: 2px solid #fff;
+		    border-bottom: 2px solid #fff;
+		    margin: auto;
+		    right: 0;
+		    @include rotate(-45);
+	    }
+	}
+	&:hover {
+		.icon {
+			right: 20px;
+			opacity: 1;
+		}
+	}
+}
+
+
+/*------------------
+* Feature Box 06
+--------------------*/
+.feature-box-ef {
+    text-align: center;
+	padding: 60px 25px;
+	.icon {
+	    width: 80px;
+	    height: 80px;
+	    line-height: 80px;
+	    text-align: center;
+	    font-size: 35px;
+	    position: relative;
+	    z-index: 1;
+	    display: inline-block;
+	    vertical-align: top;
+	    margin-bottom: 30px;
+	    &:after {
+	    	content: "";
+		    position: absolute;
+		    margin: auto;
+		    border-radius: 50px;
+		    @include transition(ease all 0.55s);
+		    z-index: -1;
+	    }
+	    &.ef-1 {
+		    &:after {
+			    border-top: 50px solid transparent;
+			    border-left: 50px solid currentColor;
+			    top: -10px;
+			    left: -10px;
+			    border-right: 50px solid transparent;
+			    border-bottom: 50px solid transparent;
+		    }
+	    }
+	    &.ef-2 {
+		    &:after {
+			    top: -10px;
+			    left: -10px;
+			    right: -10px;
+			    bottom: -10px;
+			    border: 4px solid currentcolor;
+			    border-bottom: 4px solid transparent;
+		    }
+	    }
+	    &.ef-3 {
+		    &:after {
+			    top: -8px;
+			    left: -8px;
+			    right: -8px;
+			    bottom: -8px;
+			    border: 2px solid currentcolor;
+			    border-bottom: 2px solid transparent;
+			    border-top: 2px solid transparent;
+		    }
+	    }
+	    &.ef-4 {
+		    &:after {
+			    top: -8px;
+			    left: -8px;
+			    right: -8px;
+			    bottom: -8px;
+			    border: 2px solid currentcolor;
+			    border-left: 2px solid transparent;
+			    border-right: 2px solid transparent;
+			    border-top: 2px solid transparent;
+		    }
+	    }
+	}
+	h5 {
+	    margin: 0;
+	    padding: 0 0 10px;
+	    font-weight: 600;
+	    font-size: 16px;
+	}
+	p {
+		margin: 0;
+	}
+}
+
+/*------------------
+*	Side Feature
+-------------------*/
+.sf-icon {
+	width: 80px;
+	height: 80px;
+	border-radius: 5px;
+	line-height: 80px;
+	font-size: 30px;
+	text-align: center;
+	border: 1px solid currentcolor;
+	position: relative;
+	display: inline-block;
+	.dots {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	
+}
+
+@for $i from 3 through 10 {
+	.f-icon-#{$i * 10}px {
+		width: #{$i * 10}px;
+		height: #{$i * 10}px;
+		line-height: #{$i * 10}px;
+		display: inline-block;
+		vertical-align: top;
+		position: relative;
+		.dots {
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    right: 0;
+		    bottom: 0;
+	    }
+	    &.gray {
+			color: $px-theme;
+			background: $px-gray;
+	    }
+	    &.yellow {
+			color: $px-yellow;
+			background: lighten($px-yellow, 40%);
+	    }
+	    &.blue {
+			color: $px-blue;
+			background: lighten($px-blue, 43%);
+	    }
+	    &.green {
+			color: $px-green;
+			background: lighten($px-green, 43%);
+	    }
+	    &.pink {
+			color: $px-pink;
+			background: lighten($px-pink, 40%);
+	    }
+	    &.theme {
+			color: $px-theme;
+			background: lighten($px-theme, 48%);
+	    }
+	    &.purple {
+			color: $px-purple;
+			background: lighten($px-purple, 40%);
+	    }
+	    &.theme2nd {
+			color: $px-theme2nd;
+			background: lighten($px-theme2nd, 40%);
+	    }
+		.flex-left-icon & {
+			max-width: #{$i * 10}px;
+			-ms-flex: 0 0 #{$i * 10}px;
+			flex: 0 0 #{$i * 10}px;
+		}
+	}
+}

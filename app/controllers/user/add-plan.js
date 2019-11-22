@@ -38,18 +38,6 @@ const post = async function (req, res, next) {
   //TODO set planId on session
   req.session.selectedPlan = plan
 
-
-  //     const paymentMethods = await db.any(`
-  // --
-  // SELECT        id
-  // FROM            pricing_plan
-  // WHERE id <> 1 and Active = true and id = $1
-  //                          `, req.user.id)
-
-  //if they have payment
-  //redirect to confirm-payment-method
-  //else
-  //redirect to add-payment-method
   res.redirect('/user/payment-method')
 
 

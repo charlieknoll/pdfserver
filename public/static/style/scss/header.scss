@@ -1,0 +1,409 @@
+/*	Toggle Menu
+-------------------------*/
+.navbar-toggler {
+	width: 40px;
+    height: 40px;
+    position: relative;
+    margin: 0;
+    border-radius: 0;
+    padding: 0;
+    margin-left: 15px;
+	background: $px-theme;
+	border: none;
+	.header-transparent-white & {
+		background: $px-white;
+	}
+	span {
+		position: absolute;
+	    top: 0;
+	    left: 0;
+	    bottom: 0;
+	    right: 0;
+	    width: 25px;
+	    height: 2px;
+	    margin: auto;
+	    box-shadow: 0px -8px 0 0px currentColor, 0px 8px 0 0px currentColor;
+		background: $px-white;
+		color: $px-white;
+		.header-transparent-white & {
+			background: $px-dark;
+			color: $px-dark;
+		}
+	}
+}
+
+/*	Search
+-------------------------*/
+.h-search-section {
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: rgba(0,0,0,0.95);
+    @include transition(ease-in-out all 0.55s);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    .h_search {
+	    position: absolute;
+	    top: 30px;
+	    right: 30px;
+	    width: 50px;
+	    height: 50px;
+	    line-height: 50px;
+	    text-align: center;
+	    font-size: 20px;
+	    cursor: pointer;
+	    color: $px-white;
+    }
+    .h-search-form {
+    	form {
+    		position: relative;
+    	}
+    	.input-search {
+		    width: 100%;
+		    height: 59px;
+		    padding: 5px 70px 5px 0;
+		    border: none;
+		    font-size: 22px;
+		    background: transparent;
+		    border-bottom: 2px solid rgba(255,255,255,.5);
+		    outline: none;
+		    box-shadow: none;
+		    color: $px-white;
+    	}
+    	.searc-btn {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    font-size: 19px;
+		    height: 50px;
+		    width: 50px;
+		    padding: 0;
+		    line-height: 46px;
+		    background: none;
+		    color: $px-white;
+		    border: none;
+    	}
+    }
+    &.searh-form-open {
+    	opacity: 1;
+    	visibility: visible;
+    	pointer-events: auto;
+    }
+}
+
+/* Header top
+-----------------------------*/
+.top-header {
+	@include transition(ease all 0.35s);	
+	.ht-info {
+		.nav {
+			li {
+				position: relative;
+				.header-white & {
+		    		color: $px-white;
+		    	}
+		    	.header-transparent-dark & {
+		    		color: $px-dark;
+		    	}
+		    	.header-transparent-white &  {
+		    		color: $px-white;
+		    	}
+				+ li {
+					padding-left: 15px;
+					margin-left: 15px;
+					&:after {
+					    content: "";
+					    position: absolute;
+					    top: 8px;
+					    bottom: 6px;
+					    width: 1px;
+					    background-color: currentColor;
+					    left: 0;
+					    opacity: 0.5;
+					} 
+				}
+			}
+		}
+		a {
+			text-decoration: none;
+		    text-transform: uppercase;
+		    font-size: 11px;
+		    font-weight: 500;
+		    position: relative;
+		    line-height: 35px;
+		    .header-white & {
+		    	color: rgba($px-white, 0.8);
+		    	&:hover {
+		    		color:$px-white;
+		    	}
+		    }
+		    .header-transparent-dark & {
+		    	color: rgba($px-dark, 0.8);
+		    	&:hover {
+		    		color:$px-dark;
+		    	}
+		    }
+		    .header-transparent-white &  {
+		    	color: $px-white;
+		    	&:hover {
+		    		color: rgba($px-white, 0.8);
+		    	}
+		    }
+		}
+	}
+
+	.ht-social {
+		a {
+			padding: 0 8px;
+			display: block;
+			font-size: 12px;
+			line-height: 35px;
+			.header-white & {
+		    	color: rgba($px-white, 0.8);
+		    	&:hover {
+		    		color:$px-white;
+		    	}
+		    }
+		    .header-transparent-dark & {
+		    	color: rgba($px-dark, 0.8);
+		    	&:hover {
+		    		color:$px-white;
+		    	}
+		    }
+		    .header-transparent-white &  {
+		    	color: $px-white;
+		    	&:hover {
+		    		color: rgba($px-white, 0.8);
+		    	}
+		    }
+		}
+	}
+}
+
+/* Header Nav
+-----------------------------*/
+.fixed-header-bar {
+	position: fixed;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	right: 0;
+	@include transition(ease all 0.35s);
+	.header-white & {
+		background: $px-white;
+	}
+	.header-transparent-dark.fixed-header & {
+		background: $px-white;
+	}
+	.header-transparent-white & {
+		background: transparent;
+	}
+	.header-transparent-white.fixed-header & {
+		background: $px-white;
+	}
+	.header-transparent-white & {
+		.top-header-border {
+			border-bottom: 1px solid rgba($px-white, 0.2);
+		}
+	}
+	.header-transparent-dark & {
+		.top-header-border {
+			border-bottom: 1px solid rgba($px-dark, 0.2);
+		}
+	}
+	.fixed-header & {
+		box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+		.top-header {
+			margin-top: -36px;
+		}
+	}
+}
+
+.main-navbar {
+	padding: 0;
+	.logo-dark {
+		display: none;
+		.fixed-header & {
+			display: block;
+		}
+	}
+	.logo-light  {
+		.fixed-header & {
+			display: none;
+		}	
+	}
+	@include up-md {
+		.navbar-nav {
+			> li {
+				margin: 0 6px;
+				&.mm-in {
+					> a {
+						position: relative;
+						padding-right: 15px;
+						&:after {
+							content:"";
+							position: absolute;
+							width: 6px;
+							height: 6px;
+							border-bottom: 1px solid currentColor;
+							border-right: 1px solid currentColor;
+							@include rotate(45);
+							right: 0;
+							top: -5px;
+							bottom: 0;
+							margin: auto;
+							@include down-md {
+								display: none;
+							}
+						}
+					}
+				}
+				> a {
+				    font-size: 15px;
+				    font-weight: 500;
+				    padding: 25px 0;
+				    display: block;
+					.header-white & {
+						color: $px-dark;
+					}
+					.header-transparent-dark & {
+						color: $px-dark;
+						&.active {
+							color: $px-theme;
+						}
+					}
+					.header-transparent-white & {
+						color: $px-white;
+					}
+					.header-transparent-white.fixed-header & {
+						color: $px-body-color;
+						&.active {
+							color: $px-theme;
+						}
+					}
+
+				}
+				.header-white & {
+					&:hover {
+						> a {
+							color:$px-theme;
+						}
+					}
+				}
+				.header-transparent-dark & {
+					&:hover {
+						> a {
+							color:$px-theme;
+						}
+					}
+				}
+				.header-transparent-white & {
+					&:hover {
+						> a {
+							color:$px-theme;
+						}
+					}
+				}
+				.header-transparent-white:not(.fixed-header) & {
+					&:hover {
+						> a {
+							color:$px-white;
+						}
+					}
+				}
+			}
+		}
+	}
+	.extra-menu {
+		.line {
+			padding-left: 10px;
+			margin-left: 10px;
+			position: relative;
+			&:after {
+				content:"";
+				position: absolute;
+				bottom: 0;
+				top: 0;
+				margin: auto;
+				left: 0;
+				width: 1px;
+				height: 20px;
+				.header-white & {
+					background: $px-dark;
+					opacity: 0.2;
+				}
+				.header-transparent-dark & {
+					background: $px-dark;
+					opacity: 0.2;
+				}
+				.header-transparent-white & {
+					background: $px-white;
+					opacity: 0.2;
+				}
+				.header-transparent-white.fixed-header & {
+					background: $px-dark;
+				}
+			}
+		}
+		.header-searchbar {
+			.search-toggle {
+				margin: 0;
+				padding: 0 5px;
+				line-height: 35px;
+				cursor: pointer;
+				.header-white & {
+					color: $px-dark;
+				}
+				.header-transparent-dark & {
+					color: $px-dark;
+				}
+				.header-transparent-white & {
+					color: $px-white;
+				}
+				.header-transparent-white.fixed-header & {
+					color: $px-body-color;
+				}
+			}
+		}
+	}
+}
+
+/* Responsive Menu
+-----------------------------*/
+@include down-md {
+	.main-navbar {
+		padding: 10px 15px;
+		> .container {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.navbar-collapse {
+		    position: absolute;
+		    top: 100%;
+		    left: 0;
+		    right: 0;
+		    background: $px-white;
+	        max-height: 80vh;
+		    overflow-y: auto;
+		}
+		.navbar-nav {
+			> li  {
+				margin: 0;
+				border-top:1px solid #e6e6e6;
+		    	> a {
+				    text-transform: uppercase;
+					font-size: 13px;
+					font-weight: 700;
+					padding: 0 15px;
+    				line-height: 40px;
+					display: block;
+					color: $px-dark;
+		    	}
+			}
+		}
+	}
+}

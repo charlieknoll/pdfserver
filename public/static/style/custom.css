@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Shrikhand");
+.logo-text {
+    font-family: Shrikhand;
+    color:rgb(254, 87, 34);
+    font-size: 2em;
+}
+.logo-text:hover {
+    color:rgb(254, 87, 34);
+}
+
+.logo-text-footer {
+    font-size: 1.2em;
+}
+.blank-list {
+  list-style-type: none;
+  padding: 0;
+}

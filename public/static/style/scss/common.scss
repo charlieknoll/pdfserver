@@ -1,0 +1,526 @@
+/* ----------------------
+*	Section
+-------------------------*/
+.container-extra-large { max-width: 1580px; }
+.container-large { max-width: 1440px; }
+.container-small { max-width: 750px; }
+
+.section {
+	padding: 100px 0;
+	@include down-md {
+		padding-top: 80px;
+		padding-bottom: 80px;
+	}
+	@include down-sm {
+		padding-top: 60px;
+		padding-bottom: 60px;
+	}
+}
+
+.section-top-up {
+	.container {
+		margin-top: -160px;
+	    position: relative;
+	    z-index: 1;
+	}
+}
+
+.section-top-up-100 {
+	.container {
+		margin-top: -100px;
+	    position: relative;
+	    z-index: 1;
+	}
+}
+
+/* ----------------------
+*	Background color
+---------------------------*/
+.theme-bg { background-color: $px-theme; }
+.theme2nd-bg { background-color: $px-theme2nd; }
+
+.theme-bg-light { background-color: rgba($px-theme, 0.2); }
+.theme2nd-bg-light { background-color: rgba($px-theme2nd, 0.2); }
+
+.gray-bg { background-color: $px-gray; }
+.gray-bg-g { background: linear-gradient(to bottom, #f7f8ff 80%, #ffffff 101%); }
+.white-bg { background-color: $px-white; }
+.black-bg { background-color: $px-black; }
+.black-bg { background-color: $px-black; }
+.extra-dark-gray-bg { background-color: #1c1c1c; }
+.extra-light-gray-bg { background-color: #f7f7f7; }
+.bg-dark-gray-bg { background-color: #757575; }
+
+.pink-bg { background-color: $px-pink; }
+.yellow-bg { background-color: $px-yellow; }
+.green-bg { background-color: $px-green; }
+.blue-bg { background-color: $px-blue; }
+
+.theme-after:after { background-color: $px-theme; }
+.theme-before:before { background-color: $px-theme; }
+.theme2nd-after:after { background-color: $px-theme2nd; }
+.theme2nd-before:before { background-color: $px-theme2nd; }
+.white-after:after { background-color: $px-white; }
+.white-before:before { background-color: $px-white; }
+.dark-after:after { background-color: $px-dark; }
+.dark-before:before { background-color: $px-dark; }
+
+.g-bg-1 {
+	background-color: #FFFFFF;
+	background-image: linear-gradient(180deg, #FFFFFF 0%, #6284FF 50%, #FF0000 100%);
+}
+
+.g-bg-2 {
+	background-color: #FEE140;
+	background-image: linear-gradient(90deg, #FEE140 0%, #FA709A 100%);
+}
+
+.g-bg-3 {
+	background-color: #0093E9;
+	background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+}
+
+.g-bg-4 {
+	background-color: #74EBD5;
+	background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
+}
+.g-bg-5 {
+	background-color: #FAD961;
+	background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
+}
+.g-bg-6 {
+	background-color: #4158D0;
+	background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+}
+
+.g-bg-7 {
+	background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.g-bg-8 {
+	background-image: linear-gradient(to right, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%);
+}
+
+.g-bg-9 {
+	background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+}
+
+.g-bg-9 {
+	background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+}
+
+
+
+/* ----------------------
+*	Property
+---------------------------*/
+.bg-cover { background-size: cover; }
+.bg-no-repeat { background-repeat: no-repeat; }
+.bg-fixed { background-attachment: fixed; }
+.bg-center { background-position: center; }
+
+/* ----------------------
+*	Text Color
+---------------------------*/
+.theme-color { color: $px-theme; }
+.theme2nd-color { color: $px-theme2nd; }
+.dark-color { color: $px-dark; }
+.white-color { color: $px-white; }
+.white-color-light { color: rgba($px-white, 0.65); }
+a.white-color-light { color: rgba($px-white, 0.65) !important; }
+.pink-color { color: $px-pink; }
+.yellow-color { color: $px-yellow; }
+.green-color { color: $px-green; }
+.blue-color { color: $px-blue; }
+.light-color { color: #798598; }
+
+
+/* ----------------------
+*	owl 
+---------------------------*/
+.owl-dots {
+	text-align: center;
+	.owl-dot {
+		display: inline-block;
+		vertical-align: top;
+		width: 15px;
+		height: 15px;
+		background: $px-white;
+		border: 1px solid $px-theme;
+		@include transition(ease all 0.55s);
+		border-radius: 50%;
+		margin: 0 5px;
+		&.active {
+			background: $px-theme;
+		}
+	}
+}
+.white-dot {
+	.owl-dots {
+		.owl-dot {
+			border: 2px solid $px-white;
+			background-color: transparent;
+			&.active {
+				background: $px-white;
+			}
+		}
+	}
+}
+
+.owl-carousel {
+	.owl-item {
+		img {
+			width: auto;
+			max-width: 100%;
+		}
+	}
+}
+
+/* ----------------------
+*	Box shadow
+---------------------------*/
+.box-shadow-lg {
+	box-shadow: 0px 30px 60px 0px rgba(38, 59, 94, 0.1);
+}
+.box-shadow {
+	box-shadow: 0px 3px 10px 0px rgba(38, 59, 94, 0.1);
+}
+.box-shadow-hover {
+	box-shadow: 0px 3px 10px 0px rgba(38, 59, 94, 0.1);
+	&:hover {
+		box-shadow: 0px 30px 60px 0px rgba(38, 59, 94, 0.1);
+	}
+}
+.box-shadow-only-hover {
+	&:hover {
+		box-shadow: 0px 30px 60px 0px rgba(38, 59, 94, 0.1);
+	}
+}
+
+/* ----------------------
+*	transeition
+---------------------------*/
+.transition  {
+	@include transition(ease-in-out all 0.35s);
+}
+
+/* ----------------------
+*	Positions
+---------------------------*/
+.p-center {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+}
+
+/* ----------------------
+*	Opacity
+---------------------------*/
+@for $i from 1 through 9 {
+	.opacity-#{$i} {
+		opacity: #{$i / 10};
+	}
+}
+
+/* ----------------------
+*	Image Hover
+---------------------------*/
+.img-hover {
+	.img-hover-in {
+		overflow: hidden;
+		img {
+			@include transition(ease-in-out all 0.33s);
+			@include scale(1);
+		}
+	}
+	&:hover {
+		.img-hover-in {
+			img {
+				@include scale(1.1);
+			}
+		}
+	}
+}
+
+/* ----------------------
+*	Border Radius
+---------------------------*/
+@for $i from 1 through 10 {
+	.border-radius-#{$i} {
+		border-radius: #{$i}px;
+	}	
+}
+.border-radius-50 {
+	border-radius: 50%;
+}
+
+.border-radius-effect {
+	border-radius: 73% 27% 38% 62% / 40% 43% 57% 60% ;
+}
+
+/* Border Weight
+-------------------------------*/
+@for $i from 1 through 15 {
+	.border-all-#{$i} {
+		border: #{$i}px solid;
+	}
+	.border-bottom-#{$i} {
+		border-bottom: #{$i}px solid;
+	}
+	.border-top-#{$i} {
+		border-top: #{$i}px solid;
+	}
+	.border-left-#{$i} {
+		border-left: #{$i}px solid;
+	}
+	.border-right-#{$i} {
+		border-right: #{$i}px solid;
+	}
+}
+
+/* Border color
+-------------------------------*/
+.border-color-theme {
+	border-color: $px-theme;
+}
+.border-color-theme2nd {
+	border-color: $px-theme2nd;
+}
+.border-color-dark {
+	border-color: $px-dark;
+}
+.border-color-gray {
+	border-color: #eee;
+}
+.border-color-dark-gray {
+	border-color: #ddd;
+}
+.border-color-white {
+	border-color: #fff;
+}
+.border-color-white-light {
+	border-color: rgba($px-white, 0.3);
+}
+
+/* Letter spacing
+-------------------------------*/
+@for $i from 1 through 10 {
+	.letter-spacing-#{$i} {
+		letter-spacing: #{$i}px;
+	}
+}
+
+/* Height Width
+--------------------*/
+@for $i from 1 through 20 {
+	.w-#{$i * 5}px {
+		width: #{$i * 5}px;
+	}
+}
+
+@for $i from 3 through 20 {
+	.w-#{$i * 50}px {
+		width: #{$i * 50}px;
+	}
+}
+.max-w-100 {
+	max-width: 100%;
+}
+
+.min-h-350px {
+	min-height: 350px;
+}
+.min-h-50vw {
+	min-height: 65vh;
+}
+
+.full-screen {
+	min-height: 100vh;
+}
+@include down-sm {
+	.sm-full-screen-auto {
+		min-height: auto;
+	}
+}
+
+.max-width-auto {
+	max-width: none;
+	@include down-md {
+		max-width: 100%;
+	}
+}
+
+/* Font wight
+--------------------*/
+@for $i from 1 through 9 {
+	.font-w-#{$i * 100} {
+		font-weight: #{$i * 100}
+	}
+}
+
+// Fonts
+@mixin fonts($brksize: normal){
+	@if $brksize ==  normal {
+		@for $i from 1 through 130 {
+			.font-#{$i}px {
+				font-size: #{$i}px;
+			}
+		}
+	}
+
+	@if $brksize ==  sm {
+		@for $i from 1 through 130 {
+			.sm-font-#{$i}px {
+				font-size: #{$i}px;
+			}
+		}
+	}
+
+	@if $brksize ==  md {
+		@for $i from 1 through 130 {
+			.md-font-#{$i}px {
+				font-size: #{$i}px;
+			}
+		}
+	}
+
+	@if $brksize ==  lg {
+		@for $i from 1 through 130 {
+			.lg-font-#{$i}px {
+				font-size: #{$i}px;
+			}
+		}
+	}
+}
+/* Font size
+--------------------*/
+@include fonts(normal);
+
+
+// Margin Padding mixin
+$mp-name: (
+	"m":"margin",
+	"p":"padding",
+);
+$mp-position: (
+	"t":"top",
+	"l":"left",
+	"r":"right",
+	"b":"bottom",
+);
+@mixin spacing($brksize: normal) {
+	@for $i from 0 through 20 {
+		@each $n-name, $n-value in $mp-name {
+			@if $brksize == normal{
+				.#{$n-name}-#{$i*5}px{
+					#{$n-value}: #{$i*5}px;
+				}
+				.#{$n-name}-#{$i*5}px-tb{
+					#{$n-value}-top: #{$i*5}px;
+					#{$n-value}-bottom: #{$i*5}px;
+				}
+				.#{$n-name}-#{$i*5}px-lr{
+					#{$n-value}-left: #{$i*5}px;
+					#{$n-value}-right: #{$i*5}px;
+				}
+			}
+
+			@if $brksize == sm{
+				.sm-#{$n-name}-#{$i*5}px{
+					#{$n-value}: #{$i*5}px;
+				}
+				.sm-#{$n-name}-#{$i*5}px-tb{
+					#{$n-value}-top: #{$i*5}px;
+					#{$n-value}-bottom: #{$i*5}px;
+				}
+				.sm-#{$n-name}-#{$i*5}px-lr{
+					#{$n-value}-left: #{$i*5}px;
+					#{$n-value}-right: #{$i*5}px;
+				}
+			}
+
+			@if $brksize == md{
+				.md-#{$n-name}-#{$i*5}px{
+					#{$n-value}: #{$i*5}px;
+				}
+				.md-#{$n-name}-#{$i*5}px-tb{
+					#{$n-value}-top: #{$i*5}px;
+					#{$n-value}-bottom: #{$i*5}px;
+				}
+				.md-#{$n-name}-#{$i*5}px-lr{
+					#{$n-value}-left: #{$i*5}px;
+					#{$n-value}-right: #{$i*5}px;
+				}
+			}
+
+			@if $brksize == lg{
+				.lg-#{$n-name}-#{$i*5}px{
+					#{$n-value}: #{$i*5}px;
+				}
+				.lg-#{$n-name}-#{$i*5}px-tb{
+					#{$n-value}-top: #{$i*5}px;
+					#{$n-value}-bottom: #{$i*5}px;
+				}
+				.lg-#{$n-name}-#{$i*5}px-lr{
+					#{$n-value}-left: #{$i*5}px;
+					#{$n-value}-right: #{$i*5}px;
+				}
+			}
+
+			@each $p-name, $p-value in $mp-position {
+				@if $brksize == normal{
+					.#{$n-name}-#{$i*5}px-#{$p-name}{
+						#{$n-value}-#{$p-value}: #{$i*5}px;
+					}
+				}
+				@if $brksize == sm {
+					.sm-#{$n-name}-#{$i*5}px-#{$p-name}{
+						#{$n-value}-#{$p-value}: #{$i*5}px;
+					}	
+				}
+				@if $brksize == md {
+					.md-#{$n-name}-#{$i*5}px-#{$p-name}{
+						#{$n-value}-#{$p-value}: #{$i*5}px;
+					}	
+				}
+				@if $brksize == lg {
+					.lg-#{$n-name}-#{$i*5}px-#{$p-name}{
+						#{$n-value}-#{$p-value}: #{$i*5}px;
+					}
+				}
+			}
+		}
+	}
+}
+
+/* Margin Padding
+--------------------*/
+@include spacing(normal);
+
+@include down-lg {
+	/* Font size
+	--------------------*/
+	@include fonts(lg);
+	/* Margin Padding
+	--------------------*/
+	@include spacing(lg);
+}
+@include down-md {
+	/* Font size
+	--------------------*/
+	@include fonts(md);
+	/* Margin Padding
+	--------------------*/
+	@include spacing(md);
+}
+@include down-sm {
+	/* Font size
+	--------------------*/
+	@include fonts(sm);
+	/* Margin Padding
+	--------------------*/
+	@include spacing(sm);
+}
