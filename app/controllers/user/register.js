@@ -59,6 +59,7 @@ const handleValidationErrors = function (req, res, next) {
 //post
 
 const redirectToPayment = async function (req, res) {
+    if (!req.query.addPlan) return false
     try {
         const plan = await db.oneOrNone(`
   SELECT        id, name, price, price::numeric as num_price, credits, rate_limit, concurrent_limit
@@ -112,7 +113,17 @@ async function post(req, res, next) {
         // };
 
         // await sendEmail(message)
+        //send email
+        const email = req.body.username
+        const message = {
+            to: 'charlie.knoll@gmail.com',
+            subject: 'New user registered',
+            text: `User registration: ${email}`,
+            html: `User registration: ${email}`,
+            "o:tracking": 'False'
+        };
 
+        await sendEmail(message)
         //get hash
 
 
