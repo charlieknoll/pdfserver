@@ -17,6 +17,12 @@ module.exports = (app) => {
     app.get('/terms-of-service', function (req, res, next) {
         res.render('home/terms-of-service', { title: 'Terms of Service', layout: 'public.hbs' })
     })
+    app.get('/faq', function (req, res, next) {
+        res.render('home/faq', { title: 'FAQ', layout: 'public.hbs' })
+    })
+    app.get('/enterprise', function (req, res, next) {
+        res.render('home/enterprise', { title: 'Enterprise Pricing', layout: 'public.hbs' })
+    })
     app.use('/user', require('../controllers/user'))
     app.use('/webhooks', require('../controllers/webhooks'))
     app.use('/convert', require('../controllers/convert'))
