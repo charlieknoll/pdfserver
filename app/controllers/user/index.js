@@ -26,5 +26,6 @@ router.use('/edit-apikey', asyncHandler(auth.requiresUser), require('./edit-apik
 router.use('/settings', asyncHandler(auth.requiresUser), require('./settings'))
 router.use('/usage', asyncHandler(auth.requiresUser), asyncHandler(pdfHandler), require('./usage'))
 router.use('/billing', asyncHandler(auth.requiresUser), asyncHandler(pdfHandler), require('./billing'))
+router.use('/gravatar', asyncHandler(auth.requiresUser), require('./gravatar'))
 module.exports = router
 

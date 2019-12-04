@@ -7,6 +7,12 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Migrate Images",
+            "program": "${workspaceFolder}\\app\\migrate-image.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch Express",
             "program": "${workspaceFolder}\\app\\server.js",
             "env": {

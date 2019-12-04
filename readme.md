@@ -145,12 +145,12 @@ run createdb.sql or execute through pgadmin (careful of drop statements and db n
 - sudo useradd -m -s /bin/bash rp_user
 - sudo passwd rp_user
 - sudo su - rp_user
-- git clone https://github.com/charlieknoll/pdfserver.git
+- git clone https://github.com/charlieknoll/pdfserver.git  ***need to enter username and password here
+- cd pdfserver
 - git config credential.helper store
 - git pull
 - npm install --production
 - npm install puppeteer (for some reason chrome doesn't install when doing npm install)
-- touch .env
 - nano .env (enter all vars from sample.env) point rp-dev to use rp-test's db
 - set up db on rp-test
 - NOTE if updating pm2 dump file, first pm2 kill

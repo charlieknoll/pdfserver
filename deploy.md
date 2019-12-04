@@ -1,5 +1,14 @@
 ### Deployment
 
+New server
+
+Install node:
+
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+rm -rf node_modules
+
+
 Check for npm updates
 
 - ncu, then ncu -u
