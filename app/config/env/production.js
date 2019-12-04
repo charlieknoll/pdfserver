@@ -8,7 +8,8 @@ module.exports = {
 		host: process.env.DB_HOST,
 		port: process.env.DB_PORT,
 		max: process.env.DB_MAX_CONNECTIONS,
-		idleTimeoutMillis: process.env.DB_IDLE_TIMEOUT
+		idleTimeoutMillis: process.env.DB_IDLE_TIMEOUT,
+		ssl: true
 	},
 	redis: {
 		password: process.env.REDIS_PASSWORD,
