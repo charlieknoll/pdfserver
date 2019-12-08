@@ -8,6 +8,8 @@ WHERE id = $1
   `, req.user.id)
   const image = Buffer.from(result.image, 'hex')
   res.set('Content-Type', 'image/jpeg')
+  res.set('Cache-Control', 'max-age=31536000');
+  res.set('x-timestamp', Date.now())
   res.send(image)
 
 }
