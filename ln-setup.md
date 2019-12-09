@@ -48,7 +48,7 @@ npm install --production && env $(cat .env) pm2 start ./app/server.js -i max && 
 exit rp_user
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u rp_user --hp /home/rp_user
 sudo systemctl start pm2-rp_user
-mount image directory
+
 
 
 ## Redis
