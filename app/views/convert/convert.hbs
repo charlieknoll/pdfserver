@@ -55,7 +55,20 @@
                                         <div role="tabpanel" id="tab-1" class="tab-pane active show">
                                             <div class="panel-body">
 
-                                                <label for="">Url to convert</label>
+                                                <label for="">Url to convert</label> <br><small>Examples:
+                                                    <a href="" class="exampleUrl"
+                                                        data-src='https://examples.responsivepaper.com/stocks'>Stocks
+                                                    </a> |
+                                                    <a href="" class="exampleUrl"
+                                                        data-src='https://examples.responsivepaper.com/invoice'>Invoice
+                                                    </a> |
+                                                    <a href="" class="exampleUrl"
+                                                        data-src='https://examples.responsivepaper.com/tutorial/index-09.html'>Tutorial
+                                                        Step 9</a>
+                                                    <br>
+                                                    (Press
+                                                    Ctrl+Enter while in the editor to create the pdf)
+                                                </small>
                                                 <input type="url" id="url" class="form-control" placeholder=""
                                                     aria-describedby="helpId" required value="{{url}}">
                                             </div>
@@ -65,11 +78,11 @@
                                                 <div class="col-lg-12">
                                                     <div class="panel-body">
                                                         <div><small>Examples:
-                                                                <a href="" class="exampleUrl" data-src='00.html'>Simple
+                                                                <a href="" class="exampleHtml" data-src='00.html'>Simple
                                                                 </a> |
-                                                                <a href="" class="exampleUrl" data-src='01.html'>Simple
+                                                                <a href="" class="exampleHtml" data-src='01.html'>Simple
                                                                     multi-format</a> |
-                                                                <a href="" class="exampleUrl"
+                                                                <a href="" class="exampleHtml"
                                                                     data-src='02.html'>TOC/Indexing</a> <br>
                                                                 (Press
                                                                 Ctrl+Enter while in the editor to create the pdf)
@@ -344,9 +357,19 @@
             updateUrl()
 
         }
-        var exampleUrls = document.getElementsByClassName('exampleUrl')
+        async function setExampleUrl(e) {
+            e.preventDefault();
+            document.querySelector('#url').value = e.target.dataset.src
+            waitForReadyToRenderEl.checked = true
+            updateUrl()
+        }
+        var exampleUrls = document.getElementsByClassName('exampleHtml')
         for (var i = 0; i < exampleUrls.length; i++) {
             exampleUrls[i].onclick = getExampleContent;
+        };
+        var exampleUrls = document.getElementsByClassName('exampleUrl')
+        for (var i = 0; i < exampleUrls.length; i++) {
+            exampleUrls[i].onclick = setExampleUrl;
         };
         document.getElementById('urlTab').click()
         var apiUrlEl = document.getElementById('apiUrl')
