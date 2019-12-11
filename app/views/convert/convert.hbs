@@ -355,6 +355,7 @@
             var result = await fetch('https://examples.responsivepaper.com/html/' + e.target.dataset.src, { mode: 'cors' })
             var body = await result.text()
             editor.setValue(body)
+            waitForReadyToRenderEl.checked = false
             updateUrl()
 
         }
