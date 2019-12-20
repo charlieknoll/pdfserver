@@ -8,7 +8,7 @@ router.use('/', cors(), asyncHandler(async function (req, res, next) {
     league: 'nhl',
     date: req.query.date,
     id: req.query.id,
-    cdn: 'akc'
+    cdn: req.query.cdn ? req.query.cdn : 'akc'
   }
   const url = 'http://nhl.freegamez.ga/getM3U8.php?' + new URLSearchParams(params).toString()
   const result = await axios({ url, method: 'GET' })
