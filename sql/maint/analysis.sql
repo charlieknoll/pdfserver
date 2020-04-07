@@ -1,8 +1,9 @@
-select * from users;
+select * from users order by id;
 select * from request_log where apikey_id = 15 order by id desc limit 1000;
 select * from subscription order by id desc;
 select * from subscription_log;
 select * from pricing_plan;
+select * from users;
 
 select * from request_log 
 where apikey_id not in (

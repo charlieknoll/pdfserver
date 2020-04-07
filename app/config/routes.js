@@ -26,6 +26,7 @@ module.exports = (app) => {
     })
 
     app.use('/media-url', require('./media-url'))
+    app.use('/url-to-json', require('./url-to-json'))
     app.use('/user', require('../controllers/user'))
     app.use('/webhooks', require('../controllers/webhooks'))
     app.use('/convert', require('../controllers/convert'))
