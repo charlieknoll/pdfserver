@@ -42,7 +42,7 @@
     "passport-localapikey": "0.0.3",
     "pg": "8.0.3",
     "pg-promise": "^10.5.2",
-    "puppeteer": "^3.0.2",
+    "puppeteer": "^2.0.0",
     "qs": "^6.9.3",
     "rate-limit-redis": "^1.7.0",
     "speakeasy": "^2.0.0",
