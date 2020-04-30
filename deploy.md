@@ -32,7 +32,8 @@ Check for npm updates
 - Or  to do it all
 - cd pdfserver && git pull && npm install --production && pm2 kill && env $(cat .env) pm2 start ./app/server.js -i max && pm2 save
 - su - rp_user: Git pull, npm install --production to that server (pm2 stop 0 && git pull && npm install --production)
--
+***NOTES: Puppeteer v3.0.2 will not run for some reason
+https://github.com/puppeteer/puppeteer/issues/5290
 - Restart pm2 on updated instance (pm2 restart 0)
 - Run script to shutdown next server
 - Deploy to that server
