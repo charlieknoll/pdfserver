@@ -1,7 +1,7 @@
 const { validationResult, body } = require('express-validator');
 const { sanitizeBody } = require('express-validator');
 const { db, sendEmail, logger } = require('../../services')
-const uuidv4 = require('uuid/v4')
+const uuidv4 = require('uuid').v4
 const viewPath = require('../../middlewares/viewPath')
 const router = require('express').Router().use(viewPath)
 const asyncHandler = require('express-async-handler')
