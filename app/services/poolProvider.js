@@ -1,21 +1,31 @@
 var debug = require('debug')('pdfserver:browserPagePool');
 const genericPool = require('generic-pool');
-const browserFactory = require('./browserFactory')
+//const browserFactory = require('./browserFactory')
+const puppeteer = require('puppeteer');
+const launchOptions = {}
+//launchOptions.args = ["--incognito", "--no-sandbox", "--disable-gpu", "--window-size=1920,5000"];
+launchOptions.args = ["--incognito", "--no-sandbox", "--disable-gpu"];
+
+launchOptions.ignoreHTTPSErrors = true;
+launchOptions.pipe = true;
+
 const config = require('./../config')
 
 const poolProvider = {
   browser: null,
   pagePool: null,
   init: async function () {
-    browserFactory.then(b => {
-      this.browser = b
-      this.pagePool = genericPool.createPool(pageFactory, {
+    try {
+    this.browser =await puppeteer.launch(launchOptions)
+    this.pagePool = genericPool.createPool(pageFactory, {
         max: config.browserPool.max,
         min: config.browserPool.min,
         maxWaitingClients: config.browserPool.maxWaitingClients,
         autostart: true,
       })
-    })
+    } catch (e) {
+      console.log(e)
+    }
 
   }
 }
