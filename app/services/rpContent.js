@@ -40,7 +40,8 @@ const rpContentsProvider = {
                 versionList.push(items[i].replace('reportsjs-', '').replace('.min.js', ''))
             }
         }
-        return versionList.sort(function (a, b) { return a < b })
+        var sorted = versionList.sort(function (a, b) { return a < b ? 1 : -1 })
+        return sorted
 
 
     },
