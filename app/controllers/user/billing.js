@@ -4,7 +4,9 @@ const viewPath = require('../../middlewares/viewPath')
 const router = require('express').Router().use(viewPath)
 const asyncHandler = require('express-async-handler')
 const config = require('../../config')
+
 const braintree = require('braintree');
+
 const { promisify } = require('util')
 
 const { db } = require('../../services')
@@ -37,7 +39,8 @@ WHERE subscription.user_id = $1
 ORDER BY subscription.cancel_date desc, subscription.start_date asc  `, req.user.id)
 
   //get tx's for subscriptions
-  const gateway = braintree.connect(config.braintree);
+  
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const findSubscription = promisify(gateway.subscription.find).bind(gateway.subscription)
 
   let txs = []

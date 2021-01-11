@@ -10,7 +10,7 @@ const { promisify } = require('util')
 const get = async function (req, res, next) {
   const errorMessage = req.session.errorMessage
   delete req.session.errorMessage
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const createCustomer = promisify(gateway.customer.create).bind(gateway.customer)
   const generateClientToken = promisify(gateway.clientToken.generate).bind(gateway.clientToken)
 
@@ -63,7 +63,7 @@ const successRedirect = function (paymentMethodType, req, res) {
   //Put data on session for use in the billing address and confirmation steps
 }
 const post = async function (req, res, next) {
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   // Use the payment method nonce here
   const payload = JSON.parse(req.body.payload)
 

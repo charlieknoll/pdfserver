@@ -13,7 +13,7 @@ const post = async function (req, res, next) {
     res.sendStatus(403)
     return
   }
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const parse = promisify(gateway.webhookNotification.parse).bind(gateway.webhookNotification)
   const parseResult = await parse(req.body.bt_signature, req.body.bt_payload)
   if (parseResult.kind == 'check') {

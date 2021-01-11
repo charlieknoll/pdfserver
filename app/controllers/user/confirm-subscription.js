@@ -46,7 +46,7 @@ const checkResult = function (o) {
 
 const post = async function (req, res, next) {
 
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
   const createCustomer = promisify(gateway.customer.create).bind(gateway.customer)
   const createSubscriptionAsync = promisify(gateway.subscription.create).bind(gateway.subscription)

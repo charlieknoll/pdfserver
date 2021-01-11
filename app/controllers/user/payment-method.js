@@ -10,7 +10,7 @@ const { promisify } = require('util')
 const get = async function (req, res, next) {
   const errorMessage = req.session.errorMessage
   delete req.session.errorMessage
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
   const generateClientToken = promisify(gateway.clientToken.generate).bind(gateway.clientToken)
 

@@ -14,7 +14,7 @@ const checkResult = function (o) {
 const get = async function (req, res, next) {
   const errorMessage = req.session.errorMessage
   delete req.session.errorMessage
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
   const generateClientToken = promisify(gateway.clientToken.generate).bind(gateway.clientToken)
   const updateSubscription = promisify(gateway.subscription.update).bind(gateway.subscription)
@@ -46,7 +46,7 @@ WHERE pricing_plan.id <> 1
 }
 
 const post = async function (req, res, next) {
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const payload = JSON.parse(req.body.payload)
   const findCustomer = promisify(gateway.customer.find).bind(gateway.customer)
   const updateSubscription = promisify(gateway.subscription.update).bind(gateway.subscription)

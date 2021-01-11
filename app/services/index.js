@@ -10,5 +10,6 @@ module.exports = {
     redis: redis,
     logger: logger,
     sendEmail: sendEmail,
-    poolProvider: poolProvider
+    poolProvider: poolProvider,
+    
 }

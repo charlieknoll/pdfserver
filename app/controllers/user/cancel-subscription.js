@@ -37,7 +37,7 @@ function canVoid(tx) {
   return false
 }
 const post = async function (req, res, next) {
-  const gateway = braintree.connect(config.braintree);
+  const gateway = new braintree.BraintreeGateway(config.braintree)
   const findSubscription = promisify(gateway.subscription.find).bind(gateway.subscription)
   const voidTransaction = promisify(gateway.transaction.void).bind(gateway.transaction)
   const refundTransaction = promisify(gateway.transaction.refund).bind(gateway.transaction)
