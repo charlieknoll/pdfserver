@@ -16,6 +16,7 @@ Check for npm updates
 - npm audit
 
 - Run tests
+- Update reportsjs/constants.js to have the correct build
 - Run build scripts on reportsjs (gulp scripts, gulp less)
 - Copy css and js to app/resources (copy.bat)
 - Copy designer.css to app/public
